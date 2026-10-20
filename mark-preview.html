@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" href="/assets/favicon.svg">
+
+<meta charset="UTF-8">
+<title>Mirror Streams — Mark &amp; Motion System</title>
+<style>
+  :root {
+    --mist: #F2F3F5; --ink: #0f0e0c; --ember: #ff5e1d; --ash: #6b6e75; --line: #d4d7de; --stone: #e6e8ec;
+    --night: #0c1a17; --gold: #e8b860; --cyan: #7fe3d0; --hq: #b8c2ff;
+    --font-sans: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--mist); color: var(--ink); font-family: var(--font-sans); font-size: 15px; line-height: 1.6; padding: 48px 32px; }
+  h1 { font-size: 28px; font-weight: 500; letter-spacing: -0.028em; margin-bottom: 6px; }
+  h2 { font-size: 13px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ember); margin: 56px 0 20px; }
+  .sub { color: var(--ash); margin-bottom: 40px; max-width: 780px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 24px; text-align: center; }
+  .card.night { background: var(--night); border-color: #1e322c; }
+  .card h3 { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ash); margin-top: 16px; }
+  .card.night h3 { color: #93a89d; }
+  .cap { font-size: 12px; color: var(--ash); margin-top: 6px; }
+  .darkbox { background: var(--night); padding: 32px; border-radius: 6px; display: flex; align-items: center; gap: 40px; }
+  .sizes { display: flex; align-items: flex-end; gap: 32px; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 28px; }
+  .frames { display: flex; gap: 8px; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 24px; }
+  .frame { text-align: center; }
+  .frame small { display: block; font-size: 10px; color: var(--ash); letter-spacing: 0.1em; margin-top: 6px; }
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .dd { border: 1px solid var(--line); border-radius: 6px; padding: 20px; background: #fff; }
+  .dd h4 { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px; }
+  .dd.dont h4 { color: #b3261e; } .dd.do h4 { color: #1a7f37; }
+  code { font-family: 'SF Mono', Menlo, monospace; font-size: 12px; background: var(--stone); padding: 1px 5px; border-radius: 3px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); font-size: 13px; }
+  th { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ember); font-weight: 500; }
+  .tablewrap { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  ul { padding-left: 18px; }
+</style>
+</head>
+<body>
+
+<h1>Mirror Streams — Mark &amp; Motion System</h1>
+<p class="sub">Draft v0.4 for approval. The tree mark is a 2D reduction of the exact geometry from the "Where Intelligence Lives" forest experiment: three stacked cones, flat-shaded, a trunk, and a floating spark above the crown. Everything here is derived from work you already made — nothing invented from scratch.</p>
+
+<h2>01 · The Tree — primary mark</h2>
+<div class="grid">
+  <div class="card">
+    <svg width="120" height="180" viewBox="0 0 120 180">
+      <g opacity="0.18" transform="translate(0,116) scale(1,-0.5) translate(0,-116)">
+        <path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/>
+        <path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/>
+        <path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/>
+        <path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/>
+        <path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/>
+        <path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/>
+        <circle cx="57" cy="8" r="5" fill="#ff5e1d"/>
+      </g>
+      <line x1="6" y1="116" x2="114" y2="116" stroke="#d4d7de" stroke-width="1"/>
+      <path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/>
+      <path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/>
+      <path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/>
+      <path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/>
+      <path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/>
+      <path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/>
+      <path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/>
+      <circle cx="57" cy="8" r="5" fill="#ff5e1d"/>
+    </svg>
+    <h3>Tree + Mirror</h3>
+    <p class="cap">Primary lockup — full reflection</p>
+  </div>
+
+  <div class="card">
+    <svg width="120" height="180" viewBox="0 0 120 180">
+      <path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/>
+      <path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/>
+      <path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/>
+      <path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/>
+      <path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/>
+      <path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/>
+      <path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/>
+      <circle cx="57" cy="8" r="5" fill="#ff5e1d"/>
+    </svg>
+    <h3>Tree</h3>
+    <p class="cap">Icon only — no reflection</p>
+  </div>
+
+  <div class="card night">
+    <svg width="120" height="180" viewBox="0 0 120 180">
+      <path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#3b2b20"/>
+      <path d="M60 62 L26 92 L94 92 Z" fill="#2f4f42"/>
+      <path d="M60 62 L26 92 L60 92 Z" fill="#3a6353"/>
+      <path d="M58 38 L34 66 L82 66 Z" fill="#2f4f42"/>
+      <path d="M58 38 L34 66 L58 66 Z" fill="#3a6353"/>
+      <path d="M57 14 L40 40 L74 40 Z" fill="#2f4f42"/>
+      <path d="M57 14 L40 40 L57 40 Z" fill="#3a6353"/>
+      <circle cx="57" cy="8" r="5" fill="#7fe3d0"/>
+    </svg>
+    <h3>Tree — Night</h3>
+    <p class="cap">Forest experiment palette</p>
+  </div>
+
+  <div class="card">
+    <svg width="120" height="180" viewBox="0 0 120 180">
+      <path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/>
+      <path d="M60 62 L26 92 L94 92 Z" fill="none" stroke="#0f0e0c" stroke-width="1.5"/>
+      <path d="M58 38 L34 66 L82 66 Z" fill="none" stroke="#0f0e0c" stroke-width="1.5"/>
+      <path d="M57 14 L40 40 L74 40 Z" fill="none" stroke="#0f0e0c" stroke-width="1.5"/>
+      <circle cx="57" cy="8" r="5" fill="none" stroke="#ff5e1d" stroke-width="1.5"/>
+    </svg>
+    <h3>Tree — Line</h3>
+    <p class="cap">Outline variant for small sizes / emboss</p>
+  </div>
+</div>
+
+<h2>02 · Tree Cluster — "a forest doesn't have a CEO"</h2>
+<div class="grid">
+  <div class="card">
+    <svg width="220" height="150" viewBox="0 0 220 150">
+      <g opacity="0.18" transform="translate(0,128) scale(1,-0.5) translate(0,-128)">
+        <path d="M46 74 L12 100 L80 100 Z" fill="#0f0e0c"/><path d="M46 74 L12 100 L46 100 Z" fill="#2b2823"/>
+        <path d="M45 50 L24 78 L66 78 Z" fill="#0f0e0c"/><path d="M45 50 L24 78 L45 78 Z" fill="#2b2823"/>
+        <path d="M44 26 L28 54 L60 54 Z" fill="#0f0e0c"/><path d="M44 26 L28 54 L44 54 Z" fill="#2b2823"/>
+        <path d="M110 70 L74 100 L146 100 Z" fill="#0f0e0c"/><path d="M110 70 L74 100 L110 100 Z" fill="#2b2823"/>
+        <path d="M109 44 L86 76 L132 76 Z" fill="#0f0e0c"/><path d="M109 44 L86 76 L109 76 Z" fill="#2b2823"/>
+        <path d="M108 18 L90 50 L126 50 Z" fill="#0f0e0c"/><path d="M108 18 L90 50 L108 50 Z" fill="#2b2823"/>
+        <path d="M174 74 L140 100 L208 100 Z" fill="#0f0e0c"/><path d="M174 74 L140 100 L174 100 Z" fill="#2b2823"/>
+        <path d="M173 50 L152 78 L194 78 Z" fill="#0f0e0c"/><path d="M173 50 L152 78 L173 78 Z" fill="#2b2823"/>
+        <path d="M172 26 L156 54 L188 54 Z" fill="#0f0e0c"/><path d="M172 26 L156 54 L172 54 Z" fill="#2b2823"/>
+        <circle cx="44" cy="18" r="4.5" fill="#ff5e1d"/><circle cx="108" cy="10" r="4.5" fill="#ff5e1d"/><circle cx="172" cy="18" r="4.5" fill="#ff5e1d"/>
+      </g>
+      <line x1="6" y1="128" x2="214" y2="128" stroke="#d4d7de" stroke-width="1"/>
+      <path d="M40 100 L52 100 L48 128 L44 128 Z" fill="#0f0e0c"/>
+      <path d="M46 74 L12 100 L80 100 Z" fill="#0f0e0c"/><path d="M46 74 L12 100 L46 100 Z" fill="#2b2823"/>
+      <path d="M45 50 L24 78 L66 78 Z" fill="#0f0e0c"/><path d="M45 50 L24 78 L45 78 Z" fill="#2b2823"/>
+      <path d="M44 26 L28 54 L60 54 Z" fill="#0f0e0c"/><path d="M44 26 L28 54 L44 54 Z" fill="#2b2823"/>
+      <circle cx="44" cy="18" r="4.5" fill="#ff5e1d"/>
+      <path d="M104 100 L116 100 L112 128 L108 128 Z" fill="#0f0e0c"/>
+      <path d="M110 70 L74 100 L146 100 Z" fill="#0f0e0c"/><path d="M110 70 L74 100 L110 100 Z" fill="#2b2823"/>
+      <path d="M109 44 L86 76 L132 76 Z" fill="#0f0e0c"/><path d="M109 44 L86 76 L109 76 Z" fill="#2b2823"/>
+      <path d="M108 18 L90 50 L126 50 Z" fill="#0f0e0c"/><path d="M108 18 L90 50 L108 50 Z" fill="#2b2823"/>
+      <circle cx="108" cy="10" r="4.5" fill="#ff5e1d"/>
+      <path d="M168 100 L180 100 L176 128 L172 128 Z" fill="#0f0e0c"/>
+      <path d="M174 74 L140 100 L208 100 Z" fill="#0f0e0c"/><path d="M174 74 L140 100 L174 100 Z" fill="#2b2823"/>
+      <path d="M173 50 L152 78 L194 78 Z" fill="#0f0e0c"/><path d="M173 50 L152 78 L173 78 Z" fill="#2b2823"/>
+      <path d="M172 26 L156 54 L188 54 Z" fill="#0f0e0c"/><path d="M172 26 L156 54 L172 54 Z" fill="#2b2823"/>
+      <circle cx="172" cy="18" r="4.5" fill="#ff5e1d"/>
+    </svg>
+    <h3>Forest</h3>
+    <p class="cap">Three trees, equal height — no tree is above the others. The brand thesis in one shape.</p>
+  </div>
+</div>
+
+<h2>03 · Scale behaviour</h2>
+<div class="sizes">
+  <svg width="64" height="64" viewBox="0 0 120 180"><path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/><path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/><path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/><path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/><path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/><circle cx="57" cy="8" r="5" fill="#ff5e1d"/></svg>
+  <svg width="40" height="40" viewBox="0 0 120 180"><path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/><path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/><path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/><path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/><path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/><circle cx="57" cy="8" r="5" fill="#ff5e1d"/></svg>
+  <svg width="24" height="24" viewBox="0 0 120 180"><path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/><path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/><path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/><path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/><path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/><circle cx="57" cy="8" r="5" fill="#ff5e1d"/></svg>
+  <svg width="16" height="16" viewBox="0 0 120 180"><path d="M56 92 L64 92 L60 116 L60 116 Z" fill="#0f0e0c"/><path d="M60 62 L30 92 L90 92 Z" fill="#0f0e0c"/><path d="M58 38 L36 66 L80 66 Z" fill="#0f0e0c"/><path d="M57 14 L42 40 L72 40 Z" fill="#0f0e0c"/><circle cx="57" cy="8" r="4" fill="#ff5e1d"/></svg>
+</div>
+<p class="cap" style="margin-top:10px">At 16px the shading is dropped and the spark shrinks — the silhouette must survive alone.</p>
+
+<h2>04 · Favicon / app icon</h2>
+<div class="grid">
+  <div class="card">
+    <svg width="72" height="72" viewBox="0 0 100 100"><rect width="100" height="100" rx="12" fill="#F2F3F5"/><path d="M43 66 L50 66 L47 44 L45 44 Z" fill="#0f0e0c"/><path d="M46 30 L30 54 L62 54 Z" fill="#0f0e0c"/><path d="M46 30 L30 54 L46 54 Z" fill="#2b2823"/><path d="M45 16 L32 36 L58 36 Z" fill="#0f0e0c"/><path d="M45 16 L32 36 L45 36 Z" fill="#2b2823"/><circle cx="45" cy="10" r="5" fill="#ff5e1d"/></svg>
+    <h3>Favicon</h3>
+    <p class="cap">Mist square + tree + ember</p>
+  </div>
+  <div class="card night">
+    <svg width="72" height="72" viewBox="0 0 100 100"><rect width="100" height="100" rx="12" fill="#0c1a17"/><path d="M43 66 L50 66 L47 44 L45 44 Z" fill="#3b2b20"/><path d="M46 30 L30 54 L62 54 Z" fill="#2f4f42"/><path d="M46 30 L30 54 L46 54 Z" fill="#3a6353"/><path d="M45 16 L32 36 L58 36 Z" fill="#2f4f42"/><path d="M45 16 L32 36 L45 36 Z" fill="#3a6353"/><circle cx="45" cy="10" r="5" fill="#7fe3d0"/></svg>
+    <h3>Favicon — Night</h3>
+    <p class="cap">For dark browser chrome</p>
+  </div>
+</div>
+
+<h2>05 · Motion — "the spark descends"</h2>
+<p class="sub" style="margin-bottom:16px">The core motion idea: an ember spark starts above the crown and descends into the tree. This is the forest experiment's argument made as an animation — intelligence moving from the centre into the tree. It is the single motion signature of the brand.</p>
+<div class="frames">
+  <div class="frame">
+    <svg width="90" height="120" viewBox="0 0 120 180"><path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/><path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/><path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/><path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/><path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/><circle cx="57" cy="8" r="5" fill="#ff5e1d"/></svg>
+    <small>0.0s · above</small>
+  </div>
+  <div class="frame">
+    <svg width="90" height="120" viewBox="0 0 120 180"><path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/><path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/><path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/><path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/><path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/><circle cx="57" cy="30" r="5" fill="#ff5e1d"/></svg>
+    <small>0.6s · entering</small>
+  </div>
+  <div class="frame">
+    <svg width="90" height="120" viewBox="0 0 120 180"><path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/><path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/><path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/><path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/><path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/><circle cx="57" cy="55" r="5" fill="#ff5e1d"/></svg>
+    <small>1.2s · through</small>
+  </div>
+  <div class="frame">
+    <svg width="90" height="120" viewBox="0 0 120 180"><path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/><path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/><path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/><path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/><path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/><path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/><circle cx="57" cy="80" r="5" fill="#ff5e1d"/><circle cx="57" cy="80" r="11" fill="#ff5e1d" opacity="0.18"/></svg>
+    <small>1.8s · rooted</small>
+  </div>
+</div>
+
+<h2>06 · Mycelium pattern — the graphic field</h2>
+<div class="card" style="padding:0; overflow:hidden">
+  <svg width="100%" height="150" viewBox="0 0 600 150" preserveAspectRatio="none">
+    <g stroke="#d4d7de" stroke-width="1" fill="none">
+      <path d="M40 150 L90 90 L150 60 L210 30 L280 20"/>
+      <path d="M90 90 L70 40 L100 10"/>
+      <path d="M150 60 L170 20"/>
+      <path d="M150 60 L210 95 L280 120 L350 140"/>
+      <path d="M210 30 L250 70 L300 100"/>
+      <path d="M280 20 L330 60 L390 90 L460 120"/>
+      <path d="M330 60 L350 20 L400 10"/>
+      <path d="M390 90 L420 130"/>
+      <path d="M460 120 L500 90 L560 70"/>
+      <path d="M500 90 L520 130"/>
+      <path d="M40 150 L0 100"/>
+    </g>
+    <g fill="#ff5e1d">
+      <circle cx="90" cy="90" r="3.5"/><circle cx="210" cy="30" r="3.5"/><circle cx="330" cy="60" r="3.5"/><circle cx="460" cy="120" r="3.5"/><circle cx="500" cy="90" r="3.5"/>
+    </g>
+  </svg>
+</div>
+<p class="cap" style="margin-top:10px">The underground fungal network from the forest experiment, flattened to a 2D hairline field. Ember dots mark the nodes that are "smart" — the ones with local intelligence.</p>
+
+<h2>07 · Rules</h2>
+<div class="do-dont">
+  <div class="dd do">
+    <h4>Do</h4>
+    <ul style="font-size:13px; line-height:1.7; color:#4a4d52">
+      <li>Keep the spark ember — it is the "question" and the tree is the system</li>
+      <li>Keep the cones flat-shaded (one lighter left face) — that is what makes it read as 3D</li>
+      <li>Use the reflection only in the primary lockup, never in the icon</li>
+      <li>Use the forest cluster to signal "no hierarchy"</li>
+    </ul>
+  </div>
+  <div class="dd dont">
+    <h4>Don't</h4>
+    <ul style="font-size:13px; line-height:1.7; color:#4a4d52">
+      <li>Don't add a 4th cone — three is the tested geometry from the experiment</li>
+      <li>Don't round the cones into a blob or add leaf detail — it kills the low-poly signature</li>
+      <li>Don't put the tree above the mirror line — the tree is the real, the reflection is the idea</li>
+      <li>Don't use a second chromatic colour in the mark</li>
+      <li>Don't let the tree become "generic eco/nature brand" — the geometry is what makes it yours</li>
+    </ul>
+  </div>
+</div>
+
+<h2>08 · Clearspace &amp; minimum size</h2>
+<div class="tablewrap">
+<table>
+  <tr><th>Rule</th><th>Specification</th></tr>
+  <tr><td>Clearspace</td><td>Equal to the height of the ember spark (r × 2) on all sides</td></tr>
+  <tr><td>Minimum size — icon</td><td>16px (drop the shading, shrink the spark)</td></tr>
+  <tr><td>Minimum size — lockup</td><td>32px tall</td></tr>
+  <tr><td>Grid</td><td>120 × 180 viewBox; tree occupies x 26–94, y 8–116</td></tr>
+  <tr><td>Stroke</td><td>1px hairline on the mirror line, <code>--line #d4d7de</code></td></tr>
+</table>
+</div>
+
+</body>
+</html>

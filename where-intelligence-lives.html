@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" href="/assets/favicon.svg">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Where should intelligence live?</title>
+<meta name="description" content="A forest doesn't have a CEO. Move intelligence from the top to the trees and watch what happens.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #0c1a17;
+    --panel: rgba(13, 30, 26, 0.78);
+    --line: rgba(232, 184, 96, 0.22);
+    --gold: #e8b860;
+    --cyan: #7fe3d0;
+    --hq: #b8c2ff;
+    --ember: #ff6a3d;
+    --ink: #e9efe6;
+    --muted: #93a89d;
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: "Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--night);
+    color: var(--ink);
+    font-family: var(--sans);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    touch-action: none;
+  }
+  canvas#c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+  /* ---------- Intro ---------- */
+  #intro {
+    position: fixed; inset: 0; z-index: 10;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: calc(env(safe-area-inset-top, 0px) + 32px) 28px calc(env(safe-area-inset-bottom, 0px) + 32px);
+    background: radial-gradient(ellipse at 50% 70%, rgba(12,26,23,0.35), rgba(12,26,23,0.92) 70%);
+    cursor: pointer;
+    transition: opacity .9s ease;
+  }
+  #intro.gone { opacity: 0; pointer-events: none; }
+  #introText {
+    max-width: 30ch; margin: 0 auto; width: 100%;
+    font-family: var(--serif); font-weight: 350;
+    font-size: clamp(28px, 6.4vw, 52px); line-height: 1.18;
+    font-variation-settings: "opsz" 120;
+    min-height: 5.2em;
+    display: flex; align-items: center;
+  }
+  #introText span { transition: opacity .7s ease, transform .7s ease; }
+  #introText span.out { opacity: 0; transform: translateY(8px); }
+  #introText em { font-style: italic; color: var(--gold); }
+  #introFoot {
+    max-width: 30ch; margin: 28px auto 0; width: 100%;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    color: var(--muted); font-size: 14px;
+  }
+  #progress { display: flex; gap: 6px; }
+  #progress i { width: 18px; height: 2px; background: rgba(233,239,230,.2); border-radius: 2px; transition: background .4s; }
+  #progress i.on { background: var(--gold); }
+  .ghost {
+    font: inherit; color: var(--muted); background: none; border: 0; padding: 8px 0; cursor: pointer;
+  }
+  .ghost:hover { color: var(--ink); }
+  #enter {
+    display: none; margin-top: 30px;
+    font: 500 17px/1 var(--sans); color: #10201b;
+    background: var(--gold); border: 0; border-radius: 999px;
+    padding: 16px 26px; cursor: pointer; align-self: flex-start;
+  }
+  #enterWrap { max-width: 30ch; margin: 0 auto; width: 100%; display: flex; }
+  #intro.final #introText { justify-content: center; text-align: center; }
+  #intro.final #enterWrap { justify-content: center; }
+  #intro.final #introFoot { justify-content: center; }
+
+  /* ---------- HUD ---------- */
+  #hud { position: fixed; inset: 0; pointer-events: none; z-index: 5; opacity: 0; transition: opacity 1s ease .3s; }
+  #hud.on { opacity: 1; }
+  #top {
+    position: absolute; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 14px);
+    padding: 0 18px; display: flex; justify-content: space-between; align-items: flex-start; gap: 18px;
+  }
+  #narration {
+    font-family: var(--serif); font-style: italic; font-weight: 340;
+    font-size: clamp(18px, 2.6vw, 24px); line-height: 1.32;
+    max-width: 24ch; text-shadow: 0 2px 18px rgba(0,0,0,.6);
+    transition: opacity .5s ease;
+  }
+  #stats { display: grid; grid-template-columns: auto auto; gap: 6px 16px; text-align: right; flex-shrink: 0; }
+  .stat b {
+    display: block; font-family: var(--serif); font-weight: 450; font-size: 26px; line-height: 1;
+    font-variant-numeric: tabular-nums; font-variation-settings: "opsz" 60;
+  }
+  .stat span { font-size: 12px; color: var(--muted); }
+  #sHealth b { color: var(--gold); }
+
+  #panel {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+    width: min(560px, calc(100% - 20px));
+    background: var(--panel);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border: 1px solid var(--line); border-radius: 22px;
+    padding: 18px 20px 16px; pointer-events: auto;
+  }
+  #question { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+  #question h2 { margin: 0; font-family: var(--serif); font-weight: 450; font-size: 19px; }
+  #fracLabel { font-size: 14px; color: var(--cyan); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  input[type=range] {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 34px; background: transparent; margin: 0; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    height: 6px; border-radius: 6px;
+    background: linear-gradient(90deg, var(--hq), #6c7a7c 50%, var(--cyan));
+  }
+  input[type=range]::-moz-range-track {
+    height: 6px; border-radius: 6px;
+    background: linear-gradient(90deg, var(--hq), #6c7a7c 50%, var(--cyan));
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 28px; height: 28px; margin-top: -11px; border-radius: 50%;
+    background: var(--ink); border: 4px solid var(--night); box-shadow: 0 0 0 1px var(--gold);
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 20px; height: 20px; border-radius: 50%; background: var(--ink); border: 4px solid var(--night); box-shadow: 0 0 0 1px var(--gold);
+  }
+  input[type=range].nudge::-webkit-slider-thumb { animation: nudge 1.6s ease-in-out infinite; }
+  input[type=range].nudge::-moz-range-thumb { animation: nudge 1.6s ease-in-out infinite; }
+  @keyframes nudge { 0%,100% { box-shadow: 0 0 0 1px var(--gold), 0 0 0 0 rgba(127,227,208,.6); } 50% { box-shadow: 0 0 0 1px var(--gold), 0 0 0 12px rgba(127,227,208,0); } }
+  input[type=range]:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 8px; }
+
+  #ends { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: 2px; }
+  #actions { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .btn {
+    font: 500 15px/1 var(--sans); color: var(--ink);
+    background: rgba(233,239,230,.07); border: 1px solid rgba(233,239,230,.16);
+    border-radius: 999px; padding: 11px 16px; cursor: pointer;
+  }
+  .btn:hover { background: rgba(233,239,230,.13); }
+  .btn:focus-visible, .ghost:focus-visible, #enter:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  #storm { border-color: rgba(255,106,61,.5); }
+  #legend { margin-left: auto; display: flex; gap: 12px; font-size: 12.5px; color: var(--muted); }
+  #legend i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: 1px; }
+  #hint { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+
+  #narration .cite { display: block; margin-top: 8px; font-family: var(--sans); font-style: normal; font-size: 13px; color: var(--gold); }
+  #narration.quote { font-size: clamp(19px, 2.8vw, 26px); max-width: 26ch; }
+  #notes {
+    position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center;
+    background: rgba(8, 18, 15, 0.82); padding: 24px; pointer-events: auto;
+  }
+  #notes.on { display: flex; }
+  #notesCard {
+    max-width: 560px; max-height: 80vh; overflow-y: auto; background: #10241f; border: 1px solid var(--line);
+    border-radius: 20px; padding: 24px 24px 18px; line-height: 1.5; font-size: 15px;
+  }
+  #notesCard h3 { font-family: var(--serif); font-weight: 450; font-size: 22px; margin: 0 0 14px; }
+  #notesCard p { margin: 0 0 12px; color: #c9d5cd; }
+  #notesCard p b { color: var(--ink); font-weight: 500; }
+  #notesCard .caveat { border-left: 2px solid var(--gold); padding-left: 12px; }
+  @media (max-width: 620px) {
+    #top { flex-direction: column-reverse; gap: 10px; }
+    #stats { grid-template-columns: repeat(4, auto); text-align: left; gap: 4px 18px; }
+    .stat b { font-size: 21px; }
+    #narration { font-size: 17px; max-width: 30ch; }
+    #legend { margin-left: 0; width: 100%; }
+    #panel { padding: 15px 16px 13px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #introText span, #intro, #hud { transition: none; }
+    input[type=range].nudge::-webkit-slider-thumb, input[type=range].nudge::-moz-range-thumb { animation: none; }
+  }
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="A 3D forest connected by an underground fungal network"></canvas>
+
+<div id="intro" role="dialog" aria-label="Introduction">
+  <div id="introText" aria-live="polite"><span></span></div>
+  <div id="enterWrap"><button id="enter" type="button">Enter the forest</button></div>
+  <div id="introFoot">
+    <div id="progress"></div>
+    <button class="ghost" id="skip" type="button">Skip</button>
+  </div>
+</div>
+
+<div id="hud">
+  <div id="top">
+    <div id="narration">Information travels up. Decisions travel down.</div>
+    <div id="stats">
+      <div class="stat" id="sHealth"><b>100%</b><span>Forest health</span></div>
+      <div class="stat" id="sResp"><b>–</b><span>Avg. response</span></div>
+      <div class="stat" id="sQueue"><b>0</b><span>Waiting on HQ</span></div>
+      <div class="stat" id="sLost"><b>0</b><span>Trees lost</span></div>
+    </div>
+  </div>
+
+  <div id="panel">
+    <div id="question">
+      <h2>Where should intelligence live?</h2>
+      <span id="fracLabel">Center decides everything</span>
+    </div>
+    <input id="frac" class="nudge" type="range" min="0" max="100" value="0" step="1" aria-label="Share of trees that can reason locally">
+    <div id="ends"><span>Center decides everything</span><span>No center at all</span></div>
+    <div id="actions">
+      <button class="btn" id="storm" type="button">Send a storm</button>
+      <button class="btn" id="reset" type="button">Reset</button>
+      <button class="btn" id="sourcesBtn" type="button">Sources</button>
+      <div id="legend">
+        <span><i style="background:var(--hq)"></i>Report / order</span>
+        <span><i style="background:var(--cyan)"></i>Local ask</span>
+        <span><i style="background:var(--gold)"></i>Resources</span>
+      </div>
+    </div>
+    <p id="hint">Tap any tree to stress it. Drag to look around.</p>
+  </div>
+</div>
+
+<div id="notes" role="dialog" aria-modal="true" aria-labelledby="notesTitle">
+  <div id="notesCard">
+    <h3 id="notesTitle">Sources and a caveat</h3>
+    <p><b>Philip W. Anderson</b>, "More Is Different," <i>Science</i> (1972). A physicist's argument that whole systems behave in ways you can't read off their parts.</p>
+    <p><b>Friedrich Hayek</b>, "The Use of Knowledge in Society," <i>American Economic Review</i> (1945). Why the knowledge an economy runs on can't be gathered into one head.</p>
+    <p><b>Daniel Dennett</b>, <i>Consciousness Explained</i> (1991). The case that the brain has no central place where experience comes together.</p>
+    <p><b>Lao Tzu</b>, <i>Tao Te Ching</i>, chapter 17. Translations vary; the line here is a common rendering.</p>
+    <p class="caveat"><b>About the forest.</b> Scientists disagree on how much trees really share through fungal networks. A 2023 review by Justine Karst, Melanie Jones and Jason Hoeksema in <i>Nature Ecology &amp; Evolution</i> found that many popular claims go beyond the evidence. Here the network is a picture of coordination, not a claim about biology.</p>
+    <button class="btn" id="notesClose" type="button">Close</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="forest-constants.js"></script>
+<script>
+(() => {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ================= Shared constants ================= */
+  // Geometry and palette come from forest-constants.js — the same file the
+  // index.html backdrop uses. One source of truth: if the mark changes, both
+  // change together. (Fallback values are used only if the script failed to load.)
+  const F = window.FOREST || {
+    MARK: {
+      trunk: { y0: 0, y1: 24, rTop: 6, rBot: 2 },
+      cones: [ { y0: 24, y1: 54, r: 34 }, { y0: 50, y1: 78, r: 24 }, { y0: 76, y1: 102, r: 17 } ],
+      sparkY: 108, crownY: 102
+    },
+    PAL: { trunk: 0x3b2b20, deadTrunk: 0x4a4744, gold: 0xe8b860, cyan: 0x7fe3d0 },
+    SCENE: { radius: 14, treeCount: 46, minGap: 1.85, centerClear: 1.8, edgeReach: 4.6, edgeDegree: 3, fireflies: 70 }
+  };
+  const MARK = F.MARK;
+  const PAL = F.PAL;
+
+  /* ================= Renderer / scene ================= */
+  const canvas = document.getElementById("c");
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  const BG = new THREE.Color(0x0c1a17);
+  const scene = new THREE.Scene();
+  scene.background = BG.clone();
+  scene.fog = new THREE.FogExp2(0x0c1a17, 0.022);
+
+  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 300);
+
+  const hemi = new THREE.HemisphereLight(0x9cc3b0, 0x0b1411, 0.6);
+  scene.add(hemi);
+  const moon = new THREE.DirectionalLight(0xc6d6ff, 0.75);
+  moon.position.set(-12, 22, 8);
+  scene.add(moon);
+
+  function makeGlowTexture() {
+    const c = document.createElement("canvas");
+    c.width = c.height = 64;
+    const g = c.getContext("2d");
+    const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, "rgba(255,255,255,1)");
+    gr.addColorStop(0.22, "rgba(255,255,255,0.85)");
+    gr.addColorStop(0.5, "rgba(255,255,255,0.25)");
+    gr.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = gr;
+    g.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+  }
+  const GLOW = makeGlowTexture();
+  const glowMat = (color, opacity = 1) => new THREE.SpriteMaterial({
+    map: GLOW, color, transparent: true, opacity, blending: THREE.AdditiveBlending, depthWrite: false
+  });
+
+  /* ================= Ground, sky ================= */
+  const R = F.SCENE.radius;
+  const ground = new THREE.Mesh(
+    new THREE.CircleGeometry(R + 9, 72),
+    new THREE.MeshStandardMaterial({ color: 0x10221c, roughness: 1 })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  scene.add(ground);
+
+  (function stars() {
+    const n = 500, p = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      const th = Math.random() * Math.PI * 2, ph = Math.random() * Math.PI * 0.42;
+      const r = 120;
+      p[i * 3] = Math.cos(th) * Math.sin(ph) * r;
+      p[i * 3 + 1] = Math.cos(ph) * r * 0.9 + 6;
+      p[i * 3 + 2] = Math.sin(th) * Math.sin(ph) * r;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(p, 3));
+    scene.add(new THREE.Points(g, new THREE.PointsMaterial({ color: 0xdfe8ff, size: 1.4, sizeAttenuation: false, fog: false, transparent: true, opacity: 0.7 })));
+  })();
+
+  const FF = F.SCENE.fireflies;
+  const ffPos = new Float32Array(FF * 3), ffSeed = [];
+  for (let i = 0; i < FF; i++) {
+    const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * (R + 2);
+    ffSeed.push({ x: Math.cos(a) * r, z: Math.sin(a) * r, y: 0.6 + Math.random() * 3.5, s: Math.random() * 10 });
+  }
+  const ffGeo = new THREE.BufferGeometry();
+  ffGeo.setAttribute("position", new THREE.BufferAttribute(ffPos, 3));
+  scene.add(new THREE.Points(ffGeo, new THREE.PointsMaterial({
+    color: 0xd9f27a, size: 0.13, transparent: true, opacity: 0.75, blending: THREE.AdditiveBlending, depthWrite: false
+  })));
+
+  /* ================= Trees ================= */
+  const EMBER = new THREE.Color(0xd8502c);
+
+  // The tree is the brand mark, in 3D. Geometry lifted from the 2D mark
+  // (viewBox 0 0 120 180) with the trunk base at y=0, in "mark units":
+  //
+  //   part      y range      radius
+  //   trunk     0 .. 24      6 at top  →  2 at bottom
+  //   cone 3    24 .. 54     34        (base — widest)
+  //   cone 2    50 .. 78     24
+  //   cone 1    76 .. 102    17        (top — smallest)
+  //   spark     108
+  //
+  // The cones WIDEN downward. That is the mark's signature: the silhouette
+  // is not a conifer tapering to a point, it is a stack of widening tiers.
+
+  const trunkGeo = new THREE.CylinderGeometry(1, 1 / 3, 1, 6);  // 3:1 taper, matching the mark
+  const coneGeo = new THREE.ConeGeometry(1, 1, 7);
+  const trunkMat = new THREE.MeshStandardMaterial({ color: PAL.trunk, roughness: 1 });
+  const deadTrunkMat = new THREE.MeshStandardMaterial({ color: PAL.deadTrunk, roughness: 1 });
+  const ringGeo = new THREE.RingGeometry(0.75, 0.95, 40);
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0xff6a3d, transparent: true, opacity: 0.7, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending });
+  const sparkMat = glowMat(PAL.cyan, 0.95);
+
+  const trees = [];
+  const pickables = [];
+
+  function makeTree(x, z, idx) {
+    const h = 2.1 + Math.random() * 1.7;
+    const s = (h * 1.05) / 102;   // mark units → world units
+    const group = new THREE.Group();
+    group.position.set(x, 0, z);
+    group.rotation.y = Math.random() * Math.PI * 2;
+
+    const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+    const tH = (MARK.trunk.y1 - MARK.trunk.y0) * s;
+    const tR = MARK.trunk.rTop * s;
+    trunk.scale.set(tR, tH, tR);
+    trunk.position.y = (MARK.trunk.y0 + MARK.trunk.y1) / 2 * s;
+    group.add(trunk);
+
+    const base = new THREE.Color().setHSL(0.36 + Math.random() * 0.07, 0.42, 0.2 + Math.random() * 0.07);
+    const mat = new THREE.MeshStandardMaterial({ color: base.clone(), roughness: 0.85, flatShading: true });
+    const foliage = [];
+    for (const c of MARK.cones) {
+      const r = c.r * s;
+      const ch = (c.y1 - c.y0) * s;
+      const m = new THREE.Mesh(coneGeo, mat);
+      m.scale.set(r, ch, r);
+      m.position.y = (c.y0 + c.y1) / 2 * s;
+      group.add(m);
+      foliage.push(m);
+    }
+    const top = MARK.crownY * s;
+    const sparkOff = (MARK.sparkY - MARK.crownY) * s;
+
+    const spark = new THREE.Sprite(sparkMat);
+    spark.position.y = MARK.sparkY * s;
+    spark.scale.set(0.001, 0.001, 1);
+    group.add(spark);
+
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = 0.04;
+    ring.visible = false;
+    group.add(ring);
+
+    scene.add(group);
+    const t = {
+      idx, x, z, h, top, sparkOff, group, trunk, mat, base, foliage, spark, ring,
+      health: 1, stressed: false, stressT: 0, dead: false, deadT: 0,
+      busy: false, smart: false, rank: 0, gen: 0, grow: 1, sparkS: 0
+    };
+    foliage.forEach(m => { m.userData.tree = t; pickables.push(m); });
+    trunk.userData.tree = t; pickables.push(trunk);
+    return t;
+  }
+
+  (function placeTrees() {
+    let tries = 0;
+    while (trees.length < F.SCENE.treeCount && tries < 8000) {
+      tries++;
+      const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * R;
+      const x = Math.cos(a) * r, z = Math.sin(a) * r;
+      if (Math.hypot(x, z) < F.SCENE.centerClear) continue;
+      if (trees.some(t => Math.hypot(t.x - x, t.z - z) < F.SCENE.minGap)) continue;
+      trees.push(makeTree(x, z, trees.length));
+    }
+    // even spread of "who gets intelligence first"
+    const order = trees.map((_, i) => i).sort(() => Math.random() - 0.5);
+    order.forEach((ti, k) => { trees[ti].rank = (k + 0.5) / trees.length; });
+  })();
+
+  /* ================= Mycelium network ================= */
+  const N = trees.length;
+  const adj = trees.map(() => new Set());
+  const edgePts = new Map();
+  const dist2 = (a, b) => Math.hypot(trees[a].x - trees[b].x, trees[a].z - trees[b].z);
+
+  function addEdge(a, b) {
+    if (a === b || adj[a].has(b)) return;
+    adj[a].add(b); adj[b].add(a);
+    const A = trees[a], B = trees[b];
+    const mx = (A.x + B.x) / 2, mz = (A.z + B.z) / 2;
+    const dx = B.x - A.x, dz = B.z - A.z, L = Math.hypot(dx, dz);
+    const off = (Math.random() - 0.5) * 0.35 * L;
+    const cx = mx - dz / L * off, cz = mz + dx / L * off;
+    const pts = [];
+    const S = 16;
+    for (let i = 0; i <= S; i++) {
+      const u = i / S, iu = 1 - u;
+      pts.push(new THREE.Vector3(
+        iu * iu * A.x + 2 * iu * u * cx + u * u * B.x,
+        0.05,
+        iu * iu * A.z + 2 * iu * u * cz + u * u * B.z
+      ));
+    }
+    edgePts.set(a + "-" + b, pts);
+  }
+  for (let i = 0; i < N; i++) {
+    const near = trees.map((_, j) => j).filter(j => j !== i).sort((p, q) => dist2(i, p) - dist2(i, q));
+    for (let k = 0; k < F.SCENE.edgeDegree; k++) if (dist2(i, near[k]) < F.SCENE.edgeReach) addEdge(i, near[k]);
+  }
+  (function ensureConnected() {
+    const inTree = new Set([0]);
+    while (inTree.size < N) {
+      let best = null, bd = Infinity;
+      inTree.forEach(a => {
+        for (let b = 0; b < N; b++) if (!inTree.has(b)) {
+          const d = dist2(a, b); if (d < bd) { bd = d; best = [a, b]; }
+        }
+      });
+      // only add if not already linked through an existing component
+      addEdge(best[0], best[1]);
+      // flood-fill to absorb everything already connected
+      const stack = [best[1]];
+      while (stack.length) {
+        const v = stack.pop();
+        if (inTree.has(v)) continue;
+        inTree.add(v);
+        adj[v].forEach(w => { if (!inTree.has(w)) stack.push(w); });
+      }
+    }
+  })();
+
+  function getEdgePath(a, b) {
+    const f = edgePts.get(a + "-" + b);
+    if (f) return f;
+    return edgePts.get(b + "-" + a).slice().reverse();
+  }
+  function pathAlong(nodes) {
+    const out = [];
+    for (let i = 0; i < nodes.length - 1; i++) {
+      const seg = getEdgePath(nodes[i], nodes[i + 1]);
+      for (let j = (i === 0 ? 0 : 1); j < seg.length; j++) out.push(seg[j]);
+    }
+    return out;
+  }
+
+  (function drawNetwork() {
+    const pos = [];
+    edgePts.forEach(pts => {
+      for (let i = 0; i < pts.length - 1; i++) pos.push(pts[i].x, pts[i].y, pts[i].z, pts[i + 1].x, pts[i + 1].y, pts[i + 1].z);
+    });
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+    scene.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0xe8b860, transparent: true, opacity: 0.32, blending: THREE.AdditiveBlending, depthWrite: false })));
+
+    // root filaments
+    const rp = [];
+    trees.forEach(t => {
+      for (let k = 0; k < 8; k++) {
+        let a = Math.random() * Math.PI * 2, x = t.x, z = t.z;
+        const len = 0.7 + Math.random() * 1.1, steps = 5;
+        for (let s = 0; s < steps; s++) {
+          a += (Math.random() - 0.5) * 0.9;
+          const nx = x + Math.cos(a) * len / steps, nz = z + Math.sin(a) * len / steps;
+          rp.push(x, 0.045, z, nx, 0.045, nz);
+          x = nx; z = nz;
+        }
+      }
+    });
+    const rg = new THREE.BufferGeometry();
+    rg.setAttribute("position", new THREE.Float32BufferAttribute(rp, 3));
+    scene.add(new THREE.LineSegments(rg, new THREE.LineBasicMaterial({ color: 0xe8b860, transparent: true, opacity: 0.16, blending: THREE.AdditiveBlending, depthWrite: false })));
+  })();
+
+  /* ================= HQ ================= */
+  const HQ_POS = new THREE.Vector3(0, 10.5, 0);
+  const hq = new THREE.Group();
+  hq.position.copy(HQ_POS);
+  const hqCoreMat = new THREE.MeshBasicMaterial({ color: 0xb8c2ff, transparent: true, opacity: 0.9 });
+  const hqWireMat = new THREE.MeshBasicMaterial({ color: 0xb8c2ff, wireframe: true, transparent: true, opacity: 0.45 });
+  const hqCore = new THREE.Mesh(new THREE.OctahedronGeometry(0.8), hqCoreMat);
+  const hqWire = new THREE.Mesh(new THREE.OctahedronGeometry(1.35), hqWireMat);
+  const hqGlowMat = glowMat(0x8f9cff, 0.55);
+  const hqGlow = new THREE.Sprite(hqGlowMat);
+  hqGlow.scale.set(6, 6, 1);
+  hq.add(hqCore, hqWire, hqGlow);
+  scene.add(hq);
+
+  const reportLinesMat = new THREE.LineBasicMaterial({ color: 0xb8c2ff, transparent: true, opacity: 0.12, blending: THREE.AdditiveBlending, depthWrite: false });
+  (function drawReportLines() {
+    const pos = [];
+    trees.forEach(t => pos.push(t.x, t.top, t.z, HQ_POS.x, HQ_POS.y, HQ_POS.z));
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+    scene.add(new THREE.LineSegments(g, reportLinesMat));
+  })();
+
+  function arcPath(a, b, bump = 1.2, n = 24) {
+    const pts = [];
+    for (let i = 0; i <= n; i++) {
+      const u = i / n;
+      const p = a.clone().lerp(b, u);
+      p.y += Math.sin(u * Math.PI) * bump;
+      pts.push(p);
+    }
+    return pts;
+  }
+  const treeTop = t => new THREE.Vector3(t.x, t.top, t.z);
+
+  /* ================= Pulses ================= */
+  const PULSE = {
+    report:   { color: 0xc9d1ff, speed: 10, size: 0.6 },
+    order:    { color: 0xc9d1ff, speed: 10, size: 0.6 },
+    request:  { color: 0x7fe3d0, speed: 11,  size: 0.5 },
+    resource: { color: 0xffc56b, speed: 6,   size: 0.75 }
+  };
+  const pulseMats = {};
+  Object.keys(PULSE).forEach(k => { pulseMats[k] = glowMat(PULSE[k].color, 1); });
+  let pulses = [];
+
+  function spawnPulse(type, pts, onArrive) {
+    const cfg = PULSE[type];
+    const sprites = [1, 0.66, 0.4].map(f => {
+      const s = new THREE.Sprite(pulseMats[type]);
+      s.scale.set(cfg.size * f, cfg.size * f, 1);
+      s.position.copy(pts[0]);
+      scene.add(s);
+      return s;
+    });
+    const lens = [0];
+    for (let i = 1; i < pts.length; i++) lens.push(lens[i - 1] + pts[i].distanceTo(pts[i - 1]));
+    const p = { type, sprites, pts, lens, total: lens[lens.length - 1], d: 0, speed: cfg.speed, onArrive };
+    pulses.push(p);
+    return p;
+  }
+  function posAt(p, d, out) {
+    d = Math.max(0, Math.min(p.total, d));
+    let j = 0;
+    while (j < p.lens.length - 2 && p.lens[j + 1] < d) j++;
+    const segLen = p.lens[j + 1] - p.lens[j] || 1;
+    return out.copy(p.pts[j]).lerp(p.pts[j + 1], (d - p.lens[j]) / segLen);
+  }
+
+  /* ================= Simulation ================= */
+  let simTime = 0, simRunning = false;
+  let tasks = [];
+  const later = (delay, fn) => tasks.push({ at: simTime + delay, fn });
+
+  let sliderV = 0, frac = 0, center = 1;
+  const SWEET = 70, LOCAL_HOPS = 1;
+  let nextStorm = 12, lastNoCenterT = -99, lastHqRescueT = -99;
+  let hqQueue = [], hqBusy = false;
+  const HQ_THINK = 1.25;
+  const STRESS_DRAIN = 0.11;
+  let responseTimes = [];
+  let localCount = 0, hqCount = 0, lostCount = 0;
+  let lastStormT = -99, lastEscalateFailT = -99, lastLocalT = -99;
+  let nextRandomStress = 2.5;
+  let flash = 0, shake = 0;
+
+  const eligibleDonor = t => !t.dead && !t.stressed && !t.busy && t.health > 0.55;
+
+  function applyFrac() {
+    // 0..70: intelligence moves into the trees. 75..90: the center fades away.
+    frac = Math.min(1, sliderV / SWEET);
+    center = sliderV <= 75 ? 1 : Math.max(0, 1 - (sliderV - 75) / 15);
+    trees.forEach(t => { t.smart = t.rank < frac; });
+  }
+
+  function stress(t) {
+    if (t.dead || t.stressed) return false;
+    t.stressed = true;
+    t.stressT = simTime;
+    t.gen++;
+    t.ring.visible = true;
+    const g = t.gen;
+    if (t.smart) later(0.25, () => localSearch(t, g));
+    else escalate(t, g);
+    return true;
+  }
+
+  function alive(t, g) { return !t.dead && t.stressed && t.gen === g; }
+
+  function localSearch(t, g, maxHops = LOCAL_HOPS) {
+    if (!alive(t, g)) return;
+    // breadth-first search through the fungal network, nearby trees only
+    const prev = new Map([[t.idx, -1]]);
+    let frontier = [t.idx], found = -1;
+    for (let depth = 0; depth < maxHops && found < 0 && frontier.length; depth++) {
+      const next = [];
+      for (const v of frontier) {
+        for (const w of adj[v]) {
+          if (prev.has(w)) continue;
+          prev.set(w, v);
+          if (eligibleDonor(trees[w])) { found = w; break; }
+          next.push(w);
+        }
+        if (found >= 0) break;
+      }
+      frontier = next;
+    }
+    if (found < 0) {
+      lastEscalateFailT = simTime;
+      if (maxHops === LOCAL_HOPS && center >= 0.5) askCenter(t, g);
+      else escalate(t, g);
+      return;
+    }
+    const how = maxHops === LOCAL_HOPS ? "local" : "map";
+    const nodes = [];
+    for (let v = found; v !== -1; v = prev.get(v)) nodes.push(v);
+    nodes.reverse(); // t -> donor
+    const donor = trees[found];
+    donor.busy = true;
+    spawnPulse("request", pathAlong(nodes), () => {
+      if (!eligibleDonor({ ...donor, busy: false })) {
+        donor.busy = false;
+        later(0.15, () => localSearch(t, g, maxHops));
+        return;
+      }
+      donor.health -= 0.12;
+      donor.busy = false;
+      spawnPulse("resource", pathAlong(nodes.slice().reverse()), () => resolve(t, g, how));
+    });
+  }
+
+  // The center doesn't decide here. It shares the whole picture, and the tree
+  // then finds help itself, however far away, without waiting in a queue.
+  function askCenter(t, g) {
+    if (!alive(t, g)) return;
+    spawnPulse("report", arcPath(treeTop(t), HQ_POS, 1.2), () => {
+      if (!alive(t, g)) return;
+      spawnPulse("order", arcPath(HQ_POS, treeTop(t), 1.2), () => localSearch(t, g, Infinity));
+    });
+  }
+
+  function escalate(t, g) {
+    if (!alive(t, g)) return;
+    if (center < 0.5) {
+      // no one above to ask: keep trying the neighbors
+      lastNoCenterT = simTime;
+      later(1.2, () => localSearch(t, g));
+      return;
+    }
+    spawnPulse("report", arcPath(treeTop(t), HQ_POS, 1.2), () => { hqQueue.push({ t, g }); });
+  }
+
+  function shortestPath(a, b) {
+    const prev = new Map([[a, -1]]);
+    const q = [a];
+    while (q.length) {
+      const v = q.shift();
+      if (v === b) break;
+      for (const w of adj[v]) if (!prev.has(w)) { prev.set(w, v); q.push(w); }
+    }
+    const nodes = [];
+    for (let v = b; v !== -1; v = prev.get(v)) nodes.push(v);
+    return nodes.reverse();
+  }
+
+  function hqDecide(item) {
+    const { t, g } = item;
+    if (!alive(t, g)) return; // too late
+    let best = null, bd = Infinity;
+    trees.forEach(c => {
+      if (c === t || !eligibleDonor(c)) return;
+      const d = Math.hypot(c.x - t.x, c.z - t.z);
+      if (d < bd) { bd = d; best = c; }
+    });
+    if (!best) { later(1.5, () => hqQueue.push(item)); return; }
+    const donor = best;
+    donor.busy = true;
+    spawnPulse("order", arcPath(HQ_POS, treeTop(donor), 1.2), () => {
+      if (!eligibleDonor({ ...donor, busy: false })) {
+        donor.busy = false;
+        hqQueue.unshift(item);
+        return;
+      }
+      donor.health -= 0.12;
+      donor.busy = false;
+      spawnPulse("resource", pathAlong(shortestPath(donor.idx, t.idx)), () => resolve(t, g, "hq"));
+    });
+  }
+
+  function resolve(t, g, how) {
+    if (!alive(t, g)) return;
+    t.stressed = false;
+    t.ring.visible = false;
+    t.health = Math.min(1, t.health + 0.5);
+    responseTimes.push(simTime - t.stressT);
+    if (responseTimes.length > 14) responseTimes.shift();
+    if (how === "local") { localCount++; lastLocalT = simTime; }
+    else if (how === "map") { localCount++; lastHqRescueT = simTime; }
+    else hqCount++;
+  }
+
+  function die(t) {
+    t.dead = true;
+    t.stressed = false;
+    t.ring.visible = false;
+    t.health = 0;
+    t.deadT = simTime;
+    t.foliage.forEach(m => { m.visible = false; });
+    t.trunk.material = deadTrunkMat;
+    lostCount++;
+  }
+
+  function revive(t) {
+    t.dead = false;
+    t.health = 0.35;
+    t.grow = 0.25;
+    t.foliage.forEach(m => { m.visible = true; });
+    t.trunk.material = trunkMat;
+  }
+
+  function storm() {
+    if (!simRunning) return;
+    const living = trees.filter(t => !t.dead);
+    if (!living.length) return;
+    const c = living[Math.floor(Math.random() * living.length)];
+    let n = 0;
+    trees.forEach(t => {
+      const d = Math.hypot(t.x - c.x, t.z - c.z);
+      if (d < 6.5 && stress(t)) { t.health = Math.min(t.health, 0.95); n++; }
+      else if (d < 8.5 && !t.dead) t.health = Math.min(t.health, 0.3); // weakened ring: can't spare anything
+    });
+    if (n < 4) {
+      // make sure a storm always feels like a storm
+      living.sort((a, b) => Math.hypot(a.x - c.x, a.z - c.z) - Math.hypot(b.x - c.x, b.z - c.z))
+        .slice(0, 7).forEach(stress);
+    }
+    lastStormT = simTime;
+    flash = 1;
+    shake = reduceMotion ? 0 : 0.5;
+  }
+
+  function reset() {
+    pulses.forEach(p => p.sprites.forEach(s => scene.remove(s)));
+    pulses = [];
+    tasks = [];
+    hqQueue = [];
+    hqBusy = false;
+    responseTimes = [];
+    localCount = hqCount = lostCount = 0;
+    trees.forEach(t => {
+      if (t.dead) revive(t);
+      t.health = 1; t.stressed = false; t.busy = false; t.ring.visible = false; t.gen++; t.grow = 1;
+    });
+    nextRandomStress = simTime + 2;
+    nextStorm = simTime + 12;
+    lastStormT = lastEscalateFailT = lastLocalT = lastNoCenterT = lastHqRescueT = -99;
+  }
+
+  function stepSim(dt) {
+    simTime += dt;
+
+    // scheduled work
+    if (tasks.length) {
+      const due = tasks.filter(k => k.at <= simTime);
+      tasks = tasks.filter(k => k.at > simTime);
+      due.forEach(k => k.fn());
+    }
+
+    // background disturbances
+    if (simTime >= nextRandomStress) {
+      const pool = trees.filter(t => !t.dead && !t.stressed);
+      if (pool.length) stress(pool[Math.floor(Math.random() * pool.length)]);
+      nextRandomStress = simTime + 0.7 + Math.random() * 0.6;
+    }
+    // weather: a regional storm every so often
+    if (simTime >= nextStorm) {
+      storm();
+      nextStorm = simTime + 11 + Math.random() * 6;
+    }
+
+    // HQ: one decision-maker, one decision at a time
+    if (center < 0.5 && hqQueue.length) {
+      hqQueue.splice(0).forEach(it => later(0.5, () => localSearch(it.t, it.g)));
+    }
+    if (!hqBusy && hqQueue.length) {
+      const item = hqQueue.shift();
+      if (alive(item.t, item.g)) {
+        hqBusy = true;
+        later(HQ_THINK, () => { hqBusy = false; hqDecide(item); });
+      }
+    }
+
+    trees.forEach(t => {
+      if (t.dead) {
+        if (simTime - t.deadT > 14) revive(t);
+        return;
+      }
+      if (t.stressed) {
+        t.health -= STRESS_DRAIN * dt;
+        if (t.health <= 0) die(t);
+      } else {
+        t.health = Math.min(1, t.health + 0.025 * dt);
+      }
+    });
+  }
+
+  /* ================= Camera + input ================= */
+  let camAngle = 0.7, camElev = 0.55, zoom = 1, baseDist = 30, lastInteract = -99;
+  let viewW = 1, viewH = 1;
+
+  function resize() {
+    viewW = window.innerWidth; viewH = window.innerHeight;
+    renderer.setSize(viewW, viewH, false);
+    const aspect = viewW / viewH;
+    camera.aspect = aspect;
+    camera.fov = aspect < 0.85 ? 60 : 46;
+    const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    baseDist = Math.max(15.5 / (tv * Math.min(aspect, 1.6)), 13 / tv) * 0.92;
+    // nudge the scene up so the bottom panel doesn't cover the forest
+    camera.setViewOffset(viewW, viewH, 0, viewH * (aspect < 0.85 ? 0.13 : 0.08), viewW, viewH);
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  const pointers = new Map();
+  let dragMoved = 0, pinchStart = 0, zoomStart = 1;
+  canvas.addEventListener("pointerdown", e => {
+    canvas.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    dragMoved = 0;
+    if (pointers.size === 2) {
+      const [a, b] = [...pointers.values()];
+      pinchStart = Math.hypot(a.x - b.x, a.y - b.y); zoomStart = zoom;
+    }
+    lastInteract = performance.now();
+  });
+  canvas.addEventListener("pointermove", e => {
+    if (!pointers.has(e.pointerId)) return;
+    const p = pointers.get(e.pointerId);
+    const dx = e.clientX - p.x, dy = e.clientY - p.y;
+    p.x = e.clientX; p.y = e.clientY;
+    if (pointers.size === 2) {
+      const [a, b] = [...pointers.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (pinchStart > 0) zoom = THREE.MathUtils.clamp(zoomStart * pinchStart / d, 0.55, 1.4);
+      dragMoved += 99;
+    } else {
+      dragMoved += Math.abs(dx) + Math.abs(dy);
+      camAngle -= dx * 0.006;
+      camElev = THREE.MathUtils.clamp(camElev + dy * 0.004, 0.2, 1.25);
+    }
+    lastInteract = performance.now();
+  });
+  const endPointer = e => {
+    if (!pointers.has(e.pointerId)) return;
+    pointers.delete(e.pointerId);
+    if (pointers.size === 0 && dragMoved < 8) tap(e.clientX, e.clientY);
+    if (pointers.size < 2) pinchStart = 0;
+  };
+  canvas.addEventListener("pointerup", endPointer);
+  canvas.addEventListener("pointercancel", e => { pointers.delete(e.pointerId); });
+  canvas.addEventListener("wheel", e => {
+    e.preventDefault();
+    zoom = THREE.MathUtils.clamp(zoom * (1 + e.deltaY * 0.001), 0.55, 1.4);
+    lastInteract = performance.now();
+  }, { passive: false });
+
+  const raycaster = new THREE.Raycaster();
+  const ndc = new THREE.Vector2();
+  function tap(x, y) {
+    if (!simRunning) return;
+    ndc.set((x / viewW) * 2 - 1, -(y / viewH) * 2 + 1);
+    raycaster.setFromCamera(ndc, camera);
+    const hit = raycaster.intersectObjects(pickables, false).find(h => h.object.visible);
+    if (hit) stress(hit.object.userData.tree);
+  }
+
+  /* ================= UI ================= */
+  const $ = id => document.getElementById(id);
+  const fracInput = $("frac"), fracLabel = $("fracLabel"), narration = $("narration");
+  const sHealth = $("sHealth").querySelector("b"), sResp = $("sResp").querySelector("b");
+  const sQueue = $("sQueue").querySelector("b"), sLost = $("sLost").querySelector("b");
+
+  function sliderLabel() {
+    const v = sliderV;
+    if (v === 0) return "Center decides everything";
+    if (v < SWEET) return Math.round(frac * 100) + "% of trees think locally";
+    if (v <= 75) return "Trees decide, center keeps watch";
+    if (v < 90) return "The center is fading";
+    return "No center at all";
+  }
+  fracInput.addEventListener("input", () => {
+    sliderV = +fracInput.value;
+    fracInput.classList.remove("nudge");
+    applyFrac();
+    fracLabel.textContent = sliderLabel();
+  });
+  const notes = $("notes");
+  $("sourcesBtn").addEventListener("click", () => { notes.classList.add("on"); $("notesClose").focus(); });
+  $("notesClose").addEventListener("click", () => notes.classList.remove("on"));
+  notes.addEventListener("click", e => { if (e.target === notes) notes.classList.remove("on"); });
+  window.addEventListener("keydown", e => { if (e.key === "Escape") notes.classList.remove("on"); });
+  $("storm").addEventListener("click", storm);
+  $("reset").addEventListener("click", reset);
+
+  let lastNarr = "", quoteUntil = -1;
+  const quoteShown = {};
+  const QUOTES = {
+    hayek: ["The knowledge we need “never exists in concentrated or integrated form.”", "Friedrich Hayek, The Use of Knowledge in Society, 1945"],
+    dennett: ["“There is no central Headquarters, no Cartesian Theater where ‘it all comes together.’”", "Daniel Dennett, Consciousness Explained, 1991"],
+    laozi: ["“When the best leader’s work is done, the people say, ‘We did it ourselves.’”", "Lao Tzu, Tao Te Ching, ch. 17"]
+  };
+  function setNarration(text, cite) {
+    const key = text + (cite || "");
+    if (key === lastNarr) return;
+    lastNarr = key;
+    narration.style.opacity = 0;
+    setTimeout(() => {
+      narration.textContent = text;
+      narration.classList.toggle("quote", !!cite);
+      if (cite) {
+        const c = document.createElement("span");
+        c.className = "cite";
+        c.textContent = cite;
+        narration.appendChild(c);
+      }
+      narration.style.opacity = 1;
+    }, 250);
+  }
+  function showQuote(k) {
+    quoteShown[k] = true;
+    quoteUntil = simTime + 9;
+    setNarration(QUOTES[k][0], QUOTES[k][1]);
+  }
+
+  function updateHud() {
+    const avg = trees.reduce((s, t) => s + (t.dead ? 0 : t.health), 0) / N;
+    sHealth.textContent = Math.round(avg * 100) + "%";
+    sResp.textContent = responseTimes.length
+      ? (responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length).toFixed(1) + "s" : "–";
+    const inFlight = pulses.filter(p => p.type === "report").length;
+    const waiting = hqQueue.length + inFlight + (hqBusy ? 1 : 0);
+    sQueue.textContent = waiting;
+    sLost.textContent = lostCount;
+
+    // quotes, each shown once, at the moment they fit
+    if (!quoteShown.hayek && sliderV < 10 && waiting >= 5) showQuote("hayek");
+    else if (!quoteShown.dennett && sliderV >= SWEET && center > 0.5 && simTime - lastLocalT < 1.5) showQuote("dennett");
+    else if (!quoteShown.laozi && quoteShown.dennett && simTime > quoteUntil && simTime - lastHqRescueT < 1.5 && center > 0.5) showQuote("laozi");
+    if (simTime < quoteUntil) return;
+
+    let text;
+    if (simTime - lastStormT < 3) text = "A storm hits a whole patch of the forest.";
+    else if (sliderV < 5) {
+      text = waiting > 4 ? `${waiting} reports, one decision-maker. Everyone waits.`
+        : "Information travels up. Decisions travel down.";
+    } else if (center < 0.5) {
+      text = simTime - lastNoCenterT < 3
+        ? "A whole patch is struggling, and nobody can see past their neighbors."
+        : "No center at all. Every tree sees only its neighborhood.";
+    } else if (center < 1) {
+      text = "The center is fading.";
+    } else if (frac >= 1) {
+      text = simTime - lastHqRescueT < 4
+        ? "The center stopped deciding. Now it only sees what no single tree can."
+        : "Trees decide. The center keeps watch over the whole.";
+    } else if (simTime - lastEscalateFailT < 2.5) {
+      text = "No neighbor could help, so this one escalates to the top.";
+    } else {
+      text = `${Math.round(frac * 100)}% of trees reason locally. The rest still report up.`;
+    }
+    setNarration(text);
+  }
+
+  /* ================= Intro ================= */
+  const lines = [
+    "A forest doesn't have a CEO.",
+    "Yet everything coordinates.",
+    "Trees trade resources and signals through underground fungal networks. No single tree has the complete picture.",
+    "And yet something emerges. As the physicist Philip Anderson put it: <em>“More is different.”</em>",
+    "Our organizations assume the opposite: information travels up, decisions travel down.",
+    "What happens when intelligence becomes cheap enough to distribute?",
+    "<em>Where should intelligence live?</em>"
+  ];
+  const intro = $("intro"), introSpan = $("introText").querySelector("span");
+  const progress = $("progress"), enterBtn = $("enter"), skipBtn = $("skip");
+  lines.forEach(() => progress.appendChild(document.createElement("i")));
+  let lineIdx = -1, lineTimer = null;
+
+  function showLine(i) {
+    lineIdx = i;
+    introSpan.classList.add("out");
+    setTimeout(() => {
+      introSpan.innerHTML = lines[i];
+      introSpan.classList.remove("out");
+    }, lineIdx === 0 ? 0 : 450);
+    [...progress.children].forEach((el, k) => el.classList.toggle("on", k <= i));
+    clearTimeout(lineTimer);
+    if (i < lines.length - 1) {
+      lineTimer = setTimeout(() => showLine(i + 1), 2600 + lines[i].length * 28);
+    } else {
+      intro.classList.add("final");
+      enterBtn.style.display = "inline-block";
+      skipBtn.style.display = "none";
+      setTimeout(() => enterBtn.focus({ preventScroll: true }), 600);
+    }
+  }
+  intro.addEventListener("click", e => {
+    if (e.target === enterBtn || e.target === skipBtn) return;
+    if (lineIdx < lines.length - 1) showLine(lineIdx + 1);
+  });
+  function begin() {
+    clearTimeout(lineTimer);
+    intro.classList.add("gone");
+    $("hud").classList.add("on");
+    simRunning = true;
+    simTime = 0;
+    nextRandomStress = 1.2;
+    nextStorm = 20;
+    applyFrac();
+  }
+  enterBtn.addEventListener("click", begin);
+  skipBtn.addEventListener("click", begin);
+  window.addEventListener("keydown", e => {
+    if (simRunning) return;
+    if (e.key === "Enter" || e.key === " " || e.key === "ArrowRight") {
+      e.preventDefault();
+      if (lineIdx < lines.length - 1) showLine(lineIdx + 1); else begin();
+    }
+  });
+  showLine(0);
+
+  /* ================= Loop ================= */
+  const tmp = new THREE.Vector3();
+  const clock = new THREE.Clock();
+  let hudTimer = 0, hqActivity = 0;
+
+  function frame() {
+    const dt = Math.min(clock.getDelta(), 0.05);
+    const t = clock.elapsedTime;
+
+    if (simRunning) {
+      stepSim(dt);
+      hudTimer += dt;
+      if (hudTimer > 0.25) { hudTimer = 0; updateHud(); }
+    }
+
+    // pulses
+    for (let i = pulses.length - 1; i >= 0; i--) {
+      const p = pulses[i];
+      p.d += p.speed * dt;
+      p.sprites.forEach((s, k) => posAt(p, p.d - k * 0.32, s.position));
+      if (p.d >= p.total) {
+        p.sprites.forEach(s => scene.remove(s));
+        pulses.splice(i, 1);
+        if (p.onArrive) p.onArrive();
+      }
+    }
+
+    // trees
+    trees.forEach(tr => {
+      if (tr.grow < 1) {
+        tr.grow = Math.min(1, tr.grow + dt * 0.35);
+        tr.group.scale.setScalar(tr.grow);
+      }
+      if (!tr.dead) {
+        const amt = tr.stressed ? 0.35 + 0.6 * (1 - tr.health) : (1 - tr.health) * 0.35;
+        tr.mat.color.copy(tr.base).lerp(EMBER, amt);
+        if (tr.stressed) {
+          tr.mat.emissive.copy(EMBER).multiplyScalar(0.12 + 0.1 * Math.sin(t * 6 + tr.idx));
+          const s = 1 + 0.25 * Math.sin(t * 5 + tr.idx);
+          tr.ring.scale.set(s, s, s);
+        } else tr.mat.emissive.setRGB(0, 0, 0);
+      }
+      const target = tr.smart && !tr.dead ? 0.6 : 0;
+      tr.sparkS += (target - tr.sparkS) * Math.min(1, dt * 6);
+      const ss = tr.sparkS * (1 + 0.12 * Math.sin(t * 3 + tr.idx * 1.7));
+      tr.spark.scale.set(ss + 0.001, ss + 0.001, 1);
+      tr.spark.position.y = tr.top + tr.sparkOff + Math.sin(t * 1.6 + tr.idx) * 0.08;
+    });
+
+    // HQ presence follows how much the forest relies on it
+    const hqUse = Math.min(1, (hqQueue.length + (hqBusy ? 1 : 0)) / 6);
+    hqActivity += (hqUse - hqActivity) * Math.min(1, dt * 3);
+    const presence = center * (0.4 + 0.6 * (1 - frac));
+    hq.visible = center > 0.01;
+    hq.scale.setScalar(0.4 + 0.6 * center);
+    hqCoreMat.opacity = 0.35 + 0.6 * presence;
+    hqWireMat.opacity = 0.15 + 0.35 * presence;
+    hqGlowMat.opacity = 0.2 + 0.35 * presence + 0.35 * hqActivity;
+    hqGlow.scale.setScalar(5 + 3 * hqActivity + (hqBusy ? 0.6 * Math.sin(t * 14) : 0));
+    reportLinesMat.opacity = (0.03 + 0.12 * (1 - frac)) * center;
+    hqCore.rotation.y += dt * (0.6 + hqActivity * 3);
+    hqWire.rotation.y -= dt * 0.25;
+    hqWire.rotation.x += dt * 0.12;
+    hq.position.y = HQ_POS.y + Math.sin(t * 0.8) * 0.15;
+
+    // fireflies
+    for (let i = 0; i < FF; i++) {
+      const f = ffSeed[i];
+      ffPos[i * 3] = f.x + Math.sin(t * 0.3 + f.s) * 0.6;
+      ffPos[i * 3 + 1] = f.y + Math.sin(t * 0.7 + f.s * 2) * 0.3;
+      ffPos[i * 3 + 2] = f.z + Math.cos(t * 0.25 + f.s) * 0.6;
+    }
+    ffGeo.attributes.position.needsUpdate = true;
+
+    // storm flash
+    if (flash > 0) flash = Math.max(0, flash - dt * 2.2);
+    hemi.intensity = 0.6 + flash * 2.4;
+    scene.background.copy(BG).lerp(new THREE.Color(0x3a4a66), flash * 0.5);
+    if (shake > 0) shake = Math.max(0, shake - dt);
+
+    // camera
+    if (!reduceMotion && performance.now() - lastInteract > 3000) camAngle += dt * 0.05;
+    const d = baseDist * zoom;
+    camera.position.set(
+      Math.sin(camAngle) * Math.cos(camElev) * d + (Math.random() - 0.5) * shake,
+      Math.sin(camElev) * d + 1 + (Math.random() - 0.5) * shake,
+      Math.cos(camAngle) * Math.cos(camElev) * d
+    );
+    camera.lookAt(0, 3, 0);
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

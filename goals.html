@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goals — Personal OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230f0e0c'/><text x='50' y='68' font-family='Georgia,serif' font-size='52' font-weight='400' fill='%23c9a96e' text-anchor='middle'>CC</text></svg>">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.4rem);
+      font-weight: 300; line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .page-title em { font-style: italic; color: var(--accent); }
+    .page-sub {
+      font-size: 0.9rem; color: var(--text-muted);
+      margin-bottom: 64px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav">
+    <a href="dashboard.html" class="topnav-logo">CC</a>
+    <ul class="topnav-links">
+      <li><a href="dashboard.html">Hub</a></li>
+      <li><a href="today.html">Today</a></li>
+      <li><a href="goals.html" class="active">Goals</a></li>
+      <li><a href="mirror.html">Mirror</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1 class="page-title">Where I'm <em>going</em></h1>
+      <p class="page-sub">The long view. Direction, horizons, and the work of this quarter.</p>
+    </header>
+
+    <section class="section">
+      <div class="section-label">
+        The System
+        <span class="section-label-zh">系统</span>
+        <span class="section-hint">hover any node</span>
+      </div>
+      <div class="system">
+        <p class="system-quote">"The system is not designed to control life. It is designed to help me live consciously while remaining open to reality."</p>
+        <p class="system-attr">— GOALS.md · Your Personal OS</p>
+        <div class="system-flow">
+          <div class="flow-row">
+            <div class="flow-node"><div class="flow-node-label">Layer 01</div>PHILOSOPHY</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><div class="flow-node-label">Layer 02</div>MISSION</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><div class="flow-node-label">Layer 03</div>VISION</div>
+          </div>
+          <div class="flow-row vertical">
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node"><div class="flow-node-label">Layer 04</div>DIRECTION (10Y)</div>
+            <div class="flow-node"><div class="flow-node-label">Layer 05</div>GOALS (3Y / 1Y)</div>
+            <div class="flow-node"><div class="flow-node-label">Layer 06</div>OBJECTIVES (Q4)</div>
+          </div>
+          <div class="flow-row vertical">
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node"><div class="flow-node-label">Layer 07</div>ACTIONS · WEEKLY · DAILY</div>
+          </div>
+          <div class="flow-row vertical">
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node"><div class="flow-node-label">Layer 08</div>LIFE — observed, lived, reflected</div>
+          </div>
+          <div class="flow-row special">
+            <div class="flow-node" style="background: var(--bg-card);"><div class="flow-node-label">Loop</div>EVIDENCE</div>
+            <div class="flow-arrow">⟲</div>
+            <div class="flow-node" style="background: var(--bg-card);"><div class="flow-node-label">Loop</div>LEARNING</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node" style="background: var(--bg-card);"><div class="flow-node-label">Loop</div>DIRECTION (revised)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">
+        Lifetime Legacy
+        <span class="section-label-zh">毕生之业</span>
+        <span class="section-hint">9 aspects · click to expand</span>
+      </div>
+      <div class="legacy-grid">
+        <div class="legacy-card" data-legacy="family">
+          <div class="legacy-num">01</div>
+          <div class="legacy-emoji">❤️</div>
+          <div class="legacy-name">Family & Intimacy</div>
+          <div class="legacy-tagline">A home where loved ones feel safe, deeply loved and free to become fully themselves.</div>
+          <div class="legacy-expand">
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">10-Year Vision</div>
+              <ul>
+                <li>People I love feel safe to grow, explore, become</li>
+                <li>A beautiful home together</li>
+                <li>Freedom to spend meaningful time</li>
+                <li>Support without control</li>
+                <li>Honesty, love, trust, mutual growth</li>
+                <li>Traditions that evolve</li>
+                <li>Always welcome home</li>
+              </ul>
+            </div>
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">1-Year (2027)</div>
+              <ul>
+                <li>Family trip to Chao Shan</li>
+                <li>Monthly family dinner, no work agenda</li>
+                <li>Regular 1-on-1 with closest people</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="legacy-card" data-legacy="work">
+          <div class="legacy-num">02</div>
+          <div class="legacy-emoji">🚀</div>
+          <div class="legacy-name">Work & Business</div>
+          <div class="legacy-tagline">Build businesses that give people back their time, attention and potential.</div>
+          <div class="legacy-expand">
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">10-Year Vision</div>
+              <ul>
+                <li>Build businesses that create tangible human value</li>
+                <li>Give back time, attention, creative capacity</li>
+                <li>Build with people who bring complementary strengths</li>
+                <li>Financially sustainable beyond my direct involvement</li>
+              </ul>
+            </div>
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">1-Year (2027)</div>
+              <ul>
+                <li>Galaxy: RM1M annual revenue</li>
+                <li>Galaxy: 2+ repeatable solutions</li>
+                <li>Galaxy: 2+ qualified clients / month</li>
+                <li>TAP: 10+ corporate clients, 200+ trained</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="legacy-card" data-legacy="life">
+          <div class="legacy-num">03</div>
+          <div class="legacy-emoji">🌿</div>
+          <div class="legacy-name">Life & Experience</div>
+          <div class="legacy-tagline">Live deeply — beauty, nature, love, meaningful experiences.</div>
+          <div class="legacy-expand">
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">10-Year Vision</div>
+              <ul>
+                <li>Live in beautiful environments that nourish thinking</li>
+                <li>Experience cultures deeply, not as visitor</li>
+                <li>Stay close to nature, movement, art, music, senses</li>
+                <li>Keep creating, exploring, playing throughout life</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="legacy-card" data-legacy="community">
+          <div class="legacy-num">04</div>
+          <div class="legacy-emoji">🤝</div>
+          <div class="legacy-name">Community</div>
+          <div class="legacy-tagline">A circle of deep relationships where people feel seen and free to grow. Mirror Streams lives here.</div>
+          <div class="legacy-expand">
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">10-Year Vision</div>
+              <ul>
+                <li>Deep relationships, people feel seen</li>
+                <li>Surround with curious, authentic, different-seeing people</li>
+                <li>Community built on trust, generosity, mutual growth</li>
+                <li>Mirror Streams IP shared here</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="legacy-card" data-legacy="faith">
+          <div class="legacy-num">05</div>
+          <div class="legacy-emoji">🧘</div>
+          <div class="legacy-name">Faith & Purpose</div>
+          <div class="legacy-tagline">Live with 慈悲喜舍. Seek truth through experience.</div>
+          <div class="legacy-expand">
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">10-Year Vision</div>
+              <ul>
+                <li>Live with 慈悲喜舍</li>
+                <li>Seek truth through experience, observation, reflection, wisdom</li>
+                <li>Let what I understand change how I live</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="legacy-card" data-legacy="finance">
+          <div class="legacy-num">06</div>
+          <div class="legacy-emoji">💰</div>
+          <div class="legacy-name">Finance</div>
+          <div class="legacy-tagline">Build enough wealth to live with freedom. Reinvest into people and ideas that matter.</div>
+          <div class="legacy-expand">
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">10-Year Vision</div>
+              <ul>
+                <li>Money as source of freedom, not fear</li>
+                <li>Freedom over time, choices, environment, work</li>
+                <li>Financial security decoupled from business decisions</li>
+                <li>Invest in people, businesses, ideas creating meaningful value</li>
+                <li>Wealth as means, not end</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="legacy-card" data-legacy="social">
+          <div class="legacy-num">07</div>
+          <div class="legacy-emoji">🌍</div>
+          <div class="legacy-name">Social Contribution</div>
+          <div class="legacy-tagline">Existence as positive force. Leave behind things that continue creating value.</div>
+          <div class="legacy-expand">
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">10-Year Vision</div>
+              <ul>
+                <li>Existence, work, way of living positively affect the world</li>
+                <li>Help people experience greater freedom, clarity, possibility, 生命力</li>
+                <li>Leave behind things creating value beyond my lifetime</li>
+                <li>Show that another way of living is possible</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="legacy-card" data-legacy="body">
+          <div class="legacy-num">08</div>
+          <div class="legacy-emoji">🧠</div>
+          <div class="legacy-name">Body & Mind</div>
+          <div class="legacy-tagline">Strong, healthy, peaceful body and mind — foundation for living fully.</div>
+          <div class="legacy-expand">
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">10-Year Vision</div>
+              <ul>
+                <li>Strong, healthy, peaceful body and mind</li>
+                <li>Physical vitality as way of life, not separate project</li>
+                <li>Movement, Tai Chi, strength, sleep, nutrition as lifelong foundations</li>
+                <li>Mental clarity, emotional steadiness, presence</li>
+                <li>Stay connected to and at home in my body</li>
+                <li>Protect energy and 生命力 for decades</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="legacy-card" data-legacy="learning">
+          <div class="legacy-num">09</div>
+          <div class="legacy-emoji">📚</div>
+          <div class="legacy-name">Learning & Growth</div>
+          <div class="legacy-tagline">Stay curious. Deepen understanding. Turn knowledge into lived wisdom.</div>
+          <div class="legacy-expand">
+            <div class="legacy-detail">
+              <div class="legacy-detail-label">10-Year Vision</div>
+              <ul>
+                <li>Understand myself deeply through experience and reflection</li>
+                <li>Perceive reality clearly, signal from projection</li>
+                <li>Study philosophy, psychology, systems, technology, traditional Chinese wisdom</li>
+                <li>Develop 风水、奇门、紫微、八字、易经 through sustained practice</li>
+                <li>Help people find their own answers</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">
+        Horizons
+        <span class="section-label-zh">远见</span>
+        <span class="section-hint">10Y / 3Y / 1Y</span>
+      </div>
+      <div class="horizon-stack">
+        <div class="horizon-card">
+          <div class="horizon-timescale">10-Year · 2026 → 2036</div>
+          <div class="horizon-thesis">Wisdom-Embedded Tech Storyteller · upstream thinking, ancient + modern. Build businesses that give people back their time. Live with 慈悲喜舍.</div>
+        </div>
+        <div class="horizon-card">
+          <div class="horizon-timescale">3-Year · 2026 → 2029</div>
+          <div class="horizon-thesis">AI Mirror as a real product · Museum of Becoming physical space · Galaxy at scale · Mirror Streams community built.</div>
+        </div>
+        <div class="horizon-card">
+          <div class="horizon-timescale">1-Year · 2027</div>
+          <div class="horizon-thesis">Build the foundation. Galaxy RM1M revenue. TAP 10+ corporate clients. Instinct AI concept solidified. IP that travels.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">
+        Q4 Focus · 5 Active
+        <span class="section-label-zh">本季专注</span>
+        <span class="section-hint">click +5% to bump progress</span>
+      </div>
+      <div class="focus-grid">
+        <div class="focus-card">
+          <span class="focus-emoji">🧠</span>
+          <div class="focus-title">Body & Mind</div>
+          <div class="focus-aspect">Q4 Goal · 48 gym + 24 Tai Chi</div>
+          <p class="focus-detail">Gym 4×/week · Tai Chi 2×/week · sleep before 11pm</p>
+          <div class="focus-progress">
+            <div class="focus-progress-bar"><div class="focus-progress-fill" data-target="30"></div></div>
+            <div class="focus-progress-label"><span>Q4 progress</span><span class="focus-pct">30%</span></div>
+            <button class="focus-bump-btn">+5%</button>
+          </div>
+        </div>
+
+        <div class="focus-card">
+          <span class="focus-emoji">📚</span>
+          <div class="focus-title">Learning & Growth</div>
+          <div class="focus-aspect">Q4 Goal · 36 cases (12/system)</div>
+          <p class="focus-detail">2 study blocks/week · 八字 · 紫微 · 奇门 · 易经</p>
+          <div class="focus-progress">
+            <div class="focus-progress-bar"><div class="focus-progress-fill" data-target="15"></div></div>
+            <div class="focus-progress-label"><span>Q4 progress</span><span class="focus-pct">15%</span></div>
+            <button class="focus-bump-btn">+5%</button>
+          </div>
+        </div>
+
+        <div class="focus-card">
+          <span class="focus-emoji">🚀</span>
+          <div class="focus-title">Work & Business</div>
+          <div class="focus-aspect">Q4 Goal · Galaxy 2 solutions + TAP 3-5</div>
+          <p class="focus-detail">Outreach + delivery · Morning outreach · weekly pipeline review</p>
+          <div class="focus-progress">
+            <div class="focus-progress-bar"><div class="focus-progress-fill" data-target="25"></div></div>
+            <div class="focus-progress-label"><span>Q4 progress</span><span class="focus-pct">25%</span></div>
+            <button class="focus-bump-btn">+5%</button>
+          </div>
+        </div>
+
+        <div class="focus-card">
+          <span class="focus-emoji">🤝</span>
+          <div class="focus-title">Community</div>
+          <div class="focus-aspect">Q4 Goal · Mirror Streams + People That Matter</div>
+          <p class="focus-detail">3 content sessions/week + 1 one-to-one · Pillars + filming system</p>
+          <div class="focus-progress">
+            <div class="focus-progress-bar"><div class="focus-progress-fill" data-target="10"></div></div>
+            <div class="focus-progress-label"><span>Q4 progress</span><span class="focus-pct">10%</span></div>
+            <button class="focus-bump-btn">+5%</button>
+          </div>
+        </div>
+
+        <div class="focus-card">
+          <span class="focus-emoji">💰</span>
+          <div class="focus-title">Finance</div>
+          <div class="focus-aspect">Q4 Goal · Monthly tracking + quarterly review</div>
+          <p class="focus-detail">Net worth tracker · 30min weekly check · log transactions</p>
+          <div class="focus-progress">
+            <div class="focus-progress-bar"><div class="focus-progress-fill" data-target="5"></div></div>
+            <div class="focus-progress-label"><span>Q4 progress</span><span class="focus-pct">5%</span></div>
+            <button class="focus-bump-btn">+5%</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">
+        Q4 Maintain · 4 Aspects
+        <span class="section-label-zh">本季维持</span>
+      </div>
+      <div class="maintain-list">
+        <div class="maintain-item"><span class="maintain-emoji">❤️</span><div class="maintain-name">Family & Intimacy</div><div class="maintain-note">Monthly family dinners, presence with people I love</div></div>
+        <div class="maintain-item"><span class="maintain-emoji">🧘</span><div class="maintain-name">Faith & Purpose</div><div class="maintain-note">Daily quiet reflection, 慈悲喜舍 in action</div></div>
+        <div class="maintain-item"><span class="maintain-emoji">🌍</span><div class="maintain-name">Social Contribution</div><div class="maintain-note">Embedded in Galaxy + Mirror Streams work</div></div>
+        <div class="maintain-item"><span class="maintain-emoji">🌿</span><div class="maintain-name">Life & Experience</div><div class="maintain-note">Rest, nature, beauty — protect space</div></div>
+      </div>
+    </section>
+
+    <div class="mission">
+      <p class="mission-text">Create freedom — for myself and others — by removing what unnecessarily consumes our time, attention and potential, so that we can live, create, love and become fully ourselves.</p>
+      <p class="mission-attr">Mission</p>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const STORAGE_KEY = 'clarissa_dashboard_auth';
+      const PASSWORD = '268';
+      if (sessionStorage.getItem(STORAGE_KEY) === 'unlocked') {
+        init();
+        return;
+      }
+      const gate = document.createElement('div');
+      gate.style.cssText = 'position:fixed;inset:0;background:#0f0e0c;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;';
+      gate.innerHTML = `<div style="text-align:center;max-width:360px;padding:0 24px;">
+        <div style="font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:#c9a96e;margin-bottom:24px;">Personal OS · 私人</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;font-style:italic;color:#e8e4df;margin-bottom:8px;line-height:1.2;">Mirror is private</div>
+        <div style="font-size:0.85rem;color:#8a847c;margin-bottom:32px;">Enter the access code.</div>
+        <input type="password" id="gate-input" placeholder="• • •" autocomplete="off"
+          style="width:100%;padding:14px 18px;background:#1a1714;border:1px solid #2a2620;border-radius:6px;color:#e8e4df;font-family:'JetBrains Mono',monospace;font-size:1.1rem;letter-spacing:0.4em;text-align:center;outline:none;" />
+        <div id="gate-error" style="color:#c97a6e;font-size:0.78rem;margin-top:12px;opacity:0;">Wrong code. Try again.</div>
+      </div>`;
+      document.body.appendChild(gate);
+      document.body.style.overflow = 'hidden';
+      const input = document.getElementById('gate-input');
+      const error = document.getElementById('gate-error');
+      setTimeout(() => input.focus(), 100);
+      function tryUnlock() {
+        if (input.value.trim() === PASSWORD) {
+          sessionStorage.setItem(STORAGE_KEY, 'unlocked');
+          gate.style.transition = 'opacity 0.4s';
+          gate.style.opacity = '0';
+          setTimeout(() => { gate.remove(); document.body.style.overflow = ''; init(); }, 400);
+        } else {
+          error.style.opacity = '1';
+          input.value = ''; input.focus();
+          input.style.borderColor = '#c97a6e';
+          setTimeout(() => { input.style.borderColor = '#2a2620'; setTimeout(() => { error.style.opacity = '0'; }, 1500); }, 800);
+        }
+      }
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+      input.addEventListener('input', () => { if (input.value.length === 3) setTimeout(tryUnlock, 100); });
+    })();
+
+    document.querySelectorAll('.legacy-card').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('expanded'));
+    });
+
+    function init() {
+      const q4Key = 'clarissa_q4_progress';
+      const saved = JSON.parse(localStorage.getItem(q4Key) || '{}');
+      document.querySelectorAll('.focus-card').forEach((card, i) => {
+        const fill = card.querySelector('.focus-progress-fill');
+        const pct = card.querySelector('.focus-pct');
+        const key = `focus_${i}`;
+        const target = saved[key] || parseInt(fill.dataset.target);
+        fill.dataset.target = target;
+        pct.textContent = target + '%';
+        setTimeout(() => { fill.style.width = target + '%'; }, 300);
+        const btn = card.querySelector('.focus-bump-btn');
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const cur = parseInt(fill.dataset.target);
+          const next = Math.min(100, cur + 5);
+          fill.dataset.target = next;
+          fill.style.width = next + '%';
+          pct.textContent = next + '%';
+          saved[key] = next;
+          localStorage.setItem(q4Key, JSON.stringify(saved));
+          btn.textContent = '✓ +5';
+          setTimeout(() => { btn.textContent = '+5%'; }, 1200);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

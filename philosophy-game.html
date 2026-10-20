@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergence — A Philosophy in Motion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f0e0c;
+  --gold: #c9a96e;
+  --gold-dim: rgba(201, 169, 110, 0.3);
+  --gold-glow: rgba(201, 169, 110, 0.15);
+  --red-tint: rgba(180, 60, 60, 0.6);
+  --red-glow: rgba(180, 60, 60, 0.2);
+  --white: #f5f0e8;
+  --white-dim: rgba(245, 240, 232, 0.5);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--white);
+}
+
+#canvas-container {
+  position: fixed; inset: 0;
+  z-index: 0;
+}
+
+#canvas-container canvas { display: block; }
+
+/* ─── HERO OVERLAY ─── */
+#hero {
+  position: fixed; inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#hero.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-shadow:
+    0 0 60px rgba(201, 169, 110, 0.5),
+    0 0 120px rgba(201, 169, 110, 0.25),
+    0 0 200px rgba(201, 169, 110, 0.1);
+  line-height: 1;
+  animation: heroFloat 6s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+#hero-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: 300;
+  color: var(--white-dim);
+  letter-spacing: 0.25em;
+  margin-top: 0.5rem;
+  animation: fadeSlide 2s ease-out 0.5s both;
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#hero-buttons {
+  display: flex;
+  gap: 2rem;
+  margin-top: 3rem;
+  pointer-events: all;
+  animation: fadeSlide 2s ease-out 1s both;
+}
+
+.mode-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 1rem 2.5rem;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.mode-btn:hover::before { opacity: 1; }
+
+#btn-control {
+  background: transparent;
+  border-color: var(--red-tint);
+  color: #e07070;
+  box-shadow: 0 0 30px var(--red-glow), inset 0 0 30px rgba(180, 60, 60, 0.05);
+}
+
+#btn-control::before {
+  background: radial-gradient(ellipse at center, rgba(180, 60, 60, 0.15), transparent 70%);
+}
+
+#btn-control:hover {
+  box-shadow: 0 0 50px rgba(180, 60, 60, 0.4), inset 0 0 30px rgba(180, 60, 60, 0.1);
+  transform: scale(1.05);
+}
+
+#btn-connection {
+  background: transparent;
+  border-color: var(--gold-dim);
+  color: var(--gold);
+  box-shadow: 0 0 30px var(--gold-glow), inset 0 0 30px rgba(201, 169, 110, 0.03);
+}
+
+#btn-connection::before {
+  background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.12), transparent 70%);
+}
+
+#btn-connection:hover {
+  box-shadow: 0 0 50px rgba(201, 169, 110, 0.35), inset 0 0 30px rgba(201, 169, 110, 0.08);
+  transform: scale(1.05);
+}
+
+/* ─── HUD ─── */
+#hud {
+  position: fixed;
+  top: 2rem; left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 1s ease 0.5s;
+  pointer-events: none;
+}
+
+#hud.visible { opacity: 1; }
+
+#mode-indicator {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  transition: color 1s, opacity 1s;
+  text-shadow: 0 0 20px rgba(201, 169, 110, 0.5);
+}
+
+#mode-indicator.control-mode {
+  color: #e07070;
+  text-shadow: 0 0 20px rgba(180, 60, 60, 0.5);
+}
+
+#score-bar {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.score-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.score-label {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+}
+
+.score-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--gold);
+  text-shadow: 0 0 15px rgba(201, 169, 110, 0.4);
+  transition: color 0.5s, text-shadow 0.5s;
+  min-width: 3ch;
+  text-align: center;
+}
+
+.score-value.stress { color: #e07070; text-shadow: 0 0 15px rgba(180, 60, 60, 0.4); }
+.score-value.harmony { color: var(--gold); }
+
+/* ─── TOOLTIP ─── */
+#tooltip {
+  position: fixed;
+  z-index: 200;
+  pointer-events: none;
+  background: rgba(15, 14, 12, 0.85);
+  border: 1px solid var(--gold-dim);
+  padding: 0.5rem 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+#tooltip.visible { opacity: 1; }
+
+/* ─── PHILOSOPHY QUOTE ─── */
+#philosophy-quote {
+  position: fixed;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  font-weight: 300;
+  color: var(--white-dim);
+  letter-spacing: 0.08em;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1.5s ease 1s;
+  pointer-events: none;
+  max-width: 90vw;
+}
+
+#philosophy-quote.visible { opacity: 1; }
+
+/* ─── BOTTOM MODE BUTTONS ─── */
+#bottom-controls {
+  position: fixed;
+  bottom: 5rem; left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  gap: 2rem;
+  opacity: 0;
+  transition: opacity 1s ease 0.5s;
+  pointer-events: none;
+}
+
+#bottom-controls.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ─── TRANSITION OVERLAY ─── */
+#transition-overlay {
+  position: fixed; inset: 0;
+  z-index: 90;
+  background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.08), transparent 60%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+#transition-overlay.active { opacity: 1; }
+
+/* ─── SCAN LINES (subtle atmosphere) ─── */
+#scanlines {
+  position: fixed; inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+</style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+<div id="scanlines"></div>
+
+<div id="transition-overlay"></div>
+
+<div id="hero">
+  <h1 id="hero-title">Emergence</h1>
+  <p id="hero-subtitle">A philosophy in motion</p>
+  <div id="hero-buttons">
+    <button class="mode-btn" id="btn-control">Control</button>
+    <button class="mode-btn" id="btn-connection">Connection</button>
+  </div>
+</div>
+
+<div id="hud">
+  <div id="mode-indicator">—</div>
+  <div id="score-bar">
+    <div class="score-item" id="score-left">
+      <span class="score-label" id="label-left">Stress Level</span>
+      <span class="score-value stress" id="value-left">0</span>
+    </div>
+    <div class="score-item" id="score-right">
+      <span class="score-label" id="label-right">Order Score</span>
+      <span class="score-value" id="value-right">0</span>
+    </div>
+  </div>
+</div>
+
+<div id="bottom-controls">
+  <button class="mode-btn" id="btn-control-bottom">Control</button>
+  <button class="mode-btn" id="btn-connection-bottom">Connection</button>
+</div>
+
+<div id="tooltip"></div>
+
+<div id="philosophy-quote">"A forest doesn't have a CEO. And yet it works."</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+// ─── RENDERER ───
+const container = document.getElementById('canvas-container');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+container.appendChild(renderer.domElement);
+
+// ─── SCENE & CAMERA ───
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0f0e0c);
+scene.fog = new THREE.FogExp2(0x0f0e0c, 0.018);
+
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 8, 40);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+controls.minDistance = 15;
+controls.maxDistance = 80;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.3;
+controls.maxPolarAngle = Math.PI * 0.85;
+controls.minPolarAngle = Math.PI * 0.1;
+
+// ─── POST-PROCESSING (BLOOM) ───
+const composer = new EffectComposer(renderer);
+const renderPass = new RenderPass(scene, camera);
+composer.addPass(renderPass);
+
+const bloomPass = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  1.2, 0.5, 0.2
+);
+composer.addPass(bloomPass);
+
+// ─── LIGHTING ───
+const ambientLight = new THREE.AmbientLight(0x2a2015, 1.5);
+scene.add(ambientLight);
+
+const warmLight = new THREE.PointLight(0xc9a96e, 2, 100);
+warmLight.position.set(0, 20, 0);
+scene.add(warmLight);
+
+// ─── STAR FIELD ───
+const starGeo = new THREE.BufferGeometry();
+const STAR_COUNT = 2000;
+const starPositions = new Float32Array(STAR_COUNT * 3);
+const starSizes = new Float32Array(STAR_COUNT);
+for (let i = 0; i < STAR_COUNT; i++) {
+  const r = 150 + Math.random() * 200;
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.acos(2 * Math.random() - 1);
+  starPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+  starPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+  starPositions[i * 3 + 2] = r * Math.cos(phi);
+  starSizes[i] = Math.random() * 2 + 0.5;
+}
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+starGeo.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
+
+const starMat = new THREE.PointsMaterial({
+  color: 0xc9a96e,
+  size: 0.4,
+  sizeAttenuation: true,
+  transparent: true,
+  opacity: 0.6,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+});
+const stars = new THREE.Points(starGeo, starMat);
+scene.add(stars);
+
+// ─── NODE SYSTEM ───
+const NODE_COUNT = 60;
+const nodes = [];
+
+const GOLD_COLOR = new THREE.Color(0xc9a96e);
+const RED_COLOR = new THREE.Color(0xb43c3c);
+
+// Node geometry & materials
+const nodeGeo = new THREE.SphereGeometry(0.45, 24, 24);
+const nodeMat = new THREE.MeshStandardMaterial({
+  color: GOLD_COLOR,
+  emissive: GOLD_COLOR,
+  emissiveIntensity: 0.8,
+  roughness: 0.2,
+  metalness: 0.6,
+  transparent: true,
+  opacity: 1,
+});
+
+// Glow sprite texture
+function makeGlowTexture(color) {
+  const size = 256;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+  const c = new THREE.Color(color);
+  gradient.addColorStop(0, `rgba(${Math.floor(c.r*255)},${Math.floor(c.g*255)},${Math.floor(c.b*255)},1)`);
+  gradient.addColorStop(0.3, `rgba(${Math.floor(c.r*255)},${Math.floor(c.g*255)},${Math.floor(c.b*255)},0.5)`);
+  gradient.addColorStop(1, `rgba(${Math.floor(c.r*255)},${Math.floor(c.g*255)},${Math.floor(c.b*255)},0)`);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, size, size);
+  return new THREE.CanvasTexture(canvas);
+}
+
+const glowTexGold = makeGlowTexture(0xc9a96e);
+const glowTexRed = makeGlowTexture(0xb43c3c);
+
+function createNodeGlow(color) {
+  const mat = new THREE.SpriteMaterial({
+    map: color === 'gold' ? glowTexGold : glowTexRed,
+    blending: THREE.AdditiveBlending,
+    transparent: true,
+    opacity: 0.7,
+    depthWrite: false,
+  });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(3, 3, 1);
+  return sprite;
+}
+
+// Nodes data
+for (let i = 0; i < NODE_COUNT; i++) {
+  const mesh = new THREE.Mesh(nodeGeo, nodeMat.clone());
+  const radius = 12 + Math.random() * 14;
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.acos(2 * Math.random() - 1);
+  mesh.position.set(
+    radius * Math.sin(phi) * Math.cos(theta),
+    radius * Math.sin(phi) * Math.sin(theta) * 0.5,
+    radius * Math.cos(phi)
+  );
+
+  const glow = createNodeGlow('gold');
+  mesh.add(glow);
+
+  scene.add(mesh);
+
+  const node = {
+    mesh,
+    glow,
+    id: i,
+    velocity: new THREE.Vector3(
+      (Math.random() - 0.5) * 0.05,
+      (Math.random() - 0.5) * 0.05,
+      (Math.random() - 0.5) * 0.05
+    ),
+    targetPos: mesh.position.clone(),
+    isDragged: false,
+    isPulsing: false,
+    pulsePhase: Math.random() * Math.PI * 2,
+    infoLevel: 0.5 + Math.random() * 0.5,
+    connections: [],
+  };
+  nodes.push(node);
+}
+
+// ─── HUB SPHERE ───
+const hubGeo = new THREE.SphereGeometry(1.8, 48, 48);
+const hubMat = new THREE.MeshStandardMaterial({
+  color: GOLD_COLOR,
+  emissive: GOLD_COLOR,
+  emissiveIntensity: 0.6,
+  roughness: 0.1,
+  metalness: 0.8,
+  transparent: true,
+  opacity: 1,
+});
+const hub = new THREE.Mesh(hubGeo, hubMat);
+hub.position.set(0, 0, 0);
+scene.add(hub);
+
+const hubGlowSprite = createNodeGlow('gold');
+hubGlowSprite.scale.set(12, 12, 1);
+hub.add(hubGlowSprite);
+
+// Hub ring
+const ringGeo = new THREE.TorusGeometry(3, 0.04, 16, 100);
+const ringMat = new THREE.MeshBasicMaterial({
+  color: GOLD_COLOR,
+  transparent: true,
+  opacity: 0.3,
+  blending: THREE.AdditiveBlending,
+});
+const ring = new THREE.Mesh(ringGeo, ringMat);
+hub.add(ring);
+
+const ring2 = new THREE.Mesh(
+  new THREE.TorusGeometry(4.5, 0.02, 16, 100),
+  new THREE.MeshBasicMaterial({ color: GOLD_COLOR, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending })
+);
+hub.add(ring2);
+
+// Hub label sprite
+function makeHubLabel() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512; canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, 512, 128);
+  ctx.font = '500 52px "Cormorant Garamond", serif';
+  ctx.fillStyle = '#c9a96e';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.letterSpacing = '12px';
+  ctx.fillText('CONTROL', 256, 64);
+  const tex = new THREE.CanvasTexture(canvas);
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(10, 2.5, 1);
+  sprite.position.set(0, 5, 0);
+  return sprite;
+}
+
+const hubLabel = makeHubLabel();
+hub.add(hubLabel);
+
+// ─── CONNECTION LINES ───
+const lineGroup = new THREE.Group();
+scene.add(lineGroup);
+const linePool = [];
+const LINE_MAX = 400;
+
+for (let i = 0; i < LINE_MAX; i++) {
+  const geo = new THREE.BufferGeometry();
+  const mat = new THREE.LineBasicMaterial({
+    color: GOLD_COLOR,
+    transparent: true,
+    opacity: 0,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+  const line = new THREE.Line(geo, mat);
+  line.visible = false;
+  lineGroup.add(line);
+  linePool.push({ line, used: false });
+}
+
+function getLine() {
+  for (const l of linePool) {
+    if (!l.used) { l.used = true; l.line.visible = true; return l.line; }
+  }
+  return null;
+}
+
+function releaseLine(l) {
+  l.used = false; l.line.visible = false;
+}
+
+// ─── GAME STATE ───
+let mode = 'none'; // 'none', 'control', 'connection'
+let stressLevel = 0;
+let orderScore = 0;
+let harmonyScore = 0;
+let emergenceLevel = 0;
+let transitioning = false;
+
+// ─── DRAG & HOVER ───
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let hoveredNode = null;
+let draggedNode = null;
+const dragPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+const dragOffset = new THREE.Vector3();
+
+const tooltip = document.getElementById('tooltip');
+
+function updateMouse(e) {
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  mouse.x = (clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+}
+
+window.addEventListener('mousemove', (e) => {
+  updateMouse(e);
+  tooltip.style.left = (e.clientX + 15) + 'px';
+  tooltip.style.top = (e.clientY - 10) + 'px';
+});
+
+window.addEventListener('mousedown', (e) => {
+  updateMouse(e);
+  if (mode !== 'control') return;
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = nodes.map(n => n.mesh);
+  const hits = raycaster.intersectObjects(meshes);
+  if (hits.length > 0) {
+    const hitMesh = hits[0].object;
+    const node = nodes.find(n => n.mesh === hitMesh);
+    if (node) {
+      draggedNode = node;
+      node.isDragged = true;
+      dragPlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 1, 0), node.mesh.position);
+      const pt = new THREE.Vector3();
+      raycaster.ray.intersectPlane(dragPlane, pt);
+      dragOffset.subVectors(node.mesh.position, pt);
+      controls.enabled = false;
+    }
+  }
+});
+
+window.addEventListener('mousemove', (e) => {
+  updateMouse(e);
+  if (draggedNode && draggedNode.isDragged) {
+    raycaster.setFromCamera(mouse, camera);
+    const pt = new THREE.Vector3();
+    raycaster.ray.intersectPlane(dragPlane, pt);
+    draggedNode.targetPos.copy(pt).add(dragOffset);
+    draggedNode.velocity.set(0, 0, 0);
+  }
+});
+
+window.addEventListener('mouseup', () => {
+  if (draggedNode) {
+    draggedNode.isDragged = false;
+    draggedNode.velocity.set(
+      (Math.random() - 0.5) * 0.1,
+      (Math.random() - 0.5) * 0.1,
+      (Math.random() - 0.5) * 0.1
+    );
+    draggedNode = null;
+    controls.enabled = true;
+  }
+});
+
+// Click node in connection mode to send info
+window.addEventListener('click', (e) => {
+  if (mode !== 'connection') return;
+  updateMouse(e);
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = nodes.map(n => n.mesh);
+  const hits = raycaster.intersectObjects(meshes);
+  if (hits.length > 0) {
+    const node = nodes.find(n => n.mesh === hits[0].object);
+    if (node) sendInfoPulse(node);
+  }
+});
+
+function sendInfoPulse(node) {
+  node.isPulsing = true;
+  node.pulsePhase = 0;
+  node.infoLevel = Math.min(1, node.infoLevel + 0.3);
+  // Share with neighbors
+  nodes.forEach(other => {
+    if (other === node) return;
+    const dist = node.mesh.position.distanceTo(other.mesh.position);
+    if (dist < 10) {
+      other.infoLevel = Math.min(1, other.infoLevel + 0.15 * (1 - dist / 10));
+    }
+  });
+}
+
+// ─── MODE SWITCHING ───
+function switchMode(newMode) {
+  if (mode === newMode || transitioning) return;
+  transitioning = true;
+  document.getElementById('transition-overlay').classList.add('active');
+
+  setTimeout(() => {
+    mode = newMode;
+
+    if (mode === 'control') {
+      document.getElementById('mode-indicator').textContent = 'Control';
+      document.getElementById('mode-indicator').classList.add('control-mode');
+      document.getElementById('label-left').textContent = 'Stress Level';
+      document.getElementById('label-right').textContent = 'Order Score';
+      document.getElementById('value-left').className = 'score-value stress';
+      document.getElementById('value-right').className = 'score-value';
+
+      // Reset node colors to gold (hub is visible)
+      hub.visible = true;
+      hub.material.color.copy(GOLD_COLOR);
+      hub.material.emissive.copy(GOLD_COLOR);
+      hub.material.opacity = 1;
+      hubLabel.visible = true;
+
+      nodes.forEach(n => {
+        n.mesh.material.color.copy(GOLD_COLOR);
+        n.mesh.material.emissive.copy(GOLD_COLOR);
+        n.mesh.material.emissiveIntensity = 0.8;
+        n.glow.material.map = glowTexGold;
+        n.glow.material.opacity = 0.7;
+      });
+
+    } else if (mode === 'connection') {
+      document.getElementById('mode-indicator').textContent = 'Connection';
+      document.getElementById('mode-indicator').classList.remove('control-mode');
+      document.getElementById('label-left').textContent = 'Harmony Score';
+      document.getElementById('label-right').textContent = 'Emergence Level';
+      document.getElementById('value-left').className = 'score-value harmony';
+      document.getElementById('value-right').className = 'score-value';
+
+      // Dissolve hub
+      hub.visible = false;
+
+      // Spread nodes slightly
+      nodes.forEach(n => {
+        n.mesh.material.color.copy(GOLD_COLOR);
+        n.mesh.material.emissive.copy(GOLD_COLOR);
+        n.mesh.material.emissiveIntensity = 0.8;
+        n.glow.material.map = glowTexGold;
+        n.glow.material.opacity = 0.7;
+      });
+    }
+
+    document.getElementById('hud').classList.add('visible');
+    document.getElementById('bottom-controls').classList.add('visible');
+    document.getElementById('philosophy-quote').classList.add('visible');
+
+    setTimeout(() => {
+      document.getElementById('transition-overlay').classList.remove('active');
+      transitioning = false;
+    }, 800);
+  }, 400);
+}
+
+// Hero buttons
+document.getElementById('btn-control').addEventListener('click', () => {
+  document.getElementById('hero').classList.add('hidden');
+  switchMode('control');
+});
+document.getElementById('btn-connection').addEventListener('click', () => {
+  document.getElementById('hero').classList.add('hidden');
+  switchMode('connection');
+});
+
+// Bottom buttons
+document.getElementById('btn-control-bottom').addEventListener('click', () => switchMode('control'));
+document.getElementById('btn-connection-bottom').addEventListener('click', () => switchMode('connection'));
+
+// ─── PHYSICS UPDATE ───
+const tempVec = new THREE.Vector3();
+const SPRING = 0.03;
+const DAMPING = 0.85;
+const REPULSION = 0.4;
+const BOUND = 22;
+
+function updatePhysics(dt) {
+  let totalCollisions = 0;
+  let totalSeparation = 0;
+
+  for (let i = 0; i < nodes.length; i++) {
+    const a = nodes[i];
+    if (a.isDragged) continue;
+
+    if (mode === 'control') {
+      // Direct control: spring toward target (user drags), bounce off others
+      const toTarget = tempVec.subVectors(a.targetPos, a.mesh.position);
+      a.velocity.add(toTarget.multiplyScalar(SPRING));
+
+      // Repulsion from other nodes
+      for (let j = 0; j < nodes.length; j++) {
+        if (i === j) continue;
+        const b = nodes[j];
+        const diff = tempVec.subVectors(a.mesh.position, b.mesh.position);
+        const dist = diff.length();
+        if (dist < 2.5 && dist > 0) {
+          const force = diff.normalize().multiplyScalar(REPULSION / (dist * 0.5 + 0.1));
+          a.velocity.add(force);
+          totalCollisions++;
+        }
+      }
+
+      // Random drift (chaos)
+      a.velocity.x += (Math.random() - 0.5) * 0.008;
+      a.velocity.y += (Math.random() - 0.5) * 0.008;
+      a.velocity.z += (Math.random() - 0.5) * 0.008;
+
+    } else if (mode === 'connection') {
+      // Emergence: nodes seek connection with neighbors
+      const centerOfMass = new THREE.Vector3();
+      let neighborCount = 0;
+      let avgDist = 0;
+
+      for (let j = 0; j < nodes.length; j++) {
+        if (i === j) continue;
+        const b = nodes[j];
+        const diff = tempVec.subVectors(b.mesh.position, a.mesh.position);
+        const dist = diff.length();
+        if (dist < 8) {
+          centerOfMass.add(b.mesh.position);
+          neighborCount++;
+          avgDist += dist;
+        }
+        // Soft repulsion (too close)
+        if (dist < 2) {
+          const rep = diff.normalize().multiplyScalar(-0.05 / (dist + 0.1));
+          a.velocity.add(rep);
+        }
+      }
+
+      if (neighborCount > 0) {
+        centerOfMass.divideScalar(neighborCount);
+        avgDist /= neighborCount;
+
+        // Move toward center of mass based on info level
+        const seek = tempVec.subVectors(centerOfMass, a.mesh.position);
+        const seekForce = seek.multiplyScalar(SPRING * a.infoLevel * 0.5);
+        a.velocity.add(seekForce);
+
+        // Gentle orbit tendency (avoid staying still)
+        const tangent = new THREE.Vector3(-a.mesh.position.z, 0, a.mesh.position.x).normalize();
+        a.velocity.add(tangent.multiplyScalar(0.005 * a.infoLevel));
+      }
+
+      // Also maintain some spread — each node has a preferred distance
+      const distFromCenter = a.mesh.position.length();
+      if (distFromCenter < 5) {
+        const out = a.mesh.position.clone().normalize().multiplyScalar(-0.01);
+        a.velocity.add(out);
+      }
+      if (distFromCenter > BOUND) {
+        const inForce = a.mesh.position.clone().normalize().multiplyScalar(-0.02);
+        a.velocity.add(inForce);
+      }
+
+      // Dampen toward info-sharing velocity
+      if (a.isPulsing) {
+        a.pulsePhase += 0.1;
+        if (a.pulsePhase > Math.PI * 2) {
+          a.isPulsing = false;
+          a.mesh.material.emissiveIntensity = 0.8;
+        } else {
+          const p = Math.sin(a.pulsePhase);
+          a.mesh.material.emissiveIntensity = 0.8 + p * 0.8;
+          a.mesh.scale.setScalar(1 + p * 0.3);
+        }
+      }
+    }
+
+    // Apply velocity with damping
+    a.velocity.multiplyScalar(DAMPING);
+    a.mesh.position.add(a.velocity);
+
+    // Boundary
+    const pos = a.mesh.position;
+    const bound = BOUND;
+    if (Math.abs(pos.x) > bound) { pos.x = Math.sign(pos.x) * bound; a.velocity.x *= -0.5; }
+    if (Math.abs(pos.y) > bound * 0.6) { pos.y = Math.sign(pos.y) * bound * 0.6; a.velocity.y *= -0.5; }
+    if (Math.abs(pos.z) > bound) { pos.z = Math.sign(pos.z) * bound; a.velocity.z *= -0.5; }
+  }
+
+  // Score calculations
+  if (mode === 'control') {
+    stressLevel += (totalCollisions * 0.5 - stressLevel) * 0.05;
+    stressLevel = Math.min(100, Math.max(0, stressLevel));
+
+    // Order score: variance from mean position
+    let variance = 0;
+    const mean = new THREE.Vector3();
+    nodes.forEach(n => mean.add(n.mesh.position));
+    mean.divideScalar(nodes.length);
+    nodes.forEach(n => variance += n.mesh.position.distanceTo(mean));
+    variance /= nodes.length;
+    orderScore += ((100 - variance * 2) - orderScore) * 0.02;
+    orderScore = Math.min(100, Math.max(0, orderScore));
+
+    updateHUD();
+  } else if (mode === 'connection') {
+    // Harmony: average connection strength
+    let totalConn = 0;
+    let pairCount = 0;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dist = nodes[i].mesh.position.distanceTo(nodes[j].mesh.position);
+        if (dist < 10) {
+          totalConn += (1 - dist / 10);
+          pairCount++;
+        }
+      }
+    }
+    const avgConn = pairCount > 0 ? totalConn / pairCount : 0;
+    harmonyScore += (avgConn * 100 - harmonyScore) * 0.03;
+    harmonyScore = Math.min(100, Math.max(0, harmonyScore));
+
+    // Emergence: how much are nodes moving together (velocity correlation)
+    let emergentMotion = 0;
+    for (let i = 0; i < nodes.length; i++) {
+      emergentMotion += nodes[i].velocity.length() * nodes[i].infoLevel;
+    }
+    emergentMotion = Math.min(100, emergentMotion * 50);
+    emergenceLevel += (emergentMotion - emergenceLevel) * 0.03;
+    emergenceLevel = Math.min(100, Math.max(0, emergenceLevel));
+
+    updateHUD();
+  }
+}
+
+function updateHUD() {
+  if (mode === 'control') {
+    document.getElementById('value-left').textContent = Math.round(stressLevel);
+    document.getElementById('value-right').textContent = Math.round(orderScore);
+  } else if (mode === 'connection') {
+    document.getElementById('value-left').textContent = Math.round(harmonyScore);
+    document.getElementById('value-right').textContent = Math.round(emergenceLevel);
+  }
+}
+
+// ─── CONNECTION LINES UPDATE ───
+let lineIdx = 0;
+function updateLines() {
+  // Release all
+  linePool.forEach(l => { l.used = false; l.line.visible = false; });
+
+  if (mode === 'none') return;
+
+  const CONNECTION_DIST = mode === 'connection' ? 9 : 6;
+  let count = 0;
+
+  for (let i = 0; i < nodes.length; i++) {
+    if (count >= LINE_MAX - 1) break;
+    const a = nodes[i];
+    for (let j = i + 1; j < nodes.length; j++) {
+      if (count >= LINE_MAX - 1) break;
+      const b = nodes[j];
+      const dist = a.mesh.position.distanceTo(b.mesh.position);
+      if (dist < CONNECTION_DIST) {
+        const lineObj = linePool[lineIdx % LINE_MAX];
+        lineIdx++;
+        const positions = new Float32Array([
+          a.mesh.position.x, a.mesh.position.y, a.mesh.position.z,
+          b.mesh.position.x, b.mesh.position.y, b.mesh.position.z
+        ]);
+        lineObj.line.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        lineObj.line.geometry.attributes.position.needsUpdate = true;
+
+        // Color based on mode and info level
+        if (mode === 'connection') {
+          const avgInfo = (a.infoLevel + b.infoLevel) / 2;
+          const lineColor = new THREE.Color().setHSL(0.1, 0.7, 0.4 + avgInfo * 0.3);
+          lineObj.line.material.color.copy(lineColor);
+          lineObj.line.material.opacity = (1 - dist / CONNECTION_DIST) * 0.5 * avgInfo;
+        } else {
+          lineObj.line.material.color.copy(new THREE.Color(0xb43c3c));
+          lineObj.line.material.opacity = (1 - dist / CONNECTION_DIST) * 0.25;
+        }
+        lineObj.used = true;
+        lineObj.line.visible = true;
+        count++;
+      }
+    }
+  }
+}
+
+// ─── HOVER DETECTION ───
+function updateHover() {
+  if (mode === 'none') return;
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = nodes.map(n => n.mesh);
+  const hits = raycaster.intersectObjects(meshes);
+
+  if (hits.length > 0) {
+    const node = nodes.find(n => n.mesh === hits[0].object);
+    if (node && !draggedNode) {
+      hoveredNode = node;
+      tooltip.textContent = `Node ${node.id + 1} — seeking connection`;
+      tooltip.classList.add('visible');
+    }
+  } else {
+    hoveredNode = null;
+    tooltip.classList.remove('visible');
+  }
+}
+
+// ─── HUB ANIMATION ───
+function updateHub(time) {
+  if (mode === 'control' && hub.visible) {
+    hub.rotation.y = time * 0.3;
+    hub.rotation.x = Math.sin(time * 0.2) * 0.1;
+    hub.children[0].scale.setScalar(12 + Math.sin(time * 2) * 1); // glow
+    hub.children[1].rotation.z = time * 0.5; // ring
+    hub.children[2].rotation.z = -time * 0.3; // ring2
+    hub.children[1].material.opacity = 0.3 + Math.sin(time * 2) * 0.1;
+    hub.material.emissiveIntensity = 0.6 + Math.sin(time * 3) * 0.2;
+  }
+}
+
+// ─── AMBIENT PARTICLES ───
+const ambGeo = new THREE.BufferGeometry();
+const ambCount = 500;
+const ambPos = new Float32Array(ambCount * 3);
+for (let i = 0; i < ambCount; i++) {
+  ambPos[i*3] = (Math.random() - 0.5) * 60;
+  ambPos[i*3+1] = (Math.random() - 0.5) * 40;
+  ambPos[i*3+2] = (Math.random() - 0.5) * 60;
+}
+ambGeo.setAttribute('position', new THREE.BufferAttribute(ambPos, 3));
+const ambMat = new THREE.PointsMaterial({
+  color: 0xc9a96e, size: 0.08,
+  transparent: true, opacity: 0.3,
+  blending: THREE.AdditiveBlending, depthWrite: false,
+});
+const ambientParticles = new THREE.Points(ambGeo, ambMat);
+scene.add(ambientParticles);
+
+// ─── RESIZE ───
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  composer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ─── ANIMATE ───
+let lastTime = performance.now();
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const now = performance.now();
+  const dt = Math.min((now - lastTime) / 1000, 0.05);
+  lastTime = now;
+  const time = now * 0.001;
+
+  controls.update();
+
+  // Star rotation
+  stars.rotation.y = time * 0.01;
+  stars.rotation.x = Math.sin(time * 0.005) * 0.02;
+
+  // Ambient particles drift
+  const ambPositions = ambientParticles.geometry.attributes.position.array;
+  for (let i = 0; i < ambCount; i++) {
+    ambPositions[i*3+1] += Math.sin(time + i) * 0.002;
+    ambPositions[i*3] += Math.cos(time * 0.7 + i) * 0.001;
+  }
+  ambientParticles.geometry.attributes.position.needsUpdate = true;
+
+  if (mode !== 'none') {
+    updatePhysics(dt);
+    updateLines();
+    updateHover();
+  }
+
+  updateHub(time);
+
+  // Node glow pulse
+  nodes.forEach((n, i) => {
+    const basePulse = Math.sin(time * 1.5 + i * 0.5) * 0.1;
+    if (!n.isPulsing) {
+      n.mesh.material.emissiveIntensity = 0.7 + basePulse;
+    }
+    n.glow.scale.setScalar(3 + basePulse * 2);
+    n.glow.material.opacity = 0.5 + basePulse * 0.3;
+  });
+
+  composer.render();
+}
+
+animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Mirror Streams">
+  <title>Mirror Streams — night</title>
+  <!-- Mirror Streams tree favicon, night variant. -->
+  <rect width="100" height="100" rx="12" fill="#0c1a17"/>
+  <path d="M43 66 L50 66 L47 44 L45 44 Z" fill="#3b2b20"/>
+  <path d="M46 30 L30 54 L62 54 Z" fill="#2f4f42"/>
+  <path d="M46 30 L30 54 L46 54 Z" fill="#3a6353"/>
+  <path d="M45 16 L32 36 L58 36 Z" fill="#2f4f42"/>
+  <path d="M45 16 L32 36 L45 36 Z" fill="#3a6353"/>
+  <circle cx="45" cy="10" r="5" fill="#7fe3d0"/>
+</svg>

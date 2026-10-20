@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" href="/assets/favicon.svg">
+
+<meta charset="UTF-8">
+<title>Mirror Streams — Mark Directions</title>
+<style>
+  :root{--mist:#F2F3F5;--ink:#0f0e0c;--ember:#ff5e1d;--ash:#6b6e75;--line:#d4d7de;--stone:#e6e8ec;--night:#0c1a17;
+    --font-sans:'Helvetica Neue',Helvetica,Arial,system-ui,-apple-system,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--mist);color:var(--ink);font-family:var(--font-sans);font-size:15px;line-height:1.6;padding:48px 32px}
+  h1{font-size:28px;font-weight:500;letter-spacing:-0.028em;margin-bottom:6px}
+  .sub{color:var(--ash);margin-bottom:36px;max-width:840px}
+  h2{font-size:13px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--ember);margin:50px 0 6px}
+  .dirhead{margin-bottom:18px;max-width:800px}
+  .dirhead p{color:var(--ash);font-size:14px}
+  .dirhead b{color:var(--ink);font-weight:500}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:15px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:22px 12px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+  .card.night{background:var(--night);border-color:#1e322c}
+  .card img{display:block}
+  .lbl{font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);margin-top:14px}
+  .note{font-size:11.5px;color:var(--ash);margin-top:3px}
+  .scales{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .sb{background:#fff;border:1px solid var(--line);border-radius:6px;padding:20px}
+  .sb h4{font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink);margin-bottom:12px}
+  .sr{display:flex;align-items:flex-end;gap:14px}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  .d{border:1px solid var(--line);border-radius:6px;padding:18px;background:#fff}
+  .d h4{font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px}
+  .d.dont h4{color:#b3261e}.d.do h4{color:#1a7f37}
+  .d ul{padding-left:17px;font-size:12.5px;line-height:1.6;color:#4a4d52}
+</style>
+</head>
+<body>
+<h1>Mark Directions</h1>
+<p class="sub">Six directions. All derived from your own work, all genuinely different shapes — so you choose on feel, not on fidelity to a tree.</p>
+
+<h2>A · Node Tree</h2>
+<div class="dirhead"><p><b>A tree drawn as a network graph.</b> Sparse — 12 nodes, designed to stay legible at 16px. Ember at the top node. Reads as: a living structure made of connections rather than a mass.</p></div>
+<div class="grid">
+  <div class="card"><img src="assets/mark-node-tree-mirror.svg" width="120" height="180"><div class="lbl">+ Mirror</div><div class="note">Primary lockup</div></div>
+  <div class="card"><img src="assets/mark-node-tree.svg" width="120" height="180"><div class="lbl">Icon</div></div>
+  <div class="card night"><img src="assets/mark-node-tree-night.svg" width="120" height="180"><div class="lbl">Night</div></div>
+</div>
+
+<h2>B · Root Tree</h2>
+<div class="dirhead"><p><b>Organic crown with visible branches and a taproot.</b> The canopy is one continuous scalloped curve — no triangles, no spikes — with branch lines showing through it. Below ground a single taproot splits into fine roots. Ember inside the crown. Reads as: rooted, with hidden structure below.</p></div>
+<div class="grid">
+  <div class="card"><img src="assets/mark-root-tree-mirror.svg" width="120" height="180"><div class="lbl">+ Mirror</div><div class="note">Primary lockup</div></div>
+  <div class="card"><img src="assets/mark-root-tree.svg" width="120" height="180"><div class="lbl">Icon</div></div>
+  <div class="card night"><img src="assets/mark-root-tree-night.svg" width="120" height="180"><div class="lbl">Night</div></div>
+</div>
+
+<h2>E · The Axis — form and exact reflection</h2>
+<div class="dirhead"><p><b>"Mirror Streams" drawn literally.</b> A hairline surface runs down the centre; the left side is the real form, the right side is its exact mirror image. The ember sits on the surface itself — the point where the two meet. This is the brand name as geometry, and it is the hardest of all of these for anyone else to use, because the reflection is not a stylistic choice, it is the idea.</p></div>
+<div class="grid">
+  <div class="card"><img src="assets/mark-axis-tree.svg" width="120" height="180"><div class="lbl">Axis — Tree</div><div class="note">Form + reflection</div></div>
+  <div class="card"><img src="assets/mark-axis-curve.svg" width="120" height="180"><div class="lbl">Axis — Stream</div><div class="note">A curve and its image</div></div>
+  <div class="card"><img src="assets/mark-axis-network.svg" width="120" height="180"><div class="lbl">Axis — Network</div><div class="note">A cluster and its image</div></div>
+  <div class="card night"><img src="assets/mark-axis-tree-night.svg" width="120" height="180"><div class="lbl">Axis — Night</div><div class="note">Dark surface</div></div>
+</div>
+
+<h2>Small-size test — 48 / 28 / 16px</h2>
+<div class="scales">
+  <div class="sb"><h4>A · Node Tree</h4><div class="sr"><img src="assets/mark-node-tree.svg" width="48" height="48"><img src="assets/mark-node-tree.svg" width="28" height="28"><img src="assets/mark-node-tree.svg" width="16" height="16"></div></div>
+  <div class="sb"><h4>B · Root Tree</h4><div class="sr"><img src="assets/mark-root-tree.svg" width="48" height="48"><img src="assets/mark-root-tree.svg" width="28" height="28"><img src="assets/mark-root-tree.svg" width="16" height="16"></div></div>
+  <div class="sb"><h4>E · Axis</h4><div class="sr"><img src="assets/mark-axis-curve.svg" width="48" height="48"><img src="assets/mark-axis-curve.svg" width="28" height="28"><img src="assets/mark-axis-curve.svg" width="16" height="16"></div></div>
+</div>
+
+<h2>Trade-offs</h2>
+<div class="dd">
+  <div class="d do"><h4>Strongest at</h4><ul>
+    <li><b>A</b> — technical and architecture contexts; diagrams, decks, developer audiences</li>
+    <li><b>B</b> — organisational and nature contexts; print, large surfaces, physical objects</li>
+    <li><b>E</b> — anything about the brand itself: identity, the name, the mirror concept, the IP</li>
+  </ul></div>
+  <div class="d dont"><h4>Watch out for</h4><ul>
+    <li><b>A</b> — reads as a molecule or diagram first; the tree is a second read</li>
+    <li><b>B</b> — the organic crown is the hardest to keep consistent; needs careful curve work</li>
+    <li><b>E</b> — the reflection must be pixel-exact or the whole point collapses; also two forms at once is busier</li>
+  </ul></div>
+</div>
+</body>
+</html>

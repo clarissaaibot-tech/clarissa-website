@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clarissa</title>
+  <title>Clarissa Chia</title>
   <meta name="description" content="AI strategist and systems builder.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230f0e0c'/><text x='50' y='68' font-family='Georgia,serif' font-size='52' font-weight='400' fill='%23c9a96e' text-anchor='middle'>CC</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" href="/assets/favicon.svg">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -17,11 +15,13 @@
     }
 
     :root {
-      --bg: #0f0e0c;
-      --text: #e8e4df;
-      --text-muted: #8a847c;
-      --accent: #c9a96e;
-      --border: #2a2620;
+      --bg: #F2F3F5;
+      --text: #0f0e0c;
+      --text-muted: #6b6e75;
+      --accent: #ff5e1d;
+      --accent-deep: #cc4a17;
+      --border: #d4d7de;
+      --font-sans: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, sans-serif;
     }
 
     html {
@@ -29,11 +29,12 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: var(--font-sans);
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
-      font-weight: 300;
+      font-weight: 400;
+      letter-spacing: -0.011em;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -52,18 +53,82 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(15, 14, 12, 0.85);
+      background: rgba(242, 243, 245, 0.85);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid var(--border);
     }
 
     .nav-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      font-weight: 400;
-      letter-spacing: 0.05em;
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
       color: var(--text);
       text-decoration: none;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    /* The 'i' wears a triangle instead of the font's rectangular tittle.
+       The glyph is swapped for a dotless 'ı' (U+0131) and a triangle is
+       overlaid at the dot's exact position.
+
+       Metrics measured from Helvetica Neue at weight 500 (all in em, relative
+       to font-size), so the same values work at any size and weight:
+         - baseline sits 0.8333em below the wrapper's top edge (line-height: 1)
+         - the font's dot occupies 0.6075em -> 0.715em above the baseline
+         - the dot's ink is centred 0.12em from the glyph origin
+       The triangle's BOTTOM lands on the dot's bottom (0.6075em above the
+       baseline) so it replaces the dot without shifting the word. */
+    .ti {
+      position: relative;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    .ti::before {
+      content: '';
+      position: absolute;
+      /* 0.12em = the 'i' stem's ink centre (upright). The dot sits on exactly the
+         same centre, so the triangle lands directly above the stem. */
+      left: 0.12em;
+      /* 0.8333em (baseline, line-height:1) - 0.14em (height) - 0.6062em (dot bottom) */
+      top: 0.0871em;
+      width: 0.16em;
+      height: 0.14em;
+      transform: translateX(-50%);
+      background: currentColor;
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      pointer-events: none;
+    }
+
+    /* Italic: in a slanted face the dot's ink centre is 0.1506em from the glyph
+       origin (vs 0.12em upright). */
+    .ti-it::before {
+      left: 0.1506em;
+    }
+
+    /* The headline's line box (line-height 1.22) places the baseline 0.8654em
+       below the wrapper's top edge — 0.0321em lower than the nav's line-height:1
+       box — so the same `top` would float the triangle that much too high. */
+    .hero-text h2 .ti::before {
+      top: 0.1192em;
+    }
+
+    .nav-tagline {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .nav-tagline::before {
+      content: '·';
+      margin-right: 12px;
+      color: var(--text-muted);
     }
 
     .nav-links {
@@ -95,6 +160,45 @@
 
     section {
       padding: 100px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    section.hero {
+      padding: 140px 48px 60px;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .hero-text {
+      min-width: 0;
+    }
+
+    .hero-portrait {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .hero-portrait-wrap {
+      position: relative;
+    }
+
+    .hero-portrait-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .narrow-section {
       max-width: 640px;
       margin: 0 auto;
     }
@@ -103,16 +207,31 @@
       font-size: 0.7rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--text);
+      color: var(--accent);
       margin-bottom: 20px;
     }
 
+    .section-label.hero-label {
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+    }
+
     h2 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: var(--font-sans);
       font-size: clamp(2rem, 5vw, 2.6rem);
-      font-weight: 300;
-      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: -0.022em;
+      line-height: 1.22;
       margin-bottom: 20px;
+    }
+
+    .hero-em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text);
     }
 
     p {
@@ -122,16 +241,51 @@
     }
 
     blockquote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.3rem, 3vw, 1.6rem);
-      font-style: italic;
-      font-weight: 300;
-      line-height: 1.5;
+      font-family: var(--font-sans);
+      font-size: clamp(1.2rem, 2.6vw, 1.45rem);
+      font-style: normal;
+      font-weight: 400;
+      letter-spacing: -0.014em;
+      line-height: 1.55;
       color: var(--text);
       padding: 40px 0;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       margin-top: 32px;
+    }
+
+    .hero-framing {
+      font-family: var(--font-sans);
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--text-muted);
+      padding: 16px 0;
+      margin-top: 20px;
+      border-top: 1px solid var(--border);
+      border-bottom: none;
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+
+    .hero-framing p {
+      margin: 0 0 14px 0;
+    }
+
+    .hero-framing p:last-child {
+      margin-bottom: 0;
+    }
+
+    .hero-framing-anchor {
+      text-align: center;
+      font-weight: 400;
+      color: var(--text);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 16px !important;
     }
 
     .work-item {
@@ -144,9 +298,10 @@
     }
 
     .work-item h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      font-weight: 400;
+      font-family: var(--font-sans);
+      font-size: 1.2rem;
+      font-weight: 500;
+      letter-spacing: -0.012em;
       margin-bottom: 10px;
     }
 
@@ -163,6 +318,168 @@
       letter-spacing: 0.04em;
     }
 
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* ── Forest philosophy section ── */
+    /* Full-bleed: a wrapper carries the background, the section inside keeps
+       the site max-width so the text column lines up with the rest of the page. */
+    .forest-wrap {
+      position: relative;
+      margin: 96px 0;
+      background: #0c1a17;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .forest-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .forest-bg canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* A soft dark wash so the text stays legible over the canopy, and the
+       forest fades out at the edges rather than being cut off. */
+    .forest-scrim {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg,
+          rgba(6, 16, 14, 0.94) 0%,
+          rgba(6, 16, 14, 0.86) 38%,
+          rgba(6, 16, 14, 0.55) 62%,
+          rgba(6, 16, 14, 0.30) 100%),
+        linear-gradient(180deg,
+          rgba(6, 16, 14, 0.55) 0%,
+          rgba(6, 16, 14, 0) 22%,
+          rgba(6, 16, 14, 0) 78%,
+          rgba(6, 16, 14, 0.55) 100%);
+      pointer-events: none;
+    }
+
+    .forest-section {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      padding: 0;
+      margin: 0 auto;
+    }
+
+    .forest-content {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 120px 48px 130px;
+      color: #e9efe6;
+    }
+
+    .forest-content .section-label {
+      color: var(--accent);
+    }
+
+    .forest-content h2 {
+      color: #f2f5f0;
+      font-size: clamp(30px, 4.4vw, 46px);
+      line-height: 1.14;
+      letter-spacing: -0.022em;
+      font-weight: 500;
+      margin-bottom: 28px;
+    }
+
+    .forest-content p {
+      color: #c3d0c7;
+      font-size: 1.02rem;
+      line-height: 1.72;
+    }
+
+    .forest-content blockquote {
+      margin: 36px 0 0;
+      padding-left: 20px;
+      border-left: 1px solid rgba(232, 184, 96, 0.5);
+      color: #e8b860;
+      font-size: 1.06rem;
+      line-height: 1.62;
+    }
+
+    .forest-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 40px;
+      padding: 13px 22px;
+      border: 1px solid rgba(232, 184, 96, 0.45);
+      border-radius: 999px;
+      color: #e8b860;
+      text-decoration: none;
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+    }
+
+    .forest-cta:hover {
+      background: rgba(232, 184, 96, 0.12);
+      border-color: rgba(232, 184, 96, 0.8);
+      color: #f2cf8c;
+    }
+
+    .forest-cta span {
+      transition: transform 0.25s;
+    }
+
+    .forest-cta:hover span {
+      transform: translateX(3px);
+    }
+
+    @media (max-width: 860px) {
+      .forest-content {
+        padding: 88px 24px 96px;
+      }
+
+      .forest-scrim {
+        background:
+          linear-gradient(180deg,
+            rgba(6, 16, 14, 0.52) 0%,
+            rgba(6, 16, 14, 0.78) 40%,
+            rgba(6, 16, 14, 0.88) 100%);
+      }
+    }
+
+
+
+    @media (max-width: 860px) {
+      section.hero {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding-top: 120px;
+      }
+
+      .hero-portrait-wrap {
+        max-width: 320px;
+        margin: 0 auto;
+      }
+    }
+
     @media (max-width: 640px) {
       nav {
         padding: 20px 24px;
@@ -176,49 +493,81 @@
         padding-left: 24px;
         padding-right: 24px;
       }
+
+      .game-thumb {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="#" class="nav-logo">Clarissa</a>
+    <a href="#" class="nav-logo"><span class="nav-logo-name">Clar<span class="ti">ı</span>ssa Ch<span class="ti">ı</span>a</span> <span class="nav-tagline">AI strategist · Systems builder</span></a>
     <ul class="nav-links">
       <li><a href="#philosophy">Philosophy</a></li>
       <li><a href="#work">Work</a></li>
     </ul>
   </nav>
 
-  <section>
-    <p class="section-label">Clarissa</p>
-    <h2>Building systems that give people back their time, attention and potential.</h2>
-    <p>AI strategist. Systems builder. Based in Malaysia.</p>
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Clar<span class="ti">ı</span>ssa bu<span class="ti">ı</span>lds systems for forward-th<span class="ti">ı</span>nk<span class="ti">ı</span>ng compan<span class="ti">ı</span>es that <em class="hero-em">give people back their time, attention and potential.</em></h2>
+      <blockquote class="hero-framing">
+        <p>Advanced technology means nothing unless it creates real value for real people in the real world. Here, we don't build technology for technology's sake. We look at how people and organisations actually live and work, understand where their time, attention and potential are being unnecessarily consumed, and use AI, automation and systems to give that capacity back.</p>
+        <p>Meaningful change is a collaborative effort. We partner with people who bring different strengths — domain knowledge, relationships, capital, creativity and industry experience. Together we build where technology can genuinely make a difference for businesses.</p>
+        <p class="hero-framing-anchor">Partnership, not solo building. Human benefit, not technology for technology's sake.</p>
+      </blockquote>
+    </div>
+    <div class="hero-portrait-wrap">
+      <img src="portrait.jpg" alt="Clarissa Chia" class="hero-portrait">
+    </div>
   </section>
 
   <div class="divider"></div>
 
-  <section id="philosophy">
-    <p class="section-label">Philosophy</p>
-    <h2>A forest doesn't have a CEO.<br>And yet it works.</h2>
-    <p>Most organisations are built on the assumption that without control, things fall apart. More managers. More meetings. More dashboards. More rules.</p>
-    <p style="margin-top: 16px;">But the most resilient, intelligent systems we know — ecosystems, neural networks, cultures — don't work through control. They work through information, responding, and connection.</p>
-    <p style="margin-top: 16px;">I spend my time designing systems that give people back their time, attention, and potential — not systems that tell them what to do.</p>
-    <blockquote>"The system is not designed to control life. It is designed to help us live consciously while remaining open to reality."</blockquote>
-  </section>
+  <div class="forest-wrap">
+    <div class="forest-bg">
+      <canvas id="forest-backdrop" aria-hidden="true"></canvas>
+      <div class="forest-scrim"></div>
+    </div>
+    <section id="philosophy" class="forest-section">
+      <div class="forest-content">
+        <p class="section-label">Philosophy</p>
+        <h2>A forest doesn't have a CEO.<br>And yet it works.</h2>
+        <p>Most organisations are built on the assumption that without control, things fall apart. More managers. More meetings. More dashboards. More rules.</p>
+        <p style="margin-top: 16px;">But the most resilient, intelligent systems we know — ecosystems, neural networks, cultures — don't work through control. They work through information, responding, and connection.</p>
+        <p style="margin-top: 16px;">I spend my time designing systems that give people back their time, attention, and potential — not systems that tell them what to do.</p>
+        <blockquote>"The system is not designed to control life. It is designed to help us live consciously while remaining open to reality."</blockquote>
+        <a href="where-intelligence-lives.html" class="forest-cta">
+          Play the experiment <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </div>
 
   <div class="divider"></div>
 
-  <section id="work">
+  <section id="work" class="narrow-section">
     <p class="section-label">Work</p>
-    <h2>Galaxy Tech Studio</h2>
+    <h2>AI-powered business systems for companies</h2>
     <div class="work-item">
-      <p>AI-powered business systems for SMEs. We build the infrastructure that removes unnecessary work — so business owners can focus on what actually matters.</p>
+      <p>We build the infrastructure that removes unnecessary work so business owners can focus on what actually matters.</p>
     </div>
   </section>
 
   <footer>
-    <p>© 2026 Clarissa</p>
+    <p>© 2026 Clarissa Chia</p>
+    <div class="footer-links">
+      <a href="https://mirrorstreams.substack.com/" target="_blank">Substack</a>
+      <a href="https://www.instagram.com/clar.issa.cc" target="_blank">Instagram</a>
+    </div>
   </footer>
+
+  <!-- The forest, live. Same scene as the experiment, without the words. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="forest-constants.js"></script>
+  <script src="forest-backdrop.js"></script>
 
 </body>
 </html>

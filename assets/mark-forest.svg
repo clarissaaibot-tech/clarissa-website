@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Mirror Streams forest mark">
+  <title>Mirror Streams — forest mark (three equal trees)</title>
+  <!-- Mirror Streams forest mark — the thesis mark.
+       Three equal-height trees: no tree is above the others.
+       Master geometry: viewBox 0 0 220 150, mirror line at y=128. -->
+  <g id="reflection" opacity="0.18" transform="translate(0,128) scale(1,-0.5) translate(0,-128)">
+    <path d="M46 74 L12 100 L80 100 Z" fill="#0f0e0c"/><path d="M46 74 L12 100 L46 100 Z" fill="#2b2823"/>
+    <path d="M45 50 L24 78 L66 78 Z" fill="#0f0e0c"/><path d="M45 50 L24 78 L45 78 Z" fill="#2b2823"/>
+    <path d="M44 26 L28 54 L60 54 Z" fill="#0f0e0c"/><path d="M44 26 L28 54 L44 54 Z" fill="#2b2823"/>
+    <path d="M110 70 L74 100 L146 100 Z" fill="#0f0e0c"/><path d="M110 70 L74 100 L110 100 Z" fill="#2b2823"/>
+    <path d="M109 44 L86 76 L132 76 Z" fill="#0f0e0c"/><path d="M109 44 L86 76 L109 76 Z" fill="#2b2823"/>
+    <path d="M108 18 L90 50 L126 50 Z" fill="#0f0e0c"/><path d="M108 18 L90 50 L108 50 Z" fill="#2b2823"/>
+    <path d="M174 74 L140 100 L208 100 Z" fill="#0f0e0c"/><path d="M174 74 L140 100 L174 100 Z" fill="#2b2823"/>
+    <path d="M173 50 L152 78 L194 78 Z" fill="#0f0e0c"/><path d="M173 50 L152 78 L173 78 Z" fill="#2b2823"/>
+    <path d="M172 26 L156 54 L188 54 Z" fill="#0f0e0c"/><path d="M172 26 L156 54 L172 54 Z" fill="#2b2823"/>
+    <circle cx="44" cy="18" r="4.5" fill="#ff5e1d"/><circle cx="108" cy="10" r="4.5" fill="#ff5e1d"/><circle cx="172" cy="18" r="4.5" fill="#ff5e1d"/>
+  </g>
+  <line id="mirror-line" x1="6" y1="128" x2="214" y2="128" stroke="#d4d7de" stroke-width="1"/>
+  <g id="trees">
+    <g id="tree-left">
+      <path d="M40 100 L52 100 L48 128 L44 128 Z" fill="#0f0e0c"/>
+      <path d="M46 74 L12 100 L80 100 Z" fill="#0f0e0c"/><path d="M46 74 L12 100 L46 100 Z" fill="#2b2823"/>
+      <path d="M45 50 L24 78 L66 78 Z" fill="#0f0e0c"/><path d="M45 50 L24 78 L45 78 Z" fill="#2b2823"/>
+      <path d="M44 26 L28 54 L60 54 Z" fill="#0f0e0c"/><path d="M44 26 L28 54 L44 54 Z" fill="#2b2823"/>
+      <circle cx="44" cy="18" r="4.5" fill="#ff5e1d"/>
+    </g>
+    <g id="tree-centre">
+      <path d="M104 100 L116 100 L112 128 L108 128 Z" fill="#0f0e0c"/>
+      <path d="M110 70 L74 100 L146 100 Z" fill="#0f0e0c"/><path d="M110 70 L74 100 L110 100 Z" fill="#2b2823"/>
+      <path d="M109 44 L86 76 L132 76 Z" fill="#0f0e0c"/><path d="M109 44 L86 76 L109 76 Z" fill="#2b2823"/>
+      <path d="M108 18 L90 50 L126 50 Z" fill="#0f0e0c"/><path d="M108 18 L90 50 L108 50 Z" fill="#2b2823"/>
+      <circle cx="108" cy="10" r="4.5" fill="#ff5e1d"/>
+    </g>
+    <g id="tree-right">
+      <path d="M168 100 L180 100 L176 128 L172 128 Z" fill="#0f0e0c"/>
+      <path d="M174 74 L140 100 L208 100 Z" fill="#0f0e0c"/><path d="M174 74 L140 100 L174 100 Z" fill="#2b2823"/>
+      <path d="M173 50 L152 78 L194 78 Z" fill="#0f0e0c"/><path d="M173 50 L152 78 L173 78 Z" fill="#2b2823"/>
+      <path d="M172 26 L156 54 L188 54 Z" fill="#0f0e0c"/><path d="M172 26 L156 54 L172 54 Z" fill="#2b2823"/>
+      <circle cx="172" cy="18" r="4.5" fill="#ff5e1d"/>
+    </g>
+  </g>
+</svg>

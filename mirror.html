@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mirror — Personal OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230f0e0c'/><text x='50' y='68' font-family='Georgia,serif' font-size='52' font-weight='400' fill='%23c9a96e' text-anchor='middle'>CC</text></svg>">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.4rem);
+      font-weight: 300; line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .page-title em { font-style: italic; color: var(--accent); }
+    .page-sub {
+      font-size: 0.9rem; color: var(--text-muted);
+      margin-bottom: 64px;
+    }
+
+    /* Today's prompt */
+    .prompt-card {
+      padding: 36px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .prompt-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.4;
+    }
+    .prompt-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .prompt-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+      font-style: italic; font-weight: 300; line-height: 1.5;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .prompt-input {
+      width: 100%; max-width: 500px;
+      padding: 12px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit; font-size: 0.9rem; line-height: 1.6;
+      outline: none; resize: vertical; min-height: 80px;
+      transition: border-color 0.2s;
+    }
+    .prompt-input:focus { border-color: var(--accent); }
+    .prompt-save {
+      margin-top: 12px; padding: 8px 18px;
+      background: transparent; border: 1px solid var(--accent);
+      border-radius: 4px; color: var(--accent);
+      font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .prompt-save:hover { background: var(--accent); color: var(--bg); }
+
+    /* Drift / Alignment */
+    .drift-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .drift-card {
+      padding: 32px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .drift-card:hover { transform: translateY(-2px); }
+    .drift-card.drift { border-color: var(--drift); }
+    .drift-card.align { border-color: var(--align); }
+    .drift-card.drift:hover { background: rgba(201, 122, 110, 0.08); }
+    .drift-card.align:hover { background: rgba(127, 176, 105, 0.08); }
+    .drift-emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
+    .drift-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; margin-bottom: 4px;
+      color: var(--text);
+    }
+    .drift-note {
+      font-size: 0.78rem; color: var(--text-muted);
+      font-style: italic;
+    }
+    .drift-streak {
+      margin-top: 16px; padding-top: 16px;
+      border-top: 1px solid var(--border-faint);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Energy history */
+    .energy-history {
+      padding: 28px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .energy-bars {
+      display: flex; gap: 4px; align-items: flex-end;
+      height: 80px; margin-top: 16px;
+    }
+    .energy-bar {
+      flex: 1; min-width: 8px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-dim));
+      border-radius: 2px 2px 0 0;
+      transition: opacity 0.2s;
+      opacity: 0.8;
+    }
+    .energy-bar:hover { opacity: 1; }
+    .energy-bar.empty { background: var(--border); opacity: 0.3; }
+    .energy-axis {
+      display: flex; justify-content: space-between;
+      margin-top: 8px;
+      font-size: 0.65rem;
+      color: var(--text-faint);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .energy-legend {
+      display: flex; gap: 12px; margin-top: 16px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .energy-legend-item { display: flex; align-items: center; gap: 4px; }
+
+    /* Reflections list */
+    .reflections-list { display: flex; flex-direction: column; gap: 12px; }
+    .reflection-item {
+      padding: 20px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .reflection-date {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 8px;
+    }
+    .reflection-prompt-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+    .reflection-answer {
+      font-size: 0.9rem; color: var(--text);
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+    .reflections-empty {
+      padding: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+    }
+
+    /* Search */
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit; font-size: 0.9rem;
+      outline: none; margin-bottom: 20px;
+    }
+    .search-box:focus { border-color: var(--accent); }
+
+    /* Vault quotes */
+    .vault-quotes {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .vault-quote {
+      padding: 20px 24px;
+      background: var(--bg-elev);
+      border-left: 2px solid var(--accent-dim);
+      border-radius: 0 6px 6px 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .vault-quote-attr {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 8px;
+      font-style: normal;
+    }
+
+    @media (max-width: 720px) {
+      .drift-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav">
+    <a href="dashboard.html" class="topnav-logo">CC</a>
+    <ul class="topnav-links">
+      <li><a href="dashboard.html">Hub</a></li>
+      <li><a href="today.html">Today</a></li>
+      <li><a href="goals.html">Goals</a></li>
+      <li><a href="mirror.html" class="active">Mirror</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1 class="page-title">What am I <em>learning</em> about myself?</h1>
+      <p class="page-sub">Past answers, drift vs alignment, energy, and your own words back to you.</p>
+    </header>
+
+    <section class="section">
+      <div class="section-label">
+        Today's prompt
+        <span class="section-label-zh">今日之问</span>
+      </div>
+      <div class="prompt-card">
+        <div class="prompt-eyebrow">reflect now</div>
+        <p class="prompt-text" id="promptText">What gave you energy today?</p>
+        <textarea class="prompt-input" id="promptInput" placeholder="Your answer here..."></textarea>
+        <br>
+        <button class="prompt-save" id="promptSave">Save</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">
+        Drift or Alignment
+        <span class="section-label-zh">漂移或对齐</span>
+        <span class="section-hint">one check per day</span>
+      </div>
+      <div class="drift-grid">
+        <div class="drift-card drift" id="driftBtn">
+          <span class="drift-emoji">🌊</span>
+          <div class="drift-title">I'm drifting</div>
+          <div class="drift-note">away from what matters</div>
+        </div>
+        <div class="drift-card align" id="alignBtn">
+          <span class="drift-emoji">🧭</span>
+          <div class="drift-title">I'm aligned</div>
+          <div class="drift-note">with what I want to become</div>
+        </div>
+      </div>
+      <div class="drift-streak" id="driftStreak">No check yet today</div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">
+        Energy · Last 30 days
+        <span class="section-label-zh">能量</span>
+      </div>
+      <div class="energy-history">
+        <div class="energy-bars" id="energyBars"></div>
+        <div class="energy-axis">
+          <span>30 days ago</span>
+          <span>today</span>
+        </div>
+        <div class="energy-legend">
+          <span class="energy-legend-item">🥱 1 · depleted</span>
+          <span class="energy-legend-item">🌿 3 · steady</span>
+          <span class="energy-legend-item">🔥 5 · vibrant</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">
+        Past reflections
+        <span class="section-label-zh">旧日省思</span>
+        <span class="section-hint">search below</span>
+      </div>
+      <input type="text" class="search-box" id="reflSearch" placeholder="Search your reflections..." />
+      <div class="reflections-list" id="reflList"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">
+        From your vault
+        <span class="section-label-zh">库里</span>
+        <span class="section-hint">your own words, back to you</span>
+      </div>
+      <div class="vault-quotes">
+        <div class="vault-quote">
+          "The bottleneck is not the progress of the models. The bottleneck is diffusing that through the rest of the world."
+          <div class="vault-quote-attr">— 2026 AI market moment · your context</div>
+        </div>
+        <div class="vault-quote">
+          "He who has a why can bear with any how."
+          <div class="vault-quote-attr">— Frankl · carried with you</div>
+        </div>
+        <div class="vault-quote">
+          "天圆地方. 外面游刃有余，里面有原则。"
+          <div class="vault-quote-attr">— your framework</div>
+        </div>
+        <div class="vault-quote">
+          "Mirror, not manager. Reflection, not instruction."
+          <div class="vault-quote-attr">— AI as Mirror principle</div>
+        </div>
+        <div class="vault-quote">
+          "卓越不一定要买名牌. 要的是自身有解决问题的能力."
+          <div class="vault-quote-attr">— Soon Yik Philosophy</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function() {
+      const STORAGE_KEY = 'clarissa_dashboard_auth';
+      const PASSWORD = '268';
+      if (sessionStorage.getItem(STORAGE_KEY) === 'unlocked') {
+        init();
+        return;
+      }
+      const gate = document.createElement('div');
+      gate.style.cssText = 'position:fixed;inset:0;background:#0f0e0c;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;';
+      gate.innerHTML = `<div style="text-align:center;max-width:360px;padding:0 24px;">
+        <div style="font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:#c9a96e;margin-bottom:24px;">Personal OS · 私人</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;font-style:italic;color:#e8e4df;margin-bottom:8px;line-height:1.2;">Mirror is private</div>
+        <div style="font-size:0.85rem;color:#8a847c;margin-bottom:32px;">Enter the access code.</div>
+        <input type="password" id="gate-input" placeholder="• • •" autocomplete="off"
+          style="width:100%;padding:14px 18px;background:#1a1714;border:1px solid #2a2620;border-radius:6px;color:#e8e4df;font-family:'JetBrains Mono',monospace;font-size:1.1rem;letter-spacing:0.4em;text-align:center;outline:none;" />
+        <div id="gate-error" style="color:#c97a6e;font-size:0.78rem;margin-top:12px;opacity:0;">Wrong code. Try again.</div>
+      </div>`;
+      document.body.appendChild(gate);
+      document.body.style.overflow = 'hidden';
+      const input = document.getElementById('gate-input');
+      const error = document.getElementById('gate-error');
+      setTimeout(() => input.focus(), 100);
+      function tryUnlock() {
+        if (input.value.trim() === PASSWORD) {
+          sessionStorage.setItem(STORAGE_KEY, 'unlocked');
+          gate.style.transition = 'opacity 0.4s';
+          gate.style.opacity = '0';
+          setTimeout(() => { gate.remove(); document.body.style.overflow = ''; init(); }, 400);
+        } else {
+          error.style.opacity = '1';
+          input.value = ''; input.focus();
+          input.style.borderColor = '#c97a6e';
+          setTimeout(() => { input.style.borderColor = '#2a2620'; setTimeout(() => { error.style.opacity = '0'; }, 1500); }, 800);
+        }
+      }
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+      input.addEventListener('input', () => { if (input.value.length === 3) setTimeout(tryUnlock, 100); });
+    })();
+
+    const PROMPTS = [
+      "What gave you energy today?",
+      "What drained you?",
+      "Where did fear control you today?",
+      "What became clearer today?",
+      "What did you create today?",
+      "Who did you connect with today?",
+      "What are you grateful for tonight?",
+      "What surprised you today?",
+      "What did reality teach you today?",
+      "What would you like to do differently tomorrow?"
+    ];
+
+    function todayKey() { return new Date().toISOString().split('T')[0]; }
+    function dateKey(d) { return d.toISOString().split('T')[0]; }
+
+    function init() {
+      // Today's prompt
+      const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+      const promptEl = document.getElementById('promptText');
+      if (promptEl) promptEl.textContent = PROMPTS[dayOfYear % PROMPTS.length];
+
+      // Load today's answer
+      const saved = localStorage.getItem('clarissa_reflection_' + todayKey());
+      if (saved) document.getElementById('promptInput').value = saved;
+
+      document.getElementById('promptSave').addEventListener('click', () => {
+        const input = document.getElementById('promptInput');
+        if (!input.value.trim()) return;
+        localStorage.setItem('clarissa_reflection_' + todayKey(), input.value);
+        const btn = document.getElementById('promptSave');
+        btn.textContent = '✓ saved';
+        setTimeout(() => { btn.textContent = 'Save'; }, 1500);
+        renderReflections(document.getElementById('reflSearch').value);
+      });
+
+      // Drift/Alignment
+      const driftKey = 'clarissa_drift_' + todayKey();
+      const todayDrift = localStorage.getItem(driftKey);
+      if (todayDrift === 'drift') document.getElementById('driftBtn').style.background = 'rgba(201, 122, 110, 0.15)';
+      if (todayDrift === 'align') document.getElementById('alignBtn').style.background = 'rgba(127, 176, 105, 0.15)';
+      updateDriftStreak(todayDrift);
+
+      document.getElementById('driftBtn').addEventListener('click', () => {
+        localStorage.setItem(driftKey, 'drift');
+        document.getElementById('driftBtn').style.background = 'rgba(201, 122, 110, 0.15)';
+        document.getElementById('alignBtn').style.background = '';
+        updateDriftStreak('drift');
+      });
+      document.getElementById('alignBtn').addEventListener('click', () => {
+        localStorage.setItem(driftKey, 'align');
+        document.getElementById('alignBtn').style.background = 'rgba(127, 176, 105, 0.15)';
+        document.getElementById('driftBtn').style.background = '';
+        updateDriftStreak('align');
+      });
+
+      // Energy bars
+      renderEnergyBars();
+      // Reflections
+      renderReflections();
+      document.getElementById('reflSearch').addEventListener('input', e => {
+        renderReflections(e.target.value);
+      });
+    }
+
+    function updateDriftStreak(todayStatus) {
+      const streakEl = document.getElementById('driftStreak');
+      if (!streakEl) return;
+      if (!todayStatus) {
+        streakEl.textContent = 'No check yet today';
+        return;
+      }
+      // Calculate streak of same-status
+      let streak = 0;
+      const today = new Date();
+      for (let i = 0; i < 60; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const k = 'clarissa_drift_' + dateKey(d);
+        if (localStorage.getItem(k) === todayStatus) streak++;
+        else if (i > 0) break;
+      }
+      streakEl.textContent = `Today: ${todayStatus} · ${streak} day streak`;
+    }
+
+    function renderEnergyBars() {
+      const container = document.getElementById('energyBars');
+      if (!container) return;
+      const today = new Date();
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const level = parseInt(localStorage.getItem('clarissa_energy_' + dateKey(d)) || '0');
+        const bar = document.createElement('div');
+        bar.className = 'energy-bar' + (level === 0 ? ' empty' : '');
+        bar.style.height = (level * 16) + 'px';
+        if (level > 0) bar.title = `${dateKey(d)}: ${level}/5`;
+        container.appendChild(bar);
+      }
+    }
+
+    function renderReflections(filter = '') {
+      const list = document.getElementById('reflList');
+      if (!list) return;
+      const items = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('clarissa_reflection_')) {
+          const date = k.replace('clarissa_reflection_', '');
+          const content = localStorage.getItem(k);
+          const promptIdx = (() => {
+            const d = new Date(date);
+            const doy = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 86400000);
+            return doy % PROMPTS.length;
+          })();
+          items.push({ date, content, prompt: PROMPTS[promptIdx] });
+        }
+      }
+      items.sort((a, b) => b.date.localeCompare(a.date));
+
+      const filtered = filter
+        ? items.filter(i => i.content.toLowerCase().includes(filter.toLowerCase()) || i.date.includes(filter))
+        : items;
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="reflections-empty">No reflections yet. Save one above.</div>';
+        return;
+      }
+
+      list.innerHTML = filtered.slice(0, 50).map(i => `
+        <div class="reflection-item">
+          <div class="reflection-date">${i.date}</div>
+          <div class="reflection-prompt-text">${i.prompt}</div>
+          <div class="reflection-answer">${escapeHtml(i.content)}</div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 180" width="120" height="180" role="img" aria-label="Mirror Streams tree and mirror">
+  <title>Mirror Streams — tree + mirror (primary lockup)</title>
+  <!-- Mirror Streams tree mark — primary lockup.
+       Tree, 1px hairline mirror line, inverted reflection at 18% opacity squashed 0.5x.
+       Master geometry: viewBox 0 0 120 180, tree occupies x 26-94, y 8-116. -->
+  <g id="reflection" opacity="0.18" transform="translate(0,116) scale(1,-0.5) translate(0,-116)">
+    <path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/>
+    <path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/>
+    <path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/>
+    <path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/>
+    <path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/>
+    <path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/>
+    <circle cx="57" cy="8" r="5" fill="#ff5e1d"/>
+  </g>
+  <line id="mirror-line" x1="6" y1="116" x2="114" y2="116" stroke="#d4d7de" stroke-width="1"/>
+  <g id="tree">
+    <path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/>
+    <path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/>
+    <path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/>
+    <path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/>
+    <path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/>
+    <path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/>
+    <path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/>
+  </g>
+  <circle id="spark" cx="57" cy="8" r="5" fill="#ff5e1d"/>
+</svg>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirror Streams — Brand Book</title>
+<meta name="description" content="The visual identity and operating principles of Mirror Streams — a creative research practice investigating systems for human agency.">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="alternate icon" href="/assets/favicon.svg">
+<style>
+  :root {
+    --mist: #F2F3F5;
+    --ink: #0f0e0c;
+    --ember: #ff5e1d;
+    --ember-deep: #cc4a17;
+    --ember-soft: #ffd4c0;
+    --ash: #6b6e75;
+    --stone: #e6e8ec;
+    --line: #d4d7de;
+    --font-sans: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--mist);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    letter-spacing: -0.011em;
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.022em; }
+  .container { max-width: 880px; margin: 0 auto; padding: 80px 32px; }
+
+  .header { padding: 120px 32px 80px; text-align: center; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ember); margin-bottom: 24px; font-weight: 500; }
+  .header h1 { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.028em; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.1; margin-bottom: 16px; color: var(--ink); }
+  .header .sub { color: var(--ash); font-size: 0.9rem; letter-spacing: 0.05em; }
+  .ember-dot { color: var(--ember); }
+
+  section { padding: 64px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  .label { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ember); margin-bottom: 24px; font-weight: 500; }
+  h2 { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.022em; font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.3; margin-bottom: 24px; color: var(--ink); }
+  h3 { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.012em; font-size: 1.2rem; margin: 32px 0 12px; color: var(--ink); }
+  p { margin-bottom: 16px; color: var(--ink); }
+  .muted { color: var(--ash); }
+  ul { margin: 16px 0 16px 24px; }
+  ol { margin: 16px 0 16px 24px; }
+  li { margin-bottom: 8px; }
+  strong { color: var(--ember); font-weight: 500; }
+
+  /* Color swatches */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 32px 0; }
+  .swatch { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--mist); }
+  .swatch-color { height: 100px; padding: 16px; display: flex; align-items: flex-end; font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.015em; font-size: 1.3rem; }
+  .swatch-color.light { color: var(--ink); }
+  .swatch-color.dark { color: var(--mist); }
+  .swatch-info { padding: 12px 16px; background: var(--stone); }
+  .swatch-name { font-family: var(--font-sans); font-weight: 500; font-size: 1.05rem; margin-bottom: 4px; color: var(--ink); }
+  .swatch-hex { font-family: 'SF Mono', ui-monospace, Menlo, monospace; font-size: 0.75rem; color: var(--ash); }
+  .swatch-role { font-size: 0.75rem; color: var(--ash); margin-top: 4px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+  th, td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  th { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ember); font-weight: 500; }
+  td { color: var(--ink); }
+  td.mono { font-family: 'SF Mono', ui-monospace, Menlo, monospace; font-size: 0.85rem; color: var(--ash); }
+
+  /* Type specimen */
+  .type-specimen { background: var(--stone); padding: 32px; margin: 24px 0; border-radius: 4px; border: 1px solid var(--line); }
+  .type-row { padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .type-row:last-child { border-bottom: none; }
+  .type-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ash); margin-bottom: 8px; }
+  .display { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.028em; font-size: 2.8rem; line-height: 1.15; color: var(--ink); }
+  .h2-spec { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.022em; font-size: 2rem; line-height: 1.2; color: var(--ink); }
+  .h3-spec { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.012em; font-size: 1.4rem; color: var(--ink); }
+  .body-spec { font-size: 1rem; line-height: 1.7; color: var(--ink); }
+  .label-spec { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ember); font-weight: 500; }
+  .mono-spec { font-family: 'SF Mono', ui-monospace, Menlo, monospace; font-size: 0.9rem; color: var(--ash); }
+
+  /* Mark */
+  .mark { display: flex; flex-direction: column; align-items: center; padding: 48px 0; gap: 12px; }
+  .mark-ember { color: var(--ember); font-size: 3rem; line-height: 1; }
+  .mark-surface { color: var(--ash); font-size: 1.5rem; letter-spacing: 0.5em; }
+  .mark-caption { color: var(--ash); font-size: 0.9rem; text-align: center; margin-top: 16px; }
+
+  /* Mark grid — v0.4 */
+  .mark-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin: 32px 0; }
+  .mark-item { border: 1px solid var(--line); border-radius: 4px; background: #fff; padding: 28px 16px 18px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
+  .mark-item img { display: block; }
+  .mark-item.night-item { background: #0c1a17; border-color: #1e322c; }
+  .mark-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); margin-top: 20px; }
+  .night-item .mark-label { color: #e9efe6; }
+  .mark-note { font-size: 0.72rem; color: var(--ash); margin-top: 4px; }
+
+  /* Direction grid — v0.5 */
+  .dir-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 16px; margin: 24px 0 8px; }
+  .dir-item { border: 1px solid var(--line); border-radius: 4px; background: #fff; padding: 26px 18px 18px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .dir-item img { display: block; }
+  .dir-item.night-item { background: #0c1a17; border-color: #1e322c; }
+  .dir-item .mark-note { max-width: 190px; line-height: 1.55; }
+  .dir-item .mark-label { margin-top: 16px; }
+
+  .fav-row { display: flex; gap: 26px; align-items: flex-end; background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 24px; margin: 20px 0 4px; }
+
+  .motion-strip { display: flex; gap: 36px; align-items: flex-start; background: var(--stone); border: 1px solid var(--line); border-radius: 4px; padding: 28px; margin: 24px 0; }
+  .motion-strip img { flex: 0 0 auto; background: #fff; border-radius: 4px; }
+
+  /* Quote */
+  blockquote {
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.014em;
+    line-height: 1.55;
+    color: var(--ink);
+    padding: 32px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin: 32px 0;
+  }
+
+  /* Don'ts list */
+  .donts { background: var(--ember-soft); border: 1px solid var(--ember); padding: 24px; border-radius: 4px; margin: 24px 0; }
+  .donts h3 { color: var(--ember-deep); margin-top: 0; }
+  .donts li { color: var(--ink); }
+
+  .footer { padding: 64px 32px; text-align: center; color: var(--ash); font-size: 0.85rem; border-top: 1px solid var(--line); }
+  .footer .muted { color: var(--ash); margin-top: 8px; }
+
+  @media (max-width: 600px) {
+    .swatches { grid-template-columns: 1fr; }
+    .container { padding: 60px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <p class="eyebrow">Brand Book · v0.6</p>
+  <h1>Mirror<span class="ember-dot">·</span>Streams</h1>
+  <p class="sub">Designing systems for human agency.</p>
+  <p class="sub" style="margin-top: 24px;">Last updated · 2026-10-20</p>
+</header>
+
+<div class="container">
+
+<section>
+  <p class="label">01 · The Brand in One Line</p>
+  <h2>Mirror Streams is a creative research practice investigating how systems — information, technology, organisations, feedback — shape human agency, and how we can redesign them to give people back time, attention and potential.</h2>
+</section>
+
+<section>
+  <p class="label">02 · Brand Essence</p>
+  <table>
+    <tr><th>What we are</th><td>A research-led creative practice</td></tr>
+    <tr><th>What we make</th><td>Original frameworks, interactive experiences, and tested methods</td></tr>
+    <tr><th>What we believe</th><td>The architecture of a system determines what people are able to do, what they must do, and how much freedom they have</td></tr>
+    <tr><th>What we are NOT</th><td>Consulting theatre. Generic AI hype. A productivity tool. A media brand.</td></tr>
+    <tr><th>Tone</th><td>Upstream, warm, precise, unhurried. Not corporate. Not performative.</td></tr>
+    <tr><th>Voice</th><td>Plain claims over adjectives. Mirrors, not instructions.</td></tr>
+  </table>
+</section>
+
+<section>
+  <p class="label">03 · Visual Identity</p>
+  <h2>Color System</h2>
+  <p class="muted">A quiet surface, a dark word, one chromatic moment. The visual equivalent of: a calm room, a question, an ember.</p>
+
+  <div class="swatches">
+    <div class="swatch">
+      <div class="swatch-color light" style="background: #F2F3F5; border-bottom: 1px solid var(--line);">Mist</div>
+      <div class="swatch-info">
+        <div class="swatch-name">Mist</div>
+        <div class="swatch-hex">#F2F3F5</div>
+        <div class="swatch-role"><strong>PRIMARY</strong> — page background</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color dark" style="background: #0f0e0c;">Ink</div>
+      <div class="swatch-info">
+        <div class="swatch-name">Ink</div>
+        <div class="swatch-hex">#0f0e0c</div>
+        <div class="swatch-role"><strong>PRIMARY FOREGROUND</strong> — body text</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color dark" style="background: #ff5e1d;">Ember</div>
+      <div class="swatch-info">
+        <div class="swatch-name">Ember</div>
+        <div class="swatch-hex">#ff5e1d</div>
+        <div class="swatch-role"><strong>SECONDARY ACCENT</strong> — emphasis, identity</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color dark" style="background: #cc4a17;">Ember Deep</div>
+      <div class="swatch-info">
+        <div class="swatch-name">Ember Deep</div>
+        <div class="swatch-hex">#cc4a17</div>
+        <div class="swatch-role">Hover / active state</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color dark" style="background: #ffd4c0; color: #0f0e0c;">Ember Soft</div>
+      <div class="swatch-info">
+        <div class="swatch-name">Ember Soft</div>
+        <div class="swatch-hex">#ffd4c0</div>
+        <div class="swatch-role">Tints, callouts</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color light" style="background: #e6e8ec; border-bottom: 1px solid var(--line);">Stone</div>
+      <div class="swatch-info">
+        <div class="swatch-name">Stone</div>
+        <div class="swatch-hex">#e6e8ec</div>
+        <div class="swatch-role">Surfaces, cards</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color light" style="background: #F2F3F5; color: #6b6e75; border: 1px solid var(--line);">Ash</div>
+      <div class="swatch-info">
+        <div class="swatch-name">Ash</div>
+        <div class="swatch-hex">#6b6e75</div>
+        <div class="swatch-role">Muted text, captions</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color light" style="background: #F2F3F5; color: #d4d7de; border: 1px solid var(--line);">Line</div>
+      <div class="swatch-info">
+        <div class="swatch-name">Line</div>
+        <div class="swatch-hex">#d4d7de</div>
+        <div class="swatch-role">Borders, hairlines</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Color Hierarchy</h3>
+  <ol>
+    <li><strong>Mist</strong> — page background, dominant surface</li>
+    <li><strong>Ink</strong> — primary text, body copy</li>
+    <li><strong>Ember</strong> — section labels, links, key moments (use sparingly)</li>
+    <li><strong>Ash</strong> — secondary text, metadata</li>
+    <li><strong>Stone</strong> — surfaces, cards, dividers</li>
+    <li><strong>Line</strong> — borders, hairlines</li>
+  </ol>
+
+  <div class="donts">
+    <h3>Color Don'ts</h3>
+    <ul>
+      <li>Don't use ember as a background — it loses its meaning as a single accent</li>
+      <li>Don't introduce more than one chromatic color — Mist + Ember is the rule</li>
+      <li>Don't use pure black #000000 — too harsh against Mist</li>
+      <li>Don't use pure white #ffffff — too clinical, loses the warmth of Mist</li>
+      <li>Don't use ember for body text — it's for emphasis, not bulk reading</li>
+      <li>Don't darken the page by default — Mist is the primary surface</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <p class="label">04 · Typography</p>
+  <h2>Type System</h2>
+
+  <table>
+    <tr><th>Role</th><th>Family</th><th>Use</th></tr>
+    <tr><td>Display</td><td class="mono">Helvetica Neue 500 / -0.022em</td><td>Hero, H1, H2, blockquotes</td></tr>
+    <tr><td>Body</td><td class="mono">Helvetica Neue 400</td><td>Body copy, paragraphs</td></tr>
+    <tr><td>Label</td><td class="mono">Helvetica Neue 500 / uppercase / 0.2em</td><td>Eyebrows, section labels</td></tr>
+    <tr><td>Mono</td><td class="mono">SF Mono</td><td>Code, technical references</td></tr>
+  </table>
+
+  <p class="muted" style="margin-top: 24px;">Single-family system since v0.3. Hierarchy comes from weight and size, not typeface. No webfont is loaded — zero network requests, no FOUT.</p>
+
+  <div class="type-specimen">
+    <div class="type-row">
+      <div class="type-label">Display · Helvetica Neue 500</div>
+      <div class="display">I build systems for companies that give people back their time, attention and potential.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">H2 · Helvetica Neue 500</div>
+      <div class="h2-spec">A forest doesn't have a CEO. And yet it works.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">H3 · Helvetica Neue 500</div>
+      <div class="h3-spec">The architecture of a system determines what people are able to do.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Body · Helvetica Neue 400</div>
+      <div class="body-spec">The point of an IP brand is not to look different. The point is to be a working artifact — a thing you can build against, change, and test against reality. Like an experiment.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Label · Helvetica Neue 500 · Ember</div>
+      <div class="label-spec">01 · The Brand in One Line</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Mono · SF Mono 400</div>
+      <div class="mono-spec">const color = "#ff5e1d"; // ember</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="label">05 · Voice & Tone</p>
+  <h2>Plain claims over adjectives.</h2>
+  <p>Mirror, don't instruct. Reflect what is, not what should be. If you need three adjectives to make a sentence work, rewrite the sentence.</p>
+
+  <table>
+    <tr><th>Use</th><th>Avoid</th></tr>
+    <tr><td>investigate</td><td>disrupt</td></tr>
+    <tr><td>design</td><td>transform (as verb)</td></tr>
+    <tr><td>mirror</td><td>unlock</td></tr>
+    <tr><td>observe</td><td>empower</td></tr>
+    <tr><td>test</td><td>leverage</td></tr>
+    <tr><td>evidence</td><td>optimize</td></tr>
+    <tr><td>hypothesis</td><td>revolutionize</td></tr>
+    <tr><td>agency</td><td>game-changing</td></tr>
+    <tr><td>upstream</td><td></td></tr>
+    <tr><td>partner</td><td></td></tr>
+  </table>
+</section>
+
+<section>
+  <p class="label">06 · The Mark</p>
+  <h2>Mirror · Streams</h2>
+
+  <p class="muted"><strong style="color:var(--ember)">The Tree.</strong> A low-poly tree standing on a mirror line, with an ember spark floating above its crown. The tree is the system. The mirror line is the reflection — the idea, the question. The ember spark is the one thing that is alive and moving.</p>
+
+  <div class="dir-grid">
+    <div class="dir-item">
+      <img src="assets/mark-tree-mirror.svg" width="120" height="180" alt="Tree and mirror">
+      <p class="mark-label">Tree + Mirror</p>
+      <p class="mark-note">Primary lockup — full reflection</p>
+    </div>
+    <div class="dir-item">
+      <img src="assets/mark-tree.svg" width="120" height="180" alt="Tree">
+      <p class="mark-label">Tree</p>
+      <p class="mark-note">Icon — favicon, avatar</p>
+    </div>
+    <div class="dir-item night-item">
+      <img src="assets/mark-tree-night.svg" width="120" height="180" alt="Tree in night colours">
+      <p class="mark-label">Tree — Night</p>
+      <p class="mark-note">Forest experiment palette</p>
+    </div>
+    <div class="dir-item">
+      <img src="assets/mark-forest.svg" width="200" height="136" alt="Three equal trees">
+      <p class="mark-label">Forest</p>
+      <p class="mark-note">Three equal trees — no tree is the boss</p>
+    </div>
+  </div>
+
+  <h3>Provenance — derived, not invented</h3>
+  <p class="muted">The mark is a 2D reduction of the exact geometry from the <b>"Where Intelligence Lives"</b> forest experiment — <code>makeTree()</code>: three stacked 7-sided flat-shaded cones, a trunk, and a floating spark above the crown. The 3D forest now uses the same numbers, so the mark and the experiment are one piece of work rather than two that resemble each other.</p>
+
+  <h3>Geometry — the master path set</h3>
+  <p class="muted">viewBox <code>0 0 120 180</code>; tree occupies x 26–94, y 8–116; mirror line at y=116. The cones <b>widen downward</b> — that is the signature, and it is the same in the 3D forest.</p>
+  <table>
+    <tr><th>Element</th><th>Path</th></tr>
+    <tr><td>Cone 1 — top</td><td class="mono">M57 14 L40 40 L74 40 Z</td></tr>
+    <tr><td>Cone 2 — middle</td><td class="mono">M58 38 L34 66 L82 66 Z</td></tr>
+    <tr><td>Cone 3 — base</td><td class="mono">M60 62 L26 92 L94 92 Z</td></tr>
+    <tr><td>Left face (the 3D read)</td><td class="mono">… L57 40 Z &nbsp;/&nbsp; L58 66 Z &nbsp;/&nbsp; L60 92 Z</td></tr>
+    <tr><td>Trunk</td><td class="mono">M54 92 L66 92 L62 116 L58 116 Z</td></tr>
+    <tr><td>Spark</td><td class="mono">circle cx 57, cy 8, r 5</td></tr>
+    <tr><td>Mirror line</td><td class="mono">M6 116 H114, 1px</td></tr>
+  </table>
+  <p class="muted" style="margin-top: 16px;"><b>3D forest equivalent</b> (mark units, trunk base at y=0): trunk 0–24 · cone 3 24–54 r=34 · cone 2 50–78 r=24 · cone 1 76–102 r=17 · spark 108.</p>
+
+  <h3>Mark Don'ts</h3>
+  <ul>
+    <li>Don't add a fourth cone — three is the tested geometry from the experiment</li>
+    <li>Don't round the cones into a blob or add leaf detail — it kills the low-poly signature</li>
+    <li>Don't put the tree above the mirror line — the tree is the real, the reflection is the idea</li>
+    <li>Don't use a second chromatic colour in the mark</li>
+    <li>Don't vary the cone proportions between applications</li>
+    <li>Don't make the cones narrow toward the base — they widen downward, in the 2D mark and in the 3D forest</li>
+  </ul>
+
+  <h3>Favicon</h3>
+  <div class="fav-row">
+    <img src="/assets/favicon.svg" width="16" height="16" alt="Favicon at 16 pixels">
+    <img src="/assets/favicon.svg" width="32" height="32" alt="Favicon at 32 pixels">
+    <img src="/assets/favicon.svg" width="48" height="48" alt="Favicon at 48 pixels">
+    <img src="/assets/favicon.svg" width="100" height="100" alt="Favicon at 100 pixels">
+  </div>
+  <p class="muted" style="margin-top: 12px;">The 2D mark reduced to a 100×100 tile — trunk, three cones, ember spark. Live on the site.</p>
+
+  <h3>Motion — "the spark descends"</h3>
+  <p class="muted">The single motion signature. An ember spark starts above the crown and descends into the tree, coming to rest inside the foliage with a soft halo. This is the forest experiment's argument as an animation — intelligence moving into the trees. 1.8s ease-in-out, one spark, no trails, no particles, no sound. Hold at rooted — a loop reads as a loading spinner.</p>
+  <div class="motion-strip">
+    <img src="assets/mark-tree-animated.svg" alt="Animated mark: the spark descends" width="120" height="180">
+    <div>
+      <table style="margin:0">
+        <tr><th>Phase</th><th>Time</th><th>Spark</th></tr>
+        <tr><td>Above</td><td class="mono">0.0s</td><td class="mono">y 8</td></tr>
+        <tr><td>Entering</td><td class="mono">0.6s</td><td class="mono">y 30</td></tr>
+        <tr><td>Through</td><td class="mono">1.2s</td><td class="mono">y 55</td></tr>
+        <tr><td>Rooted</td><td class="mono">1.8s</td><td class="mono">y 80 + halo 0.18</td></tr>
+      </table>
+      <p class="muted" style="margin-top: 12px; font-size: 0.8rem;">1.8s ease-in-out. One spark, one tree. No trails, no particles, no camera moves, no sound. Hold at rooted — a loop reads as a loading spinner.</p>
+    </div>
+  </div>
+
+  <h3>Building your own graphics</h3>
+  <ol>
+    <li>Start from the master geometry — recombine, don't invent</li>
+    <li>Reduce, don't add — every new piece should lose something</li>
+    <li>One ember moment per composition</li>
+    <li>Only two motion verbs: <strong>descend</strong> and <strong>ignite</strong></li>
+    <li>Check it against the thesis — if it could belong to a generic eco brand, it isn't finished</li>
+    <li>Check it against the mirror — if it could belong to a different brand with a different name, it isn't finished either</li>
+  </ol>
+
+  <h3>How this aligns the visual experiments</h3>
+  <table>
+    <tr><th>Experiment</th><th>How the mark connects it</th></tr>
+    <tr><td>Where Intelligence Lives</td><td>The source of the thesis — its adjacency graph is direction A, its taproot is direction B</td></tr>
+    <tr><td>AI Mirror</td><td>The mirror surface in direction E is that water, flattened to a hairline</td></tr>
+    <tr><td>void-mirror</td><td>Same instinct — one system, restrained palette</td></tr>
+    <tr><td>Museum of Becoming</td><td>The spark is the alive thing in a dark field — the ember room's move</td></tr>
+    <tr><td>Personal OS</td><td>Same role for the accent, its own colour — deliberately a separate product</td></tr>
+  </table>
+</section>
+
+<section>
+  <p class="label">07 · Operating Principles</p>
+  <blockquote>
+    Technology means nothing unless it creates real value for real people in the real world.<br><br>
+    Partnership, not solo building. Human benefit, not technology for technology's sake.
+  </blockquote>
+  <p class="muted">These are not marketing copy. They are operating rules. Every public artifact should be checkable against them.</p>
+</section>
+
+<section>
+  <p class="label">08 · What's Next</p>
+  <ul>
+    <li>Designer to develop the ember-flame mark properly</li>
+    <li>Test the palette against actual screenshots</li>
+    <li>Re-evaluate gold #c9a96e (Personal OS) vs ember #ff5e1d (Mirror Streams) — keep both or unify</li>
+    <li>One case study as evidence the brand works in practice</li>
+    <li>Update website to reference the IP palette</li>
+    <li>Decide whether the Personal OS pages move to Helvetica too, or keep their own character</li>
+  </ul>
+</section>
+
+</div>
+
+<footer class="footer">
+  <p>Mirror Streams · Brand Book v0.6</p>
+  <p class="muted">This is a working document. It will be wrong in places. The point is to have a thing to be wrong against.</p>
+</footer>
+
+</body>
+</html>

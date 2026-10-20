@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 180" width="120" height="180" role="img" aria-label="Mirror Streams animated mark">
+  <title>Mirror Streams — the spark descends</title>
+  <!-- Mirror Streams motion signature: "the spark descends".
+       1.8s ease-in-out. Spark starts above the crown, descends into the tree, rests with a soft halo.
+       No loop — hold at "rooted". No sound.
+       Spark travel: cy 8 -> 80 (72px). Halo fades in to 0.18 opacity, r=11, no blur. -->
+  <style>
+    #descender { animation: descend 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    #halo     { animation: fadein 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    @keyframes descend {
+      0%   { transform: translateY(0); }
+      33%  { transform: translateY(22px); }
+      67%  { transform: translateY(47px); }
+      100% { transform: translateY(72px); }
+    }
+    @keyframes fadein {
+      0%   { opacity: 0; }
+      88%  { opacity: 0; }
+      100% { opacity: 0.18; }
+    }
+  </style>
+  <g id="tree">
+    <path d="M54 92 L66 92 L62 116 L58 116 Z" fill="#0f0e0c"/>
+    <path d="M60 62 L26 92 L94 92 Z" fill="#0f0e0c"/>
+    <path d="M60 62 L26 92 L60 92 Z" fill="#2b2823"/>
+    <path d="M58 38 L34 66 L82 66 Z" fill="#0f0e0c"/>
+    <path d="M58 38 L34 66 L58 66 Z" fill="#2b2823"/>
+    <path d="M57 14 L40 40 L74 40 Z" fill="#0f0e0c"/>
+    <path d="M57 14 L40 40 L57 40 Z" fill="#2b2823"/>
+  </g>
+  <g id="descender">
+    <circle id="halo" cx="57" cy="8" r="11" fill="#ff5e1d" opacity="0"/>
+    <circle id="spark" cx="57" cy="8" r="5" fill="#ff5e1d"/>
+  </g>
+</svg>

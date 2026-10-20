@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal OS — Clarissa</title>
+  <meta name="description" content="A mirror, not a manager.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230f0e0c'/><text x='50' y='68' font-family='Georgia,serif' font-size='52' font-weight='400' fill='%23c9a96e' text-anchor='middle'>CC</text></svg>">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .hub-intro { margin-bottom: 80px; }
+    .hub-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hub-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
+    }
+    .hub-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.6rem, 6vw, 3.8rem);
+      font-weight: 300; line-height: 1.1;
+      margin-bottom: 20px; letter-spacing: -0.01em;
+    }
+    .hub-title em { font-style: italic; color: var(--accent); }
+    .hub-sub {
+      font-size: 0.95rem; color: var(--text-muted);
+      max-width: 540px; line-height: 1.7;
+    }
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 80px;
+    }
+    .hub-card {
+      padding: 36px 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none; color: inherit;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column; min-height: 280px;
+    }
+    .hub-card:hover {
+      border-color: var(--accent);
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+    }
+    .hub-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .hub-card:hover::before { opacity: 1; }
+    .hub-card-emoji {
+      font-size: 1.8rem; margin-bottom: 16px;
+      display: block; transform-origin: center;
+    }
+    .hub-card:hover .hub-card-emoji { animation: wiggle 0.6s ease-in-out; }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-8deg); }
+      75% { transform: rotate(8deg); }
+    }
+    .hub-card-num {
+      position: absolute; top: 24px; right: 28px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; color: var(--text-faint);
+      letter-spacing: 0.1em;
+    }
+    .hub-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .hub-card-zh {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; color: var(--text-muted);
+      font-size: 0.9rem; margin-bottom: 16px;
+    }
+    .hub-card-desc {
+      font-size: 0.88rem; color: var(--text-muted);
+      line-height: 1.6; margin-bottom: 20px; flex: 1;
+    }
+    .hub-card-purpose {
+      font-size: 0.72rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      padding-top: 16px; border-top: 1px solid var(--border-faint);
+    }
+    .hub-card-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 8px; color: var(--accent);
+      font-size: 0.85rem; transition: gap 0.2s;
+    }
+    .hub-card:hover .hub-card-cta { gap: 14px; }
+    .hub-section-label {
+      font-size: 0.7rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .hub-meta {
+      display: flex; align-items: center; gap: 24px;
+      font-size: 0.78rem; color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em; margin-top: 8px; flex-wrap: wrap;
+    }
+    .hub-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-faint); }
+    .hub-meta-item { display: flex; align-items: center; gap: 6px; }
+    .hub-meta-key { color: var(--text-faint); }
+    .hub-quote {
+      padding: 36px;
+      background: linear-gradient(135deg, var(--bg-card), var(--bg-elev));
+      border: 1px solid var(--border);
+      border-radius: 8px; text-align: center;
+      margin-bottom: 64px;
+    }
+    .hub-quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-style: italic; font-weight: 300; line-height: 1.5;
+      color: var(--text); margin-bottom: 12px;
+    }
+    .hub-quote-attr {
+      font-size: 0.72rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .hub-flow {
+      padding: 28px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .hub-flow-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 0;
+    }
+    .hub-flow-row + .hub-flow-row { border-top: 1px solid var(--border-faint); }
+    .hub-flow-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; color: var(--text-faint);
+      letter-spacing: 0.05em; width: 90px; flex-shrink: 0;
+    }
+    .hub-flow-arrow { color: var(--text-faint); font-size: 0.85rem; }
+    .hub-flow-target {
+      font-size: 0.88rem; color: var(--text); flex: 1;
+    }
+    .hub-flow-page {
+      font-size: 0.65rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    @media (max-width: 720px) {
+      .hub-card { min-height: 240px; padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav">
+    <a href="dashboard.html" class="topnav-logo">CC</a>
+    <ul class="topnav-links">
+      <li><a href="dashboard.html" class="active">Hub</a></li>
+      <li><a href="today.html">Today</a></li>
+      <li><a href="goals.html">Goals</a></li>
+      <li><a href="mirror.html">Mirror</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header class="hub-intro">
+      <div class="hub-eyebrow">
+        <span class="hub-dot"></span>
+        <span>Personal OS</span>
+      </div>
+      <h1 class="hub-title">Three mirrors.<br>One <em>becoming</em>.</h1>
+      <p class="hub-sub">
+        This is not a productivity tool. It is a system to help you live consciously while remaining open to reality.
+      </p>
+      <div class="hub-meta">
+        <span class="hub-meta-item">
+          <span class="hub-meta-key">Today</span>
+          <span id="hubDate">Tuesday, October 13, 2026</span>
+        </span>
+        <span class="hub-meta-dot"></span>
+        <span class="hub-meta-item">
+          <span class="hub-meta-key">Week</span>
+          <span id="hubWeek">42</span>
+        </span>
+        <span class="hub-meta-dot"></span>
+        <span class="hub-meta-item">
+          <span class="hub-meta-key">Q4</span>
+          <span>Day 13 of 92</span>
+        </span>
+      </div>
+    </header>
+
+    <div class="hub-section-label">The three pages</div>
+
+    <div class="hub-grid">
+      <a href="today.html" class="hub-card">
+        <span class="hub-card-emoji">🌅</span>
+        <span class="hub-card-num">01</span>
+        <div class="hub-card-title">Today</div>
+        <div class="hub-card-zh">今日</div>
+        <p class="hub-card-desc">
+          The daily operating system. What to focus on, today's rhythm, the 10pm reflection, and a quick energy check-in. Opens twice a day — morning and night.
+        </p>
+        <div class="hub-card-purpose">Morning + Night</div>
+        <div class="hub-card-cta">Open Today →</div>
+      </a>
+
+      <a href="goals.html" class="hub-card">
+        <span class="hub-card-emoji">🧭</span>
+        <span class="hub-card-num">02</span>
+        <div class="hub-card-title">Goals</div>
+        <div class="hub-card-zh">方向</div>
+        <p class="hub-card-desc">
+          The long view. Lifetime Legacy (9 aspects), Horizons (10Y/3Y/1Y), Q4 focus with progress. Opens weekly for review, monthly for planning.
+        </p>
+        <div class="hub-card-purpose">Weekly + Monthly</div>
+        <div class="hub-card-cta">Open Goals →</div>
+      </a>
+
+      <a href="mirror.html" class="hub-card">
+        <span class="hub-card-emoji">🪞</span>
+        <span class="hub-card-num">03</span>
+        <div class="hub-card-title">Mirror</div>
+        <div class="hub-card-zh">镜</div>
+        <p class="hub-card-desc">
+          Reflection. Past answers, drift vs alignment signals, energy history, vault quotes. Opens when you want to think, not on a schedule.
+        </p>
+        <div class="hub-card-purpose">Anytime</div>
+        <div class="hub-card-cta">Open Mirror →</div>
+      </a>
+    </div>
+
+    <div class="hub-quote">
+      <p class="hub-quote-text">"The system is not designed to control life.<br>It is designed to help me live consciously while remaining open to reality."</p>
+      <p class="hub-quote-attr">— GOALS.md · Your Personal OS</p>
+    </div>
+
+    <div class="section">
+      <div class="section-label">
+        Daily Rhythm
+        <span class="section-label-zh">日常节奏</span>
+      </div>
+      <div class="hub-flow">
+        <div class="hub-flow-row">
+          <span class="hub-flow-time">MORNING</span>
+          <span class="hub-flow-arrow">→</span>
+          <span class="hub-flow-target">Open Today · Set 1-3 priorities · Mirror quote for the day</span>
+          <span class="hub-flow-page">today.html</span>
+        </div>
+        <div class="hub-flow-row">
+          <span class="hub-flow-time">WEEKLY</span>
+          <span class="hub-flow-arrow">→</span>
+          <span class="hub-flow-target">Review Goals · Q4 progress check · Bump what moved</span>
+          <span class="hub-flow-page">goals.html</span>
+        </div>
+        <div class="hub-flow-row">
+          <span class="hub-flow-time">NIGHT</span>
+          <span class="hub-flow-arrow">→</span>
+          <span class="hub-flow-target">10pm reflection · Save answer · Check drift/alignment</span>
+          <span class="hub-flow-page">today.html</span>
+        </div>
+        <div class="hub-flow-row">
+          <span class="hub-flow-time">ANYTIME</span>
+          <span class="hub-flow-arrow">→</span>
+          <span class="hub-flow-target">Mirror · Look for patterns · Search past reflections</span>
+          <span class="hub-flow-page">mirror.html</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const STORAGE_KEY = 'clarissa_dashboard_auth';
+      const PASSWORD = '268';
+      if (sessionStorage.getItem(STORAGE_KEY) === 'unlocked') return;
+
+      const gate = document.createElement('div');
+      gate.style.cssText = 'position:fixed;inset:0;background:#0f0e0c;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;';
+      gate.innerHTML = `
+        <div style="text-align:center;max-width:360px;padding:0 24px;">
+          <div style="font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:#c9a96e;margin-bottom:24px;">Personal OS · 私人</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;font-style:italic;color:#e8e4df;margin-bottom:8px;line-height:1.2;">Mirror is private</div>
+          <div style="font-size:0.85rem;color:#8a847c;margin-bottom:32px;">Enter the access code to continue.</div>
+          <input type="password" id="gate-input" placeholder="• • •" autocomplete="off"
+            style="width:100%;padding:14px 18px;background:#1a1714;border:1px solid #2a2620;border-radius:6px;color:#e8e4df;font-family:'JetBrains Mono',monospace;font-size:1.1rem;letter-spacing:0.4em;text-align:center;outline:none;transition:border-color 0.2s;" />
+          <div id="gate-error" style="color:#c97a6e;font-size:0.78rem;margin-top:12px;opacity:0;transition:opacity 0.2s;">Wrong code. Try again.</div>
+        </div>
+      `;
+      document.body.appendChild(gate);
+      document.body.style.overflow = 'hidden';
+
+      const input = document.getElementById('gate-input');
+      const error = document.getElementById('gate-error');
+      setTimeout(() => input.focus(), 100);
+
+      function tryUnlock() {
+        if (input.value.trim() === PASSWORD) {
+          sessionStorage.setItem(STORAGE_KEY, 'unlocked');
+          gate.style.transition = 'opacity 0.4s';
+          gate.style.opacity = '0';
+          setTimeout(() => { gate.remove(); document.body.style.overflow = ''; }, 400);
+        } else {
+          error.style.opacity = '1';
+          input.value = '';
+          input.focus();
+          input.style.borderColor = '#c97a6e';
+          setTimeout(() => { input.style.borderColor = '#2a2620'; setTimeout(() => { error.style.opacity = '0'; }, 1500); }, 800);
+        }
+      }
+
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+      input.addEventListener('input', () => { if (input.value.length === 3) setTimeout(tryUnlock, 100); });
+    })();
+
+    (function() {
+      const date = new Date();
+      const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      const el = document.getElementById('hubDate');
+      if (el) el.textContent = dateStr;
+      const start = new Date(date.getFullYear(), 0, 0);
+      const diff = (date - start) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
+      const day = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const weekEl = document.getElementById('hubWeek');
+      if (weekEl) weekEl.textContent = Math.ceil(day / 7);
+    })();
+  </script>
+</body>
+</html>
