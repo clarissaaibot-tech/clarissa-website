@@ -1,5 +1,8 @@
 /* ==========================================================================
-   world-map-data.js — the journey data.
+   world-map-data.js — GENERATED FILE. Do not edit by hand.
+
+   Source: ~/Desktop/ObsidianVault/My Second Brain/40_Projects/03_Clarissa_IP/Atlas_Places.md
+   Regenerate:  python3 ~/.hermes/scripts/atlas_sync.py --write
 
    Every place here is traceable. The `source` field records exactly where the
    place came from (an Instagram location tag, a Substack sentence, or Clarissa
@@ -24,7 +27,7 @@ window.JOURNEY = [
     note: "The line begins somewhere else. I have never seen it, and it has shaped everything.",
     photo: null,
     photoAlt: "",
-    source: "Told by Clarissa"
+    source: "Told by Clarissa — her ancestor came from here"
   },
   {
     id: "shenzhen",
@@ -39,22 +42,7 @@ window.JOURNEY = [
     note: "",
     photo: null,
     photoAlt: "",
-    source: "Instagram, 12 June 2026"
-  },
-  {
-    id: "seoul",
-    name: "Seoul",
-    cn: "서울",
-    lat: 37.5665, lng: 126.9780,
-    year: "2020",
-    era: "Before",
-    role: "journey",
-    title: "Back to January",
-    story: "A hotel in Seoul, in the strange early days of 2020. The caption was someone trying to rewind a year that would not move.",
-    note: "",
-    photo: null,
-    photoAlt: "",
-    source: "Instagram, 10 April 2020"
+    source: "Instagram, 12 June 2026 — location tag 深圳"
   },
   {
     id: "singapore",
@@ -69,7 +57,22 @@ window.JOURNEY = [
     note: "「新加坡8年是材料不是伤口」",
     photo: null,
     photoAlt: "",
-    source: "Instagram, 2020 – 2021 · Substack, 31 December 2025"
+    source: "Instagram 13 Sep 2020 (STPI, '…Reality⚡️ (when there's no covid-19)'), 4 Aug 2021 ('loving you was ❤️‍🔥❤️‍🔥❤️‍🔥🇸🇬'), Substack 31 Dec 2025, and Clarissa's own words 「新加坡8年是材料不是伤口」"
+  },
+  {
+    id: "seoul",
+    name: "Seoul",
+    cn: "서울",
+    lat: 37.5665, lng: 126.978,
+    year: "2020",
+    era: "Before",
+    role: "journey",
+    title: "Back to January",
+    story: "A hotel in Seoul, in the strange early days of 2020. The caption was someone trying to rewind a year that would not move.",
+    note: "",
+    photo: null,
+    photoAlt: "",
+    source: "Instagram, 10 April 2020 — location tag 'Seoul Dragon City 서울드래곤시티', caption 'back to january 🌃☄️'"
   },
   {
     id: "maldives",
@@ -84,7 +87,7 @@ window.JOURNEY = [
     note: "",
     photo: null,
     photoAlt: "",
-    source: "Substack, 31 December 2025"
+    source: "Substack, 31 December 2025 ('2025: The Still Point and the Dance') — 'You can be in a Singapore office on Monday and a Maldives beach on Tuesday'"
   },
   {
     id: "normandie",
@@ -99,7 +102,7 @@ window.JOURNEY = [
     note: "",
     photo: null,
     photoAlt: "",
-    source: "Instagram, 8 November 2025"
+    source: "Instagram (dani.ca), 8 November 2025 — 'THE ART OF BEING OFFLINE 🪵📜 in a 16th-century château in Normandie: unobserved, unbothered, profoundly alive'"
   },
   {
     id: "paris",
@@ -114,13 +117,13 @@ window.JOURNEY = [
     note: "",
     photo: null,
     photoAlt: "",
-    source: "Instagram, 9 September 2024"
+    source: "Instagram grid label 'paree'; reel 9 September 2024 — 'Un Homme Et Une Femme' by Francis Lai, caption 'in our metamorphosis era 🦋'"
   },
   {
     id: "milan",
     name: "Milan",
     cn: "米兰",
-    lat: 45.4642, lng: 9.1900,
+    lat: 45.4642, lng: 9.19,
     year: "2026",
     era: "Now",
     role: "journey",
@@ -129,7 +132,7 @@ window.JOURNEY = [
     note: "「We don't just produce the thing. The process produces us, too.」",
     photo: null,
     photoAlt: "",
-    source: "Substack, 15 August 2026"
+    source: "Instagram grid label 'milan'; Substack, 15 August 2026 ('What did making give us?')"
   },
   {
     id: "rome",
@@ -144,7 +147,7 @@ window.JOURNEY = [
     note: "",
     photo: null,
     photoAlt: "",
-    source: "Instagram"
+    source: "Instagram grid label 'Rome'"
   },
   {
     id: "venice",
@@ -159,7 +162,7 @@ window.JOURNEY = [
     note: "",
     photo: null,
     photoAlt: "",
-    source: "Instagram"
+    source: "Instagram grid label 'venice'"
   },
   {
     id: "como",
@@ -174,13 +177,13 @@ window.JOURNEY = [
     note: "",
     photo: null,
     photoAlt: "",
-    source: "Instagram"
+    source: "Instagram grid label 'como'"
   },
   {
     id: "kuala_lumpur",
     name: "Kuala Lumpur",
     cn: "吉隆坡",
-    lat: 3.1390, lng: 101.6869,
+    lat: 3.139, lng: 101.6869,
     year: "Now",
     era: "Now",
     role: "home",
@@ -189,6 +192,6 @@ window.JOURNEY = [
     note: "",
     photo: null,
     photoAlt: "",
-    source: "Told by Clarissa"
-  }
+    source: "Told by Clarissa — where she lives"
+  },
 ];
