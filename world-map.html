@@ -824,7 +824,9 @@
       if (box.y < navH) { lab.style.display = "none"; sub.style.display = "none"; continue; }
       const hit = placed.some(q => !(box.x + box.w < q.x || q.x + q.w < box.x ||
                                     box.y + box.h < q.y || q.y + q.h < box.y));
-      if (hit && !active) {
+      const offRight = box.x + box.w > vw - 6;
+      const offLeft = box.x < 6;
+      if ((hit && !active) || offRight || offLeft) {
         lab.style.display = "none";
         sub.style.display = "none";
       } else {
@@ -888,7 +890,7 @@
       // A phone is tall and the world is wide. Fit the journey's own width
       // so all twelve places stay on screen and reachable — the clustering
       // handles the density, and the visitor can zoom from there.
-      const byW = vw / (JOURNEY_BOX.w * 1.08);
+      const byW = vw / (JOURNEY_BOX.w * 1.16);
       k = clamp(byW, 0.8, Math.min(3.2, kMax));
       cx = (JOURNEY_BOX.x0 + JOURNEY_BOX.x1) / 2;
       cy = (JOURNEY_BOX.y0 + JOURNEY_BOX.y1) / 2;
@@ -1127,6 +1129,19 @@
   // rotation, mobile browser chrome collapsing, a window drag).
   window.addEventListener("resize", resize);
   window.addEventListener("orientationchange", () => setTimeout(resize, 120));
+
+  // A size watchdog. ResizeObserver and the window resize event both miss
+  // some viewport changes — mobile browser chrome collapsing, a device
+  // rotation, a split-screen resize. This checks the measured size on a
+  // timer and re-fits if it actually changed, until the visitor takes
+  // control of the view themselves.
+  setInterval(() => {
+    if (userAdjusted) return;
+    const r = mapEl.getBoundingClientRect();
+    const w = Math.round(r.width), h = Math.round(r.height);
+    if (w > 0 && h > 0 && (w !== vw || h !== vh)) resize();
+  }, 400);
+
   fitJourney();
   routeEls.forEach((el, i) => setTimeout(() => el.classList.add("on"), 300 + i * 130));
 })();
