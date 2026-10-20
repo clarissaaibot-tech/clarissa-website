@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clarissa Chia</title>
   <meta name="description" content="AI strategist and systems builder.">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link rel="alternate icon" href="/assets/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon-c.svg">
+  <link rel="alternate icon" href="/assets/favicon-c.svg">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -183,10 +183,19 @@
       object-fit: cover;
       border-radius: 4px;
       display: block;
+      /* The portrait is not selectable and cannot be dragged out of the page. */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
     }
 
     .hero-portrait-wrap {
       position: relative;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
     }
 
     .hero-portrait-wrap::after {
@@ -305,32 +314,6 @@
       margin-bottom: 10px;
     }
 
-    .section-cta {
-      display: inline-block;
-      margin-top: 28px;
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text);
-      text-decoration: none;
-      border-bottom: 1px solid var(--accent);
-      padding-bottom: 4px;
-      transition: color 0.2s;
-    }
-
-    .section-cta span {
-      transition: transform 0.25s;
-      display: inline-block;
-    }
-
-    .section-cta:hover {
-      color: var(--accent);
-    }
-
-    .section-cta:hover span {
-      transform: translateX(3px);
-    }
-
     footer {
       padding: 60px 48px;
       border-top: 1px solid var(--border);
@@ -443,7 +426,7 @@
       margin: 36px 0 0;
       padding: 0;
       border: 0;
-      color: #e8b860;
+      color: var(--accent);
       font-size: 1.06rem;
       line-height: 1.62;
     }
@@ -454,9 +437,9 @@
       gap: 10px;
       margin-top: 40px;
       padding: 13px 22px;
-      border: 1px solid rgba(232, 184, 96, 0.45);
+      border: 1px solid rgba(255, 94, 29, 0.45);
       border-radius: 999px;
-      color: #e8b860;
+      color: var(--accent);
       text-decoration: none;
       font-size: 0.88rem;
       letter-spacing: 0.05em;
@@ -464,9 +447,9 @@
     }
 
     .forest-cta:hover {
-      background: rgba(232, 184, 96, 0.12);
-      border-color: rgba(232, 184, 96, 0.8);
-      color: #f2cf8c;
+      background: rgba(255, 94, 29, 0.12);
+      border-color: rgba(255, 94, 29, 0.8);
+      color: #ff8a52;
     }
 
     .forest-cta span {
@@ -532,7 +515,8 @@
     <a href="#" class="nav-logo"><span class="nav-logo-name">Clar<span class="ti">ı</span>ssa Ch<span class="ti">ı</span>a</span> <span class="nav-tagline">AI strategist · Systems builder</span></a>
     <ul class="nav-links">
       <li><a href="#philosophy">Philosophy</a></li>
-      <li><a href="#reads">Reads</a></li>
+      <li><a href="/world-map.html">Atlas</a></li>
+      <li><a href="https://mirrorstreams.substack.com/" target="_blank" rel="noopener">Reads</a></li>
       <li><a href="#work">Work</a></li>
     </ul>
   </nav>
@@ -547,7 +531,7 @@
       </blockquote>
     </div>
     <div class="hero-portrait-wrap">
-      <img src="portrait.jpg" alt="Clarissa Chia" class="hero-portrait">
+      <img src="portrait.jpg" alt="Clarissa Chia" class="hero-portrait" draggable="false" ondragstart="return false;">
     </div>
   </section>
 
@@ -572,18 +556,6 @@
       </div>
     </section>
   </div>
-
-  <div class="divider"></div>
-
-  <section id="reads" class="narrow-section">
-    <p class="section-label">Reads</p>
-    <h2>Mirror Streams</h2>
-    <p>Mirror Streams is a creative research practice investigating how systems — information, technology, organisations, feedback — shape human agency, and how we can redesign them to give people back time, attention and potential.</p>
-    <p style="margin-top: 16px;">Writing on the systems we inherit, the judgements they can't make for us, and what it takes to design for human agency instead of control.</p>
-    <a href="https://mirrorstreams.substack.com/" target="_blank" rel="noopener" class="section-cta">
-      Read on Substack <span aria-hidden="true">→</span>
-    </a>
-  </section>
 
   <div class="divider"></div>
 
