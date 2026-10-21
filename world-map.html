@@ -458,9 +458,13 @@
     .zoom-ctl button { width: 44px; height: 44px; }
   }
 
+  /* the fixed nav must not cover an anchor target */
+  #philosophy, #work {
+    scroll-margin-top: 84px;
+  }
+
   @media (max-width: 640px) {
     nav { padding: 18px 24px; }
-    .nav-links { display: none; }
     .nav-tagline { display: none; }
   }
 
@@ -1142,5 +1146,6 @@
 
 </script>
 
+  <script src="mobile-nav.js" defer></script>
 </body>
 </html>

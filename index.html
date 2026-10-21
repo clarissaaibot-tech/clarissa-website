@@ -489,14 +489,16 @@
       }
     }
 
+    /* the fixed nav must not cover an anchor target */
+    #philosophy, #work {
+      scroll-margin-top: 84px;
+    }
+
     @media (max-width: 640px) {
       nav {
         padding: 20px 24px;
       }
 
-      .nav-links {
-        display: none;
-      }
 
       section, footer {
         padding-left: 24px;
@@ -578,6 +580,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="forest-constants.js"></script>
   <script src="forest-backdrop.js"></script>
+  <script src="mobile-nav.js" defer></script>
 
 </body>
 </html>
