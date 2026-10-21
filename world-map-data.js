@@ -75,21 +75,6 @@ window.JOURNEY = [
     source: "Instagram, 10 April 2020 — location tag 'Seoul Dragon City 서울드래곤시티', caption 'back to january 🌃☄️'"
   },
   {
-    id: "maldives",
-    name: "Maldives",
-    cn: "马尔代夫",
-    lat: 3.2028, lng: 73.2207,
-    year: "2025",
-    era: "Before",
-    role: "journey",
-    title: "The switch that costs nothing",
-    story: "The example I keep returning to: today it costs nothing to move on, so we never stay long enough to go deep. A beach on a Tuesday. A life you don't belong to.",
-    note: "",
-    photo: null,
-    photoAlt: "",
-    source: "Substack, 31 December 2025 ('2025: The Still Point and the Dance') — 'You can be in a Singapore office on Monday and a Maldives beach on Tuesday'"
-  },
-  {
     id: "normandie",
     name: "Normandie",
     cn: "诺曼底",
@@ -102,7 +87,7 @@ window.JOURNEY = [
     note: "",
     photo: null,
     photoAlt: "",
-    source: "Instagram (dani.ca), 8 November 2025 — 'THE ART OF BEING OFFLINE 🪵📜 in a 16th-century château in Normandie: unobserved, unbothered, profoundly alive'"
+    source: "Instagram (dani.ca), 8 November 2025 — 'THE ART OF BEING OFFLINE 🌲📜 in a 16th-century château in Normandie: unobserved, unbothered, profoundly alive'"
   },
   {
     id: "paris",

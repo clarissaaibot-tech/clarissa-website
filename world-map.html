@@ -268,18 +268,6 @@
     pointer-events: none;
   }
 
-  .place .label-sub {
-    font-family: var(--font-mono);
-    font-size: 8.5px;
-    fill: var(--ash);
-    text-anchor: middle;
-    paint-order: stroke;
-    stroke: rgba(255, 255, 255, 0.92);
-    stroke-width: 3px;
-    stroke-linejoin: round;
-    pointer-events: none;
-  }
-
   /* ── Legend ── */
   .legend {
     position: absolute;
@@ -611,6 +599,21 @@
 
   // ── Markers (screen space) ──
   const markEls = {};
+  // Emoji in a citation add nothing, and they render as tofu: the
+  // colour-emoji font has no glyph below ~16px, so a mono source line at
+  // 10.5px falls back to a monochrome box. The vault keeps the original
+  // text; the citation line drops the decoration.
+  //
+  // Remove the space BEFORE the emoji along with it, so the phrase closes
+  // up naturally and no quote-adjacent tidy-up is needed:
+  //   "loving you was ❤️‍🔥🇸🇬"  ->  "loving you was"
+  //   "OFFLINE 🪵📜 in a château"  ->  "OFFLINE in a château"
+  const stripEmoji = (t) => (t || "")
+    .replace(/[\u{200D}\u{FE0F}\u{1F1E6}-\u{1F1FF}]/gu, "")
+    .replace(/[ \t]*[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]+/gu, "")
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+
   const metaLabel = (p) => {
     if (p.year && p.year !== "—" && p.year !== "Now") return p.year;
     return p.era || "";
@@ -649,12 +652,6 @@
     lab.setAttribute("y", -15);
     lab.textContent = p.name;
     g.appendChild(lab);
-
-    const sub = document.createElementNS(NS, "text");
-    sub.setAttribute("class", "label-sub");
-    sub.setAttribute("y", 17);
-    sub.textContent = metaLabel(p);
-    g.appendChild(sub);
 
     g.addEventListener("click", (e) => { e.stopPropagation(); select(i); });
     g.addEventListener("keydown", (e) => {
@@ -815,23 +812,20 @@
     for (const o of order) {
       const el = markEls[o.p.id];
       const lab = el.querySelector(".label-t");
-      const sub = el.querySelector(".label-sub");
       const active = o.i === current;
       const w = Math.max(o.p.name.length * 6.6, 36);
       const navH = chrome().top;
       const box = {x: o.sx - w / 2, y: o.sy - 27, w, h: active ? 36 : 25};
       // A label whose box would sit behind the header is not shown.
-      if (box.y < navH) { lab.style.display = "none"; sub.style.display = "none"; continue; }
+      if (box.y < navH) { lab.style.display = "none"; continue; }
       const hit = placed.some(q => !(box.x + box.w < q.x || q.x + q.w < box.x ||
                                     box.y + box.h < q.y || q.y + q.h < box.y));
       const offRight = box.x + box.w > vw - 6;
       const offLeft = box.x < 6;
       if ((hit && !active) || offRight || offLeft) {
         lab.style.display = "none";
-        sub.style.display = "none";
       } else {
         lab.style.display = "";
-        sub.style.display = "";
         placed.push(box);
       }
     }
@@ -1089,7 +1083,7 @@
     if (p.year && p.year !== "—") when.push(p.year);
     if (p.era && p.era !== p.year) when.push(p.era);
     sWhen.textContent = when.join(" · ");
-    sSrc.textContent = "Source · " + p.source;
+    sSrc.textContent = "Source · " + stripEmoji(p.source);
 
     if (p.photo) {
       sMain.innerHTML = `<img class="photo" src="${p.photo}" alt="${p.photoAlt || p.name}">`;
