@@ -180,3 +180,36 @@ window.JOURNEY = [
     source: "Told by Clarissa — where she lives"
   },
 ];
+
+window.CHAPTERS = [
+  {
+    id: "ch1",
+    title: "Opening the shutters…",
+    note: "The line begins somewhere else. I have never seen it, and it has shaped everything.",
+    places: ["chaozhou", "shenzhen"]
+  },
+  {
+    id: "ch2",
+    title: "Eight years, held lightly",
+    note: "「新加坡8年是材料不是伤口」",
+    places: ["singapore"]
+  },
+  {
+    id: "ch3",
+    title: "Back to January",
+    note: "A year of becoming, scored in French.",
+    places: ["seoul", "normandie", "paris"]
+  },
+  {
+    id: "ch4",
+    title: "What did making give us?",
+    note: "「We don't just produce the thing. The process produces us, too.」",
+    places: ["milan", "rome", "venice", "como"]
+  },
+  {
+    id: "ch5",
+    title: "Now",
+    note: "The city I build systems from.",
+    places: ["kuala_lumpur"]
+  },
+];
