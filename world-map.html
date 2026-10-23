@@ -32,13 +32,13 @@ button{font:inherit;color:inherit}
 #desk.dragging{cursor:grabbing}
 
 .brand{position:fixed;left:clamp(18px,3.4vw,40px);top:calc(env(safe-area-inset-top,0px) + clamp(14px,2.6vw,30px));
-  font-family:"Instrument Serif",Georgia,"Times New Roman",serif;font-size:clamp(30px,3.6vw,46px);line-height:1;
+  font-family:"Instrument Serif",Georgia,"Times New Roman",serif;font-size:clamp(19px,1.9vw,25px);line-height:1;
   letter-spacing:.01em;z-index:5;pointer-events:none;transition:color 1.2s ease;color:#2c2a33;text-shadow:0 1px 14px rgba(255,255,255,.6)}
 body.on-map .brand{color:var(--ink);text-shadow:none}
 .brand .b-map{display:none}
 body.on-map .brand .b-desk{display:none}
 body.on-map .brand .b-map{display:inline}
-@media (max-width:760px){body.on-map .brand{font-size:26px;max-width:52vw;line-height:1.08}}
+@media (max-width:760px){body.on-map .brand{font-size:19px;max-width:52vw;line-height:1.08}}
 
 /* hint at the desk */
 .hint{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + clamp(56px,9vh,84px));transform:translateX(-50%);
@@ -52,14 +52,6 @@ body.on-map .brand .b-map{display:inline}
 .hint.gone{opacity:0;transform:translate(-50%,12px);pointer-events:none}
 #ring{transition:stroke-dashoffset .15s linear}
 
-/* lamp switch */
-.lampBtn{position:fixed;right:clamp(18px,3.4vw,40px);top:calc(env(safe-area-inset-top,0px) + clamp(16px,2.8vw,32px));z-index:5;
-  display:flex;align-items:center;gap:8px;padding:8px 14px 8px 11px;border-radius:999px;cursor:pointer;font-size:14px;color:#2c2a33;
-  background:rgba(255,255,255,.62);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(44,42,51,.08);
-  box-shadow:0 6px 24px rgba(40,40,30,.08);transition:background .3s ease,color .3s ease,opacity .6s ease}
-.lampBtn[aria-pressed="true"]{background:rgba(255,236,204,.82);color:#7a5418}
-.lampBtn:focus-visible{outline:2px solid #b8902f;outline-offset:3px}
-body.on-map .lampBtn,body.diving .lampBtn{opacity:0;pointer-events:none}
 /* paper veil for the transition */
 #veil{position:fixed;inset:0;background:var(--paper);opacity:0;pointer-events:none;z-index:3}
 
@@ -210,10 +202,6 @@ body.night #site-nav .nav-logo,body.on-map #site-nav .nav-links a.on{color:#2c2a
 <canvas id="desk" tabindex="0" aria-label="Clarissa’s Atlas. Your white desk in a sunlit room facing a lily pond. Drag left or right, or use the arrow keys, to spin the golden armillary globe."></canvas>
 <div class="brand" aria-hidden="true"><span class="b-desk">Clarissa’s Atlas</span><span class="b-map">Somewhere, Clarissa became.</span></div>
 
-<button class="lampBtn" id="lampBtn" type="button" aria-pressed="true" title="Switch the tree lamp (or tap the lamp, or press L)">
-  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5 4.5 7h7L8 1.5Z M8 6 3.5 12.5h9L8 6Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M8 12.5V15" stroke="currentColor" stroke-width="1.2"/></svg>
-  <span>Lamp on</span>
-</button>
 <div class="hint" id="hint">
   <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
     <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(138,106,44,.18)" stroke-width="2"/>
@@ -702,13 +690,41 @@ const winG=new THREE.Group();winG.position.z=WALL_Z-WALL_T*.55;room.add(winG);
   [-1,1].forEach(sd=>{const m=new THREE.Mesh(new THREE.BoxGeometry(.07,WIN.spring-WIN.sill+.06,.035),M.trim);m.position.set(sd*(WIN.hw+.04),(WIN.sill+WIN.spring)/2-.03,WALL_Z+.01-winG.position.z);winG.add(m);});
   const sillB=new THREE.Mesh(new THREE.BoxGeometry(WIN.hw*2+.2,.035,WALL_T+.08),M.trim);sillB.position.set(0,WIN.sill-.01,WALL_Z-WALL_T/2+.04-winG.position.z);sillB.receiveShadow=true;winG.add(sillB);
 }
-/* French doors on either side, with frosted glass */
-[-1.82,1.82].forEach(x=>{
+/* French doors on either side, with frosted glass.
+   These are full-height doors — 2.9m from the floor, 1.12m wide — so they
+   read as real doors to the garden rather than as panels. The room's side
+   walls sit at x=±2.6 and the window arch ends at x=±1.02, so the doors
+   sit in the 1.58m of wall between them. */
+const DOOR={w:1.2,h:2.42,x:1.88};
+[-1,1].forEach(sd=>{
+  const x=sd*DOOR.x;
   const g=new THREE.Group();g.position.set(x,0,WALL_Z+.005);room.add(g);
-  const frame=(w,h,px,py)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,.03),M.trim);m.position.set(px,py,.015);g.add(m);};
-  frame(.66,.05,0,2.36);frame(.05,2.38,-.31,1.18);frame(.05,2.38,.31,1.18);frame(.62,.04,0,.9);frame(.62,.04,0,1.9);frame(.62,.12,0,.06);
-  const glass=new THREE.Mesh(new THREE.PlaneGeometry(.57,2.2),new THREE.MeshPhysicalMaterial({color:'#e6ebec',roughness:.35,emissive:new THREE.Color('#ffffff'),emissiveIntensity:.35,envMapIntensity:.6}));glass.position.set(0,1.24,.005);g.add(glass);
-  const knob=new THREE.Mesh(new THREE.SphereGeometry(.018,16,12),M.gold);knob.position.set(x<0?.25:-.25,1.05,.05);g.add(knob);
+  const half=DOOR.w/2;
+  const frame=(w,h,px,py,d=.035)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M.trim);m.position.set(px,py,d/2);g.add(m);};
+  // a shallow reveal in the wall, so the door sits IN the wall rather than
+  // on it — without the shadow line the whole door reads as a white panel
+  const reveal=new THREE.Mesh(new THREE.BoxGeometry(DOOR.w+.1,DOOR.h+.09,.012),
+    new THREE.MeshStandardMaterial({color:'#c9b9a4',roughness:.9}));
+  reveal.position.set(0,DOOR.h/2,.004);g.add(reveal);
+  // head, jambs, threshold
+  frame(DOOR.w+.12,.08,0,DOOR.h+.02);
+  frame(.075,DOOR.h+.04,-half-.02,DOOR.h/2);
+  frame(.075,DOOR.h+.04, half+.02,DOOR.h/2);
+  frame(DOOR.w-.04,.17,0,.085);
+  // the frosted glass, catching the garden light
+  const glass=new THREE.Mesh(new THREE.PlaneGeometry(DOOR.w-.11,DOOR.h-.15),
+    new THREE.MeshPhysicalMaterial({color:'#eef2f2',roughness:.28,emissive:new THREE.Color('#ffffff'),emissiveIntensity:.55,envMapIntensity:.7}));
+  glass.position.set(0,DOOR.h/2+.05,.024);g.add(glass);
+  // glazing bars — two rails and a centre stile, so it reads as a pair of
+  // glazed French doors rather than one flat sheet
+  frame(DOOR.w-.09,.055,0,.86);
+  frame(DOOR.w-.09,.055,0,1.62);
+  frame(.04,DOOR.h-.2,0,DOOR.h/2+.05,.026);
+  // handle, on the side toward the room's centre
+  const knob=new THREE.Mesh(new THREE.SphereGeometry(.028,16,12),M.gold);
+  knob.position.set(x<0?.44:-.44,1.05,.06);g.add(knob);
+  const plate=new THREE.Mesh(new THREE.BoxGeometry(.038,.22,.014),M.gold);
+  plate.position.set(x<0?.44:-.44,1.05,.038);g.add(plate);
 });
 /* ---------- the garden outside ---------- */
 const garden=new THREE.Group();scene.add(garden);
@@ -1310,9 +1326,10 @@ let usedKeyboard=false;
 addEventListener('keydown',()=>{usedKeyboard=true;});addEventListener('pointerdown',()=>{usedKeyboard=false;});
 /* ---------- the lamp switch ---------- */
 let lampOn=true,lampLevel=1;
-const lampBtn=document.getElementById('lampBtn'),ray=new THREE.Raycaster();
-function setLamp(on){lampOn=on;lampBtn.setAttribute('aria-pressed',String(on));lampBtn.querySelector('span').textContent=on?'Lamp on':'Lamp off';}
-lampBtn.addEventListener('click',()=>setLamp(!lampOn));
+const ray=new THREE.Raycaster();
+/* There is no lamp button: the lamp is switched by tapping it in the
+   scene, or by pressing L. Both are told to the visitor in the hint. */
+function setLamp(on){lampOn=on;}
 function tapLamp(e){
   ray.setFromCamera(new THREE.Vector2(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight*2-1)),camera);
   if(ray.intersectObject(lamp,true).length)setLamp(!lampOn);
